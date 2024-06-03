@@ -32,7 +32,7 @@ namespace task2_memory_game
             {
                 computerIsPlaying = false;
                 secondPlayerName = UI.getUsername();
-                secondPlayer = new HumanPlayerMemoryGame(firstPlayerName);
+                secondPlayer = new HumanPlayerMemoryGame(secondPlayerName);
             }
 
         }
