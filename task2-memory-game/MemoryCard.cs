@@ -5,24 +5,28 @@ namespace task2_memory_game
 {
     public struct MemoryCard
     {
-        private int numberOfPair;
-        private bool isSeen;
+        private int m_numberOfPair;
+        private bool m_isSeen;
         
 
-        public MemoryCard(int numberOfPair)
+        public MemoryCard(int i_numberOfPair)
         {
-            this.numberOfPair = numberOfPair;
-            isSeen = false;
+            m_numberOfPair = i_numberOfPair;
+            m_isSeen = false;
         }
 
 
         public bool getIsSeen()
         {
-            return isSeen;
+            return m_isSeen;
         }
         public int getNumberOfPair()
         {
-            return numberOfPair;
+            return m_numberOfPair;
+        }
+        public void setNumberOfPair(int i_numberOfPair)
+        {
+            m_numberOfPair = i_numberOfPair;
         }
     }
 }
