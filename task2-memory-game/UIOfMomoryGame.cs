@@ -9,6 +9,7 @@ namespace task2_memory_game
         public string getUsername()
         {
             string name;
+            Console.WriteLine("Enter username: ");
             name = Console.ReadLine();
             return name;
         }
@@ -38,7 +39,6 @@ namespace task2_memory_game
             string i_columnInput;
             int i_row;
             int i_column;
-
             i_rowInput = Console.ReadLine();
             while (int.TryParse(i_rowInput, out i_row) && i_row >= minimumRowSize && i_row <= maximumRowSize)
             {
@@ -77,19 +77,19 @@ namespace task2_memory_game
             //top border
             lineOfEquals(i_columns);
             //rows
-            for (int row = 1; row < i_rows; row++)
+            for (int row = 1; row <= i_rows; row++)
             {
                 Console.Write(row + " |");
                
                 for (int column = 0; column < i_columns; column++)
                 {
-                    if (!(board.getBoardState()[row, column].getIsSeen()))
+                    if (!(board.getBoardState()[row - 1, column].getIsSeen()))
                     {
                         Console.Write(" |");
                     } 
                     else
                     {
-                        Console.Write((char)(board.getBoardState()[row, column].getNumberOfPair()) + "|");
+                        Console.Write((char)(board.getBoardState()[row - 1, column].getNumberOfPair()) + "|");
                     }
                 }
                 Console.WriteLine();
