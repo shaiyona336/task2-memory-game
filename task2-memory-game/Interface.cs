@@ -15,7 +15,7 @@ namespace task2_memory_game
         HumanPlayerMemoryGame secondPlayer;
         ComputerPlayerMemoryGame computer;
         private UIOfMomoryGame UI;
-        LogicMemoryGame logicMemoryGame;
+        private LogicMemoryGame logicMemoryGame;
         private const int minimumRowSize = 4;
         private const int minimumColumnSize = 4;
         private const int maximumRowSize = 6;
@@ -24,6 +24,8 @@ namespace task2_memory_game
         public void game()
         {
             UI = new UIOfMomoryGame();
+            logicMemoryGame = new LogicMemoryGame();
+           
             bool againstComputer;
             firstPlayerName = UI.getUsername();
             firstPlayer = new HumanPlayerMemoryGame(firstPlayerName);
@@ -39,7 +41,9 @@ namespace task2_memory_game
                 secondPlayer = new HumanPlayerMemoryGame(secondPlayerName);
             }
 
-            UI.printBoard(4, 6);
+            logicMemoryGame.setBoard(4, 6);
+
+            UI.printBoard(4, 6, logicMemoryGame.getBoard());
 
             Console.ReadLine();
 

@@ -66,9 +66,9 @@ namespace task2_memory_game
             Console.WriteLine();
         }
 
-        public void printBoard(int i_rows, int i_columns)
+        public void printBoard(int i_rows, int i_columns, BoardMemoryGame board)
         {
-            Console.Write("  ");
+            Console.Write("   ");
             for (int latter = 0; latter < i_columns; latter++)
             {
                 Console.Write((char)('A' + latter) + " ");
@@ -77,12 +77,20 @@ namespace task2_memory_game
             //top border
             lineOfEquals(i_columns);
             //rows
-            for (int row = 1; row <= i_rows; row++)
+            for (int row = 1; row < i_rows; row++)
             {
-                Console.Write(row + "| ");
-                for (int col = 0; col < i_columns; col++)
+                Console.Write(row + " |");
+               
+                for (int column = 0; column < i_columns; column++)
                 {
-                    Console.Write("| ");
+                    if (!(board.getBoardState()[row, column].getIsSeen()))
+                    {
+                        Console.Write(" |");
+                    } 
+                    else
+                    {
+                        Console.Write((char)(board.getBoardState()[row, column].getNumberOfPair()) + "|");
+                    }
                 }
                 Console.WriteLine();
                 lineOfEquals(i_columns);
