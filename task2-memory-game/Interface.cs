@@ -1,5 +1,8 @@
 ﻿
 
+using System;
+using System.Runtime.InteropServices;
+
 namespace task2_memory_game
 {
     internal class Interface
@@ -11,15 +14,18 @@ namespace task2_memory_game
         HumanPlayerMemoryGame firstPlayer;
         HumanPlayerMemoryGame secondPlayer;
         ComputerPlayerMemoryGame computer;
-        UIOfMomoryGame UI;
-        LogicMemoryGame logicMemoryGame;
+        private UIOfMomoryGame UI;
+        private LogicMemoryGame logicMemoryGame;
         private const int minimumRowSize = 4;
         private const int minimumColumnSize = 4;
         private const int maximumRowSize = 6;
         private const int maximumColumnSize = 6;
 
-        void game()
+        public void game()
         {
+            UI = new UIOfMomoryGame();
+            logicMemoryGame = new LogicMemoryGame();
+           
             bool againstComputer;
             firstPlayerName = UI.getUsername();
             firstPlayer = new HumanPlayerMemoryGame(firstPlayerName);
@@ -34,6 +40,12 @@ namespace task2_memory_game
                 secondPlayerName = UI.getUsername();
                 secondPlayer = new HumanPlayerMemoryGame(secondPlayerName);
             }
+
+            logicMemoryGame.setBoard(4, 6);
+
+            UI.printBoard(4, 6, logicMemoryGame.getBoard());
+
+            Console.ReadLine();
 
         }
 

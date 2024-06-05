@@ -1,7 +1,6 @@
 ﻿
 using System;
-using System.Diagnostics.PerformanceData;
-using System.Runtime.CompilerServices;
+
 
 namespace task2_memory_game
 {
@@ -56,6 +55,48 @@ namespace task2_memory_game
             return i_rowAndColumnSize;
 
         }
+
+        public void lineOfEquals(int i_columns)
+        {
+            Console.Write("  ");
+            for (int amountOfEquals = 0; amountOfEquals < i_columns * 2 + 1; amountOfEquals++)
+            {
+                Console.Write('=');
+            }
+            Console.WriteLine();
+        }
+
+        public void printBoard(int i_rows, int i_columns, BoardMemoryGame board)
+        {
+            Console.Write("   ");
+            for (int latter = 0; latter < i_columns; latter++)
+            {
+                Console.Write((char)('A' + latter) + " ");
+            }
+            Console.WriteLine();
+            //top border
+            lineOfEquals(i_columns);
+            //rows
+            for (int row = 1; row < i_rows; row++)
+            {
+                Console.Write(row + " |");
+               
+                for (int column = 0; column < i_columns; column++)
+                {
+                    if (!(board.getBoardState()[row, column].getIsSeen()))
+                    {
+                        Console.Write(" |");
+                    } 
+                    else
+                    {
+                        Console.Write((char)(board.getBoardState()[row, column].getNumberOfPair()) + "|");
+                    }
+                }
+                Console.WriteLine();
+                lineOfEquals(i_columns);
+            }
+        }
+
 
     }
 }
