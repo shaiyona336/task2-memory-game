@@ -40,11 +40,10 @@ namespace task2_memory_game
                 secondPlayerName = UI.getUsername();
                 secondPlayer = new HumanPlayerMemoryGame(secondPlayerName);
             }
-
+            //need to get board dimensions here
+            /////////////////
             logicMemoryGame.setBoard(4, 6);
-
             UI.printBoard(4, 6, logicMemoryGame.getBoard());
-
             Console.ReadLine();
 
         }
