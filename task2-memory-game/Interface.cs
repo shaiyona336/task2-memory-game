@@ -81,6 +81,7 @@ namespace task2_memory_game
                 {
                     givePoints(isFirstPlayerTurn, ref firstPlayerPoints, ref secondPlayerPoints);
                     logicMemoryGame.getBoard().printBoard();
+                    
                     isGameOver = logicMemoryGame.isGameOver();
                     if (isGameOver)
                     {
@@ -156,9 +157,9 @@ namespace task2_memory_game
             }
             else if (cardToOpen.Length == 2 &&
                 cardToOpen[0] - 'A' >= 0 &&
-                cardToOpen[0] - 'A' <= logicMemoryGame.getBoard().getBoardYDimension() + 1 &&
+                cardToOpen[0] - 'A' <= logicMemoryGame.getBoard().getBoardXDimension() + 1 &&
                 cardToOpen[1] - '0' >= 0 &&
-                cardToOpen[1] - '0' <= logicMemoryGame.getBoard().getBoardXDimension())
+                cardToOpen[1] - '0' <= logicMemoryGame.getBoard().getBoardYDimension())
             {
                 pair = (cardToOpen[1] - '0' - 1, cardToOpen[0] - 'A');
             }

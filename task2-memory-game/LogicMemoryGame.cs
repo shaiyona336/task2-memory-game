@@ -28,7 +28,7 @@ namespace task2_memory_game
             {
                 for (int boardYDimension = 0; boardYDimension < board.getBoardYDimension() && flag; boardYDimension++)
                 {
-                    if (boardState[boardXDimension, boardYDimension].getIsSeen())
+                    if (!(boardState[boardXDimension, boardYDimension].getIsSeen()))
                     {
                         flag = false;
                     }
