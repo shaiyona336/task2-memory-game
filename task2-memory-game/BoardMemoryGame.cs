@@ -52,12 +52,12 @@ namespace task2_memory_game
 
         public int getBoardXDimension()
         {
-            return m_sizeColumnBoard;
+            return m_sizeRowBoard;
         }
 
         public int getBoardYDimension()
         {  
-            return m_sizeRowBoard;
+            return m_sizeColumnBoard;
         }
 
         public BoardMemoryGame(int i_sizeRowBoard, int i_sizeColumnBoard)
