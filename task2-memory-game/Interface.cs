@@ -25,6 +25,7 @@ namespace task2_memory_game
         {
             UI = new UIOfMomoryGame();
             logicMemoryGame = new LogicMemoryGame();
+            string currentCardToOpen;
            
             bool againstComputer;
             firstPlayerName = UI.getUsername();
@@ -44,6 +45,16 @@ namespace task2_memory_game
             /////////////////
             logicMemoryGame.setBoard(4, 6);
             UI.printBoard(4, 6, logicMemoryGame.getBoard());
+
+            currentCardToOpen = UI.askUserForCardToOpen();
+            while (currentCardToOpen != "Q")
+            {
+
+
+            }
+            
+
+
             Console.ReadLine();
 
         }

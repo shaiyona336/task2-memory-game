@@ -68,6 +68,7 @@ namespace task2_memory_game
 
         public void printBoard(int i_rows, int i_columns, BoardMemoryGame board)
         {
+            board.setCardUserOpenAsSeen(); //treat the open card in the current turn as a normal opened card to show him on the board
             Console.Write("   ");
             for (int latter = 0; latter < i_columns; latter++)
             {
@@ -95,6 +96,16 @@ namespace task2_memory_game
                 Console.WriteLine();
                 lineOfEquals(i_columns);
             }
+            board.setCardUserOpenAsUnseen();
+        }
+
+
+        public string askUserForCardToOpen()
+        {
+            string cardToOpen;
+            Console.WriteLine("Pick a card to open: ");
+            cardToOpen = Console.ReadLine();
+            return cardToOpen;
         }
 
 

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace task2_memory_game
 {
@@ -10,6 +11,26 @@ namespace task2_memory_game
         private int m_sizeRowBoard;
         private int m_sizeColumnBoard;
         private MemoryCard[,] boardState;
+        private bool UserOpenedOneCard = false;
+        private int withRowCardUserOpen;
+        private int withColumnCardUserOpen;
+
+
+        public void setCardUserOpenAsSeen()
+        {
+            boardState[withRowCardUserOpen, withColumnCardUserOpen].setIsSeen(true);
+        }
+
+        public void setCardUserOpenAsUnseen()
+        {
+            boardState[withRowCardUserOpen, withColumnCardUserOpen].setIsSeen(false);
+        }
+
+
+        public bool getUserOpenedOneCard()
+        {
+            return UserOpenedOneCard;
+        }
 
 
         public int getBoardXDimension()
@@ -78,5 +99,48 @@ namespace task2_memory_game
 
         }
 
+
+
+        public bool openCard(int i_row, int i_column) //return if flipped a pair
+        {
+            bool isFlippedAPair = false;
+            if (UserOpenedOneCard == true)
+            {
+                if (boardState[i_row, i_column].getNumberOfPair() == boardState[withRowCardUserOpen, withColumnCardUserOpen].getNumberOfPair())
+                {
+                    isFlippedAPair = true;
+                    boardState[i_row, i_column].setIsSeen(true); // need to flip this card and keep his state like that
+                }
+                else //if the card flipped wasnt a pair
+                {
+                    isFlippedAPair = false;
+                    boardState[withRowCardUserOpen, withColumnCardUserOpen].setIsSeen(false); // need to set the old card that been flipped to not seen again
+                }
+
+            }
+            else //if (UserOpenedOneCard == false), then need to set the card that is now opened in the middle of a turn
+            {
+                withRowCardUserOpen = i_row;
+                withColumnCardUserOpen = i_column;
+            }
+            UserOpenedOneCard = !UserOpenedOneCard; //if user open card, now need to flip the condition of one card open in a turn
+            return isFlippedAPair;
+        }
+
+
+        public bool isCardValid(int i_row, int i_column)
+        {
+            bool i_flag = false;
+
+            if (i_row <= 0 && i_row >= m_sizeColumnBoard && i_column <= 0 && i_column >= m_sizeRowBoard)
+            {
+                if (!(boardState[i_row, i_column].getIsSeen()))
+                {
+                    i_flag = true;
+                }
+            }
+            return i_flag;
+        }
     }
 }
+
