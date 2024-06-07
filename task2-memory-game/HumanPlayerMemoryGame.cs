@@ -1,6 +1,6 @@
 ﻿namespace task2_memory_game
 {
-    internal class HumanPlayerMemoryGame
+    internal class HumanPlayerMemoryGame : PlayerMemoryGame
     {
         public string PlayerName { get; }
 
