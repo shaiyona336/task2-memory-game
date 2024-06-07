@@ -66,6 +66,16 @@ namespace task2_memory_game
             return cardToOpen;
         }
 
+        public void printIllegalPlaceForCard()
+        {
+            Console.WriteLine("Illigal place for card");
+        }
+
+        public void printIllegalPlaceForCardBorder() {
+            Console.WriteLine("card not in borders");
+        }
+
+
 
     }
 }

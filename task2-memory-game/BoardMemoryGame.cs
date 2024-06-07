@@ -101,7 +101,7 @@ namespace task2_memory_game
 
 
 
-        public bool openCard(int i_row, int i_column) //return if flipped a pair
+        public bool openCardInBoard(int i_row, int i_column) //return if flipped a pair
         {
             bool isFlippedAPair = false;
             if (UserOpenedOneCard == true)
@@ -132,7 +132,7 @@ namespace task2_memory_game
         {
             bool i_flag = false;
 
-            if (i_row <= 0 && i_row >= m_sizeColumnBoard && i_column <= 0 && i_column >= m_sizeRowBoard)
+            if (i_row >= 0 && i_row <= m_sizeRowBoard && i_column >= 0 && i_column <= m_sizeColumnBoard)
             {
                 if (!(boardState[i_row, i_column].getIsSeen()))
                 {
