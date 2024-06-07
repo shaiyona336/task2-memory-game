@@ -44,7 +44,7 @@ namespace task2_memory_game
             //need to get board dimensions here
             /////////////////
             logicMemoryGame.setBoard(4, 6);
-            UI.printBoard(4, 6, logicMemoryGame.getBoard());
+            logicMemoryGame.getBoard().printBoard(logicMemoryGame.getBoard());
 
             currentCardToOpen = UI.askUserForCardToOpen();
             while (currentCardToOpen != "Q")

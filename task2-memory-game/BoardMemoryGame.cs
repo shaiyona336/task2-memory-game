@@ -141,6 +141,55 @@ namespace task2_memory_game
             }
             return i_flag;
         }
+
+
+
+        public void lineOfEquals(int i_columns)
+        {
+            Console.Write("  ");
+            for (int amountOfEquals = 0; amountOfEquals < i_columns * 2 + 1; amountOfEquals++)
+            {
+                Console.Write('=');
+            }
+            Console.WriteLine();
+        }
+
+
+        public void printBoard(BoardMemoryGame board)
+        {
+            board.setCardUserOpenAsSeen(); //treat the open card in the current turn as a normal opened card to show him on the board
+            Console.Write("   ");
+            for (int latter = 0; latter < m_sizeColumnBoard; latter++)
+            {
+                Console.Write((char)('A' + latter) + " ");
+            }
+            Console.WriteLine();
+            //top border
+            lineOfEquals(m_sizeColumnBoard);
+            //rows
+            for (int row = 1; row <= m_sizeRowBoard; row++)
+            {
+                Console.Write(row + " |");
+
+                for (int column = 0; column < m_sizeColumnBoard; column++)
+                {
+                    if (!(board.getBoardState()[row - 1, column].getIsSeen()))
+                    {
+                        Console.Write(" |");
+                    }
+                    else
+                    {
+                        Console.Write((char)(board.getBoardState()[row - 1, column].getNumberOfPair()) + "|");
+                    }
+                }
+                Console.WriteLine();
+                lineOfEquals(m_sizeColumnBoard);
+            }
+            board.setCardUserOpenAsUnseen();
+        }
+
+
     }
+
 }
 
