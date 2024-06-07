@@ -47,6 +47,7 @@ namespace task2_memory_game
             /////////////////
             logicMemoryGame.setBoard(4, 6);
             logicMemoryGame.getBoard().printBoard();
+            logicMemoryGame.getBoard().generatePairs();
             //while user didnt typed 'Q'
             while (pair != (-2,-2))
             {
