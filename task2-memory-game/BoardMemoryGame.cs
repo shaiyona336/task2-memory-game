@@ -58,10 +58,8 @@ namespace task2_memory_game
 
         public void generatePairs()
         {
-            
             int numberOfPairs = (m_sizeRowBoard * m_sizeColumnBoard) / 2; //size of the board devide by two
             List<MemoryCard> pairsToShuffle = new List<MemoryCard>(); //save all the cards in a list, shuffle them, and put them in the board
-
 
             for (int pair = 1; pair <= numberOfPairs; pair++)
             {
@@ -155,9 +153,9 @@ namespace task2_memory_game
         }
 
 
-        public void printBoard(BoardMemoryGame board)
+        public void printBoard()
         {
-            board.setCardUserOpenAsSeen(); //treat the open card in the current turn as a normal opened card to show him on the board
+            setCardUserOpenAsSeen(); //treat the open card in the current turn as a normal opened card to show him on the board
             Console.Write("   ");
             for (int latter = 0; latter < m_sizeColumnBoard; latter++)
             {
@@ -173,19 +171,19 @@ namespace task2_memory_game
 
                 for (int column = 0; column < m_sizeColumnBoard; column++)
                 {
-                    if (!(board.getBoardState()[row - 1, column].getIsSeen()))
+                    if (!(getBoardState()[row - 1, column].getIsSeen()))
                     {
                         Console.Write(" |");
                     }
                     else
                     {
-                        Console.Write((char)(board.getBoardState()[row - 1, column].getNumberOfPair()) + "|");
+                        Console.Write((char)(getBoardState()[row - 1, column].getNumberOfPair()) + "|");
                     }
                 }
                 Console.WriteLine();
                 lineOfEquals(m_sizeColumnBoard);
             }
-            board.setCardUserOpenAsUnseen();
+            setCardUserOpenAsUnseen();
         }
 
 
