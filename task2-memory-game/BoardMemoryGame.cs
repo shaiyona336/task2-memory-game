@@ -97,7 +97,7 @@ namespace task2_memory_game
             {
                 whoToSwitchWith = random.Next(list.Count);
                 tempCurrCardValue = list[card].getNumberOfPair();
-                list[card].setNumberOfPair(list[whoToSwitchWith - 1].getNumberOfPair());
+                list[card].setNumberOfPair(list[whoToSwitchWith].getNumberOfPair());
                 list[whoToSwitchWith].setNumberOfPair(tempCurrCardValue);
             }
 
@@ -161,6 +161,7 @@ namespace task2_memory_game
 
         public void printBoard()
         {
+            Ex02.ConsoleUtils.Screen.Clear();
             setCardUserOpenAsSeen(); //treat the open card in the current turn as a normal opened card to show him on the board
             Console.Write("   ");
             for (int latter = 0; latter < m_sizeColumnBoard; latter++)
