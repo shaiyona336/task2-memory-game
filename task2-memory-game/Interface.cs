@@ -80,6 +80,7 @@ namespace task2_memory_game
                 if (openCardState == '2') //need to print the board normally
                 {
                     givePoints(isFirstPlayerTurn, ref firstPlayerPoints, ref secondPlayerPoints);
+
                     logicMemoryGame.Board.printBoard();
                     isGameOver = logicMemoryGame.isGameOver();
                     if (isGameOver)

@@ -46,7 +46,7 @@ namespace task2_memory_game
         {
             return UserOpenedOneCard;
         }
-
+      
         public BoardMemoryGame(int i_BoardHeight, int i_BoardWidth)
         {
             BoardHeight = i_BoardHeight;
