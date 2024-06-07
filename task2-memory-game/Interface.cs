@@ -46,12 +46,12 @@ namespace task2_memory_game
             //need to get board dimensions here
             /////////////////
             logicMemoryGame.setBoard(4, 6);
-            logicMemoryGame.getBoard().printBoard(logicMemoryGame.getBoard());
+            logicMemoryGame.getBoard().printBoard();
             //while user didnt typed 'Q'
             while (pair != (-2,-2))
             {
                 pair = askUserForLigalCardToOpen();
-                //open first card
+                //open first card first player
                 openCardState = logicMemoryGame.openCard(pair.Item1, pair.Item2);
                 while (openCardState == '0') //cant flip unmatched card on the first card that we open in the turn, just need to check it flipped the card
                 {
@@ -59,7 +59,17 @@ namespace task2_memory_game
                     pair = askUserForLigalCardToOpen();
                     openCardState = logicMemoryGame.openCard(pair.Item1, pair.Item2);
                 }
-                //open second card
+                Ex02.ConsoleUtils.Screen.Clear();
+                logicMemoryGame.getBoard().printBoard(); //print board after placing the first card
+                //open second card first player
+                pair = askUserForLigalCardToOpen();
+                openCardState = logicMemoryGame.openCard(pair.Item1, pair.Item2);
+                while (openCardState == '0') //cant flip unmatched card on the first card that we open in the turn, just need to check it flipped the card
+                {
+                    UI.printIllegalPlaceForCard();
+                    pair = askUserForLigalCardToOpen();
+                    openCardState = logicMemoryGame.openCard(pair.Item1, pair.Item2);
+                }
 
 
             }
