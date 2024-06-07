@@ -60,7 +60,6 @@ namespace task2_memory_game
                     pair = askUserForLigalCardToOpen();
                     openCardState = logicMemoryGame.openCard(pair.Item1, pair.Item2);
                 }
-                Ex02.ConsoleUtils.Screen.Clear();
                 logicMemoryGame.getBoard().printBoard(); //print board after placing the first card
                 //open second card first player
                 pair = askUserForLigalCardToOpen();
@@ -71,6 +70,7 @@ namespace task2_memory_game
                     pair = askUserForLigalCardToOpen();
                     openCardState = logicMemoryGame.openCard(pair.Item1, pair.Item2);
                 }
+                //need to check if openCardState is 1 or 2, if 1 print the board with the 2 cards that the user open for two seconds
 
 
             }
