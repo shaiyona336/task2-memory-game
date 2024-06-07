@@ -1,6 +1,4 @@
-﻿
-
-namespace task2_memory_game
+﻿namespace task2_memory_game
 {
     internal class LogicMemoryGame
     {
@@ -14,7 +12,7 @@ namespace task2_memory_game
         public bool isGameOver()
         {
             bool flag = true;
-            MemoryCard[,] boardState = Board.getBoardState();
+            MemoryCard[,] boardState = Board.BoardState;
             for (int boardXDimension = 0; boardXDimension < Board.BoardWidth && flag; boardXDimension++)
             {
                 for (int boardYDimension = 0; boardYDimension < Board.BoardHeight && flag; boardYDimension++)

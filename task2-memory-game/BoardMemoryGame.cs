@@ -8,29 +8,29 @@ namespace task2_memory_game
     {
         public int BoardHeight { get; private set; }
         public int BoardWidth { get; private set; }
-        private MemoryCard[,] boardState;
-        private bool UserOpenedOneCard = false;
+        public MemoryCard[,] BoardState { get; private set; }
+        public bool UserOpenedOneCard { get; private set; }
         private int withRowCardUserOpen;
         private int withColumnCardUserOpen;
 
 
         public void RevealCards((int,int) firstCard, (int,int) secondCard)
         {
-            boardState[firstCard.Item1, firstCard.Item2].IsSeen = true;
-            boardState[secondCard.Item1, secondCard.Item2].IsSeen = true;
+            BoardState[firstCard.Item1, firstCard.Item2].IsSeen = true;
+            BoardState[secondCard.Item1, secondCard.Item2].IsSeen = true;
         }
 
         public void HideCards((int, int) firstCard, (int, int) secondCard)
         {
-            boardState[firstCard.Item1, firstCard.Item2].IsSeen = false;
-            boardState[secondCard.Item1, secondCard.Item2].IsSeen = false;
+            BoardState[firstCard.Item1, firstCard.Item2].IsSeen = false;
+            BoardState[secondCard.Item1, secondCard.Item2].IsSeen = false;
         }
 
         public void setCardUserOpenAsSeen()
         {
             if (UserOpenedOneCard)
             {
-                boardState[withRowCardUserOpen, withColumnCardUserOpen].IsSeen = true;
+                BoardState[withRowCardUserOpen, withColumnCardUserOpen].IsSeen = true;
             }
         }
 
@@ -38,7 +38,7 @@ namespace task2_memory_game
         {
             if (UserOpenedOneCard)
             {
-                boardState[withRowCardUserOpen, withColumnCardUserOpen].IsSeen = false;
+                BoardState[withRowCardUserOpen, withColumnCardUserOpen].IsSeen = false;
             }
         }
 
@@ -51,12 +51,8 @@ namespace task2_memory_game
         {
             BoardHeight = i_BoardHeight;
             BoardWidth = i_BoardWidth;
-            boardState = new MemoryCard[BoardHeight, BoardWidth];
-        }
-
-        public MemoryCard[,] getBoardState()
-        {
-            return boardState;
+            BoardState = new MemoryCard[BoardHeight, BoardWidth];
+            UserOpenedOneCard = false;
         }
 
         public void generatePairs()
@@ -79,7 +75,7 @@ namespace task2_memory_game
             {
                 for (int column = 0; column < BoardWidth; column++)
                 {
-                    boardState[row, column] = pairsToShuffle[row * BoardWidth + column];
+                    BoardState[row, column] = pairsToShuffle[row * BoardWidth + column];
                 }
             }
 
@@ -109,16 +105,16 @@ namespace task2_memory_game
             bool isFlippedAPair = false;
             if (UserOpenedOneCard == true)
             {
-                if (boardState[i_row, i_column].PairNum == boardState[withRowCardUserOpen, withColumnCardUserOpen].PairNum)
+                if (BoardState[i_row, i_column].PairNum == BoardState[withRowCardUserOpen, withColumnCardUserOpen].PairNum)
                 {
                     isFlippedAPair = true;
-                    boardState[i_row, i_column].IsSeen = true; // need to flip this card and keep his state like that
-                    boardState[withRowCardUserOpen, withColumnCardUserOpen].IsSeen = true;
+                    BoardState[i_row, i_column].IsSeen = true; // need to flip this card and keep his state like that
+                    BoardState[withRowCardUserOpen, withColumnCardUserOpen].IsSeen = true;
                 }
                 else //if the card flipped wasnt a pair
                 {
                     isFlippedAPair = false;
-                    boardState[withRowCardUserOpen, withColumnCardUserOpen].IsSeen = false; // need to set the old card that been flipped to not seen again
+                    BoardState[withRowCardUserOpen, withColumnCardUserOpen].IsSeen = false; // need to set the old card that been flipped to not seen again
                 }
             }
             else //if (UserOpenedOneCard == false), then need to set the card that is now opened in the middle of a turn
@@ -136,7 +132,7 @@ namespace task2_memory_game
 
             if (i_row >= 0 && i_row <= BoardHeight && i_column >= 0 && i_column <= BoardWidth)
             {
-                if (!(boardState[i_row, i_column].IsSeen))
+                if (!(BoardState[i_row, i_column].IsSeen))
                 {
                     i_flag = true;
                 }
@@ -176,13 +172,13 @@ namespace task2_memory_game
 
                 for (int column = 0; column < BoardWidth; column++)
                 {
-                    if (!(getBoardState()[row - 1, column].IsSeen))
+                    if (!(BoardState[row - 1, column].IsSeen))
                     {
                         Console.Write(" |");
                     }
                     else
                     {
-                        Console.Write((getBoardState()[row - 1, column].PairNum) + "|");
+                        Console.Write((BoardState[row - 1, column].PairNum) + "|");
                     }
                 }
                 Console.WriteLine();
