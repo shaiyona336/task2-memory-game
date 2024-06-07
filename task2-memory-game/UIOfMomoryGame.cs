@@ -60,7 +60,7 @@ namespace task2_memory_game
             int inputInt;
             string inputStr = Console.ReadLine();
 
-            while (!(int.TryParse(inputStr, out inputInt) && inputInt >= i_minimum && inputInt <= i_maximum))
+            while (!(int.TryParse(inputStr, out inputInt) && inputInt >= i_minimum && inputInt <= i_maximum && inputInt % 2 == 0))
             {
                 Console.WriteLine("Invalid input! Please try again.");
                 inputStr = Console.ReadLine();
