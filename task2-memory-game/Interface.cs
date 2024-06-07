@@ -156,7 +156,7 @@ namespace task2_memory_game
             }
             else if (cardToOpen.Length == 2 &&
                 cardToOpen[0] - 'A' >= 0 &&
-                cardToOpen[0] - 'A' <= logicMemoryGame.getBoard().getBoardYDimension() &&
+                cardToOpen[0] - 'A' <= logicMemoryGame.getBoard().getBoardYDimension() + 1 &&
                 cardToOpen[1] - '0' >= 0 &&
                 cardToOpen[1] - '0' <= logicMemoryGame.getBoard().getBoardXDimension())
             {
