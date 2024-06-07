@@ -1,6 +1,4 @@
-﻿
-using System;
-
+﻿using System;
 
 namespace task2_memory_game
 {
