@@ -10,7 +10,7 @@ namespace task2_memory_game
     {
         string firstPlayerName;
         string secondPlayerName;
-        private bool isFirstPlayerTurn;
+        private bool isFirstPlayerTurn = true;
         private bool computerIsPlaying;
         HumanPlayerMemoryGame firstPlayer;
         HumanPlayerMemoryGame secondPlayer;
@@ -22,6 +22,10 @@ namespace task2_memory_game
         private const int maximumRowSize = 6;
         private const int maximumColumnSize = 6;
         private char openCardState; //0 the card couldnt opened, 1 card opend but not matched a previous pair
+        int firstPlayerPoints = 0;
+        int secondPlayerPoints = 0;
+        bool isGameOver = false;
+        bool startNewGame = true; //contain the answer from the user, if the value is true the user want to start a new game
 
         public void game()
         {
@@ -75,7 +79,21 @@ namespace task2_memory_game
                 //need to check if openCardState is 1 or 2, if 1 print the board with the 2 cards that the user open for two seconds
                 if (openCardState == '2') //need to print the board normally
                 {
+                    givePoints(isFirstPlayerTurn, ref firstPlayerPoints, ref secondPlayerPoints);
                     logicMemoryGame.getBoard().printBoard();
+                    isGameOver = logicMemoryGame.isGameOver();
+                    if (isGameOver)
+                    {
+                        startNewGame = UI.endGameMessageAndAskIfAnotherGame(firstPlayerPoints, secondPlayerPoints);
+                        if (!startNewGame)
+                        {
+                            pair = (-2, -2); //the same as if the user press Q in a middle of a game, quit
+                        }
+                        else //if the user want to start a new game, need to clear the board
+                        {
+                            logicMemoryGame.getBoard().generatePairs();
+                        }
+                    }
                 }
                 else //openCardState == '1'
                 {
@@ -85,10 +103,35 @@ namespace task2_memory_game
                     logicMemoryGame.getBoard().setCardsClosedTwoSeconds(pair, secondPair);
                     logicMemoryGame.getBoard().printBoard();
                 }
-
+                switchTurn(ref isFirstPlayerTurn);
             }
-            Console.ReadLine();
         }
+
+        public void givePoints(bool isFirstPlayer, ref int firstPlayerPoints, ref int secondPlayerPoints)
+        {
+            if (isFirstPlayer)
+            {
+                firstPlayerPoints++;
+            }
+            else
+            {
+                secondPlayerPoints++;
+            }
+        }
+
+
+        public void switchTurn(ref bool isFirstPlayer)
+        {
+            if (isFirstPlayer)
+            {
+                isFirstPlayer = false; ;
+            }
+            else
+            {
+                isFirstPlayer = true;
+            }
+        }
+
 
         private (int,int) askUserForLigalCardToOpen()
         {

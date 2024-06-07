@@ -17,9 +17,16 @@ namespace task2_memory_game
         public bool againstHumanOrComputer()
         {
             bool i_flag;
-            string i_answer;
 
             System.Console.WriteLine("do you want to play against a computer: (y/n)");
+            i_flag = getIfAnswerIsYes();
+            return i_flag;
+        }
+
+        public bool getIfAnswerIsYes()
+        {
+            bool i_flag;
+            string i_answer;
             i_answer = Console.ReadLine();
             if (i_answer == "y")
             {
@@ -76,6 +83,29 @@ namespace task2_memory_game
         }
 
 
-
+        public bool endGameMessageAndAskIfAnotherGame(int amountOfPointsFirstPlayer, int amountOfPointsSecondPlayer)
+        {
+            bool i_flag;
+            Console.WriteLine("THE GAME HAS ENDED");
+            //print who won the game
+            if (amountOfPointsFirstPlayer > amountOfPointsSecondPlayer)
+            {
+                Console.WriteLine("FIRST PLAYER WON!");
+            }
+            else //amountOfPointsFirstPlayer >= amountOfPointsSecondPlayer = second player won
+            {
+                if (amountOfPointsFirstPlayer > amountOfPointsSecondPlayer)
+                {
+                    Console.WriteLine("SECOND PLAYER WON!");
+                }
+            }
+            Console.WriteLine("FIRST PLAYER POINTS: " + amountOfPointsFirstPlayer.ToString());
+            Console.WriteLine("SECOND PLAYER POINTS: " + amountOfPointsSecondPlayer.ToString());
+            //ask if the user want to start a new game
+            Console.WriteLine("DO YOU WANT TO START A NEW GAME: (y/n)");
+            
+            i_flag = getIfAnswerIsYes();
+            return i_flag;
+        }
     }
 }
