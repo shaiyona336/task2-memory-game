@@ -93,6 +93,7 @@ namespace task2_memory_game
                         else //if the user want to start a new game, need to clear the board
                         {
                             logicMemoryGame.getBoard().generatePairs();
+                            logicMemoryGame.getBoard().printBoard();
                         }
                     }
                 }
