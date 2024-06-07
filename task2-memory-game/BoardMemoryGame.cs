@@ -101,7 +101,7 @@ namespace task2_memory_game
 
 
 
-        public bool openCard(int i_row, int i_column) //return if flipped a pair
+        public bool openCardInBoard(int i_row, int i_column) //return if flipped a pair
         {
             bool isFlippedAPair = false;
             if (UserOpenedOneCard == true)
@@ -132,7 +132,7 @@ namespace task2_memory_game
         {
             bool i_flag = false;
 
-            if (i_row <= 0 && i_row >= m_sizeColumnBoard && i_column <= 0 && i_column >= m_sizeRowBoard)
+            if (i_row >= 0 && i_row <= m_sizeRowBoard && i_column >= 0 && i_column <= m_sizeColumnBoard)
             {
                 if (!(boardState[i_row, i_column].getIsSeen()))
                 {
@@ -141,6 +141,55 @@ namespace task2_memory_game
             }
             return i_flag;
         }
+
+
+
+        public void lineOfEquals(int i_columns)
+        {
+            Console.Write("  ");
+            for (int amountOfEquals = 0; amountOfEquals < i_columns * 2 + 1; amountOfEquals++)
+            {
+                Console.Write('=');
+            }
+            Console.WriteLine();
+        }
+
+
+        public void printBoard(BoardMemoryGame board)
+        {
+            board.setCardUserOpenAsSeen(); //treat the open card in the current turn as a normal opened card to show him on the board
+            Console.Write("   ");
+            for (int latter = 0; latter < m_sizeColumnBoard; latter++)
+            {
+                Console.Write((char)('A' + latter) + " ");
+            }
+            Console.WriteLine();
+            //top border
+            lineOfEquals(m_sizeColumnBoard);
+            //rows
+            for (int row = 1; row <= m_sizeRowBoard; row++)
+            {
+                Console.Write(row + " |");
+
+                for (int column = 0; column < m_sizeColumnBoard; column++)
+                {
+                    if (!(board.getBoardState()[row - 1, column].getIsSeen()))
+                    {
+                        Console.Write(" |");
+                    }
+                    else
+                    {
+                        Console.Write((char)(board.getBoardState()[row - 1, column].getNumberOfPair()) + "|");
+                    }
+                }
+                Console.WriteLine();
+                lineOfEquals(m_sizeColumnBoard);
+            }
+            board.setCardUserOpenAsUnseen();
+        }
+
+
     }
+
 }
 

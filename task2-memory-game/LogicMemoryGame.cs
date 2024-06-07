@@ -44,7 +44,7 @@ namespace task2_memory_game
             if (board.isCardValid(i_row, i_column))
             {
                 cardToFlipAffectOnBoard = '1';
-                isFlippedAPair = board.openCard(i_row, i_column);
+                isFlippedAPair = board.openCardInBoard(i_row, i_column);
                 if (isFlippedAPair)
                 {
                     cardToFlipAffectOnBoard = '2';

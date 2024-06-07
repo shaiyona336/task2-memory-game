@@ -56,48 +56,6 @@ namespace task2_memory_game
 
         }
 
-        public void lineOfEquals(int i_columns)
-        {
-            Console.Write("  ");
-            for (int amountOfEquals = 0; amountOfEquals < i_columns * 2 + 1; amountOfEquals++)
-            {
-                Console.Write('=');
-            }
-            Console.WriteLine();
-        }
-
-        public void printBoard(int i_rows, int i_columns, BoardMemoryGame board)
-        {
-            board.setCardUserOpenAsSeen(); //treat the open card in the current turn as a normal opened card to show him on the board
-            Console.Write("   ");
-            for (int latter = 0; latter < i_columns; latter++)
-            {
-                Console.Write((char)('A' + latter) + " ");
-            }
-            Console.WriteLine();
-            //top border
-            lineOfEquals(i_columns);
-            //rows
-            for (int row = 1; row <= i_rows; row++)
-            {
-                Console.Write(row + " |");
-               
-                for (int column = 0; column < i_columns; column++)
-                {
-                    if (!(board.getBoardState()[row - 1, column].getIsSeen()))
-                    {
-                        Console.Write(" |");
-                    } 
-                    else
-                    {
-                        Console.Write((char)(board.getBoardState()[row - 1, column].getNumberOfPair()) + "|");
-                    }
-                }
-                Console.WriteLine();
-                lineOfEquals(i_columns);
-            }
-            board.setCardUserOpenAsUnseen();
-        }
 
 
         public string askUserForCardToOpen()
@@ -107,6 +65,16 @@ namespace task2_memory_game
             cardToOpen = Console.ReadLine();
             return cardToOpen;
         }
+
+        public void printIllegalPlaceForCard()
+        {
+            Console.WriteLine("Illigal place for card");
+        }
+
+        public void printIllegalPlaceForCardBorder() {
+            Console.WriteLine("card not in borders");
+        }
+
 
 
     }
