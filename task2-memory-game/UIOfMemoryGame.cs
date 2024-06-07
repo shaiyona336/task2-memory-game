@@ -2,7 +2,7 @@
 
 namespace task2_memory_game
 {
-    internal class UIOfMomoryGame
+    internal class UIOfMemoryGame
     {
         private const string k_ChooseYes = "y";
         private const string k_ChooseNo = "n";
@@ -40,7 +40,7 @@ namespace task2_memory_game
             return wasYesChosen;
         }
 
-        public (int,int) GetBoardSize((int,int) i_RowSizeMinAndMax, (int,int) i_ColSizeMinAndMax)
+        public (int,int) GetBoardSizeFromUser((int,int) i_RowSizeMinAndMax, (int,int) i_ColSizeMinAndMax)
         {
             (int,int) rowAndColumnSize;
             int row;

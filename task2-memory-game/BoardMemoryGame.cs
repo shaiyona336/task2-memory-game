@@ -9,7 +9,7 @@ namespace task2_memory_game
         public int BoardHeight { get; private set; }
         public int BoardWidth { get; private set; }
         public MemoryCard[,] BoardState { get; private set; }
-        public bool UserOpenedOneCard { get; private set; }
+        public bool IsThereARevealedCard { get; private set; }
 
         private (int, int) m_currentlyOpenedCardCords;
         private MemoryCard CurrentlyOpenedCard
@@ -18,69 +18,55 @@ namespace task2_memory_game
             {
                 return BoardState[m_currentlyOpenedCardCords.Item1, m_currentlyOpenedCardCords.Item2];
             }
-            set
-            {
-                BoardState[m_currentlyOpenedCardCords.Item1, m_currentlyOpenedCardCords.Item2] = value;
-            }
+            //set
+            //{
+            //    BoardState[m_currentlyOpenedCardCords.Item1, m_currentlyOpenedCardCords.Item2] = value;
+            //}
         }
 
-        public void RevealCards((int,int) i_firstCardLocationOnBoard, (int,int) i_secondCardLocationOnBoard)
+        public void RevealCards((int,int) i_firstCardCords, (int,int) i_secondCardCords)
         {
-            BoardState[i_firstCardLocationOnBoard.Item1, i_firstCardLocationOnBoard.Item2].RevealCard();
-            BoardState[i_secondCardLocationOnBoard.Item1, i_secondCardLocationOnBoard.Item2].RevealCard();
+            BoardState[i_firstCardCords.Item1, i_firstCardCords.Item2].RevealCard();
+            BoardState[i_secondCardCords.Item1, i_secondCardCords.Item2].RevealCard();
         }
 
-        public void HideCards((int, int) firstCard, (int, int) secondCard)
+        public void HideCards((int, int) firstCardCords, (int, int) secondCardCords)
         {
-            BoardState[firstCard.Item1, firstCard.Item2].HideCard();
-            BoardState[secondCard.Item1, secondCard.Item2].HideCard();
+            BoardState[firstCardCords.Item1, firstCardCords.Item2].HideCard();
+            BoardState[secondCardCords.Item1, secondCardCords.Item2].HideCard();
         }
 
-        public bool getUserOpenedOneCard()
-        {
-            return UserOpenedOneCard;
-        }
-
-        public void setCardUserOpenAsSeen()
-        {
-            if (UserOpenedOneCard)
-            {
-                CurrentlyOpenedCard.RevealCard();
-            }
-        }
-
-        public void setCardUserOpenAsUnseen()
-        {
-            if (UserOpenedOneCard)
-            {
-                CurrentlyOpenedCard.HideCard();
-            }
-        }
+        //public void setCardUserOpenAsSeen()
+        //{
+        //    if (UserOpenedOneCard)
+        //    {
+        //        CurrentlyOpenedCard.RevealCard();
+        //    }
+        //}
+        //
+        //public void setCardUserOpenAsUnseen()
+        //{
+        //    if (UserOpenedOneCard)
+        //    {
+        //        CurrentlyOpenedCard.HideCard();
+        //    }
+        //}
 
         public BoardMemoryGame(int i_BoardHeight, int i_BoardWidth)
         {
             BoardHeight = i_BoardHeight;
             BoardWidth = i_BoardWidth;
             BoardState = new MemoryCard[BoardHeight, BoardWidth];
-            UserOpenedOneCard = false;
+            IsThereARevealedCard = false;
         }
 
-        public void generatePairs()
+        public void GeneratePairs()
         {
             int numberOfPairs = (BoardHeight * BoardWidth) / 2; //size of the board devide by two
-            List<MemoryCard> pairsToShuffle = new List<MemoryCard>(numberOfPairs * 2); //save all the cards in a list, shuffle them, and put them in the board
-
-            for (int pair = 1; pair <= numberOfPairs; pair++)
-            {
-                MemoryCard card1 = new MemoryCard(pair);
-                MemoryCard card2 = new MemoryCard(pair);
-                pairsToShuffle.Add(card1);
-                pairsToShuffle.Add(card2);
-            }
-
-            //shuffle
+            insertPairsToList(numberOfPairs, out List<MemoryCard> pairsToShuffle);//save all the cards in a list, shuffle them, and put them in the board
             shufflePairs(pairsToShuffle);
-            //put the cards in the board
+
+            //put the cards on the board
             for (int row = 0; row < BoardHeight; row++)
             {
                 for (int column = 0; column < BoardWidth; column++)
@@ -88,7 +74,19 @@ namespace task2_memory_game
                     BoardState[row, column] = pairsToShuffle[row * BoardWidth + column];
                 }
             }
+        }
 
+        private void insertPairsToList(int i_NumberOfPairs, out List<MemoryCard> o_PairsList)
+        {
+            o_PairsList = new List<MemoryCard>(i_NumberOfPairs * 2);
+
+            for (int pair = 1; pair <= i_NumberOfPairs; pair++)
+            {
+                MemoryCard card1 = new MemoryCard(pair);
+                MemoryCard card2 = new MemoryCard(pair);
+                o_PairsList.Add(card1);
+                o_PairsList.Add(card2);
+            }
         }
 
         private void shufflePairs(List<MemoryCard> list)
@@ -113,7 +111,7 @@ namespace task2_memory_game
         public bool openCardInBoard(int i_row, int i_column) //return if flipped a pair
         {
             bool isFlippedAPair = false;
-            if (UserOpenedOneCard == true)
+            if (IsThereARevealedCard == true)
             {
                 if (BoardState[i_row, i_column].PairNum == CurrentlyOpenedCard.PairNum)
                 {
@@ -132,7 +130,7 @@ namespace task2_memory_game
                 m_currentlyOpenedCardCords = (i_row, i_column);
             }
 
-            UserOpenedOneCard = !UserOpenedOneCard; //if user open card, now need to flip the condition of one card open in a turn
+            IsThereARevealedCard = !IsThereARevealedCard; //if user open card, now need to flip the condition of one card open in a turn
             return isFlippedAPair;
         }
 
@@ -164,7 +162,7 @@ namespace task2_memory_game
         public void printBoard()
         {
             Ex02.ConsoleUtils.Screen.Clear();
-            setCardUserOpenAsSeen(); //treat the open card in the current turn as a normal opened card to show him on the board
+            //setCardUserOpenAsSeen(); //treat the open card in the current turn as a normal opened card to show him on the board
             Console.Write("   ");
             for (int latter = 0; latter < BoardWidth; latter++)
             {
@@ -192,7 +190,7 @@ namespace task2_memory_game
                 Console.WriteLine();
                 PrintLineOfEquals(BoardWidth);
             }
-            setCardUserOpenAsUnseen();
+            //setCardUserOpenAsUnseen();
         }
 
 

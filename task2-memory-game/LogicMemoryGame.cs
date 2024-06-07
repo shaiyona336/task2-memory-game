@@ -3,10 +3,22 @@
     internal class LogicMemoryGame
     {
         public BoardMemoryGame Board { get; private set; }
-
-        public void setEmptyBoard(int i_rows, int i_columns)
+        enum eCardState
         {
-            Board = new BoardMemoryGame(i_rows, i_columns);
+            CantFlip = '0',
+            FlippedButNotMatchedPair,
+            FlippedAndMatchedPair
+        }
+
+
+        public void setEmptyBoard((int,int) i_BoardDimensions)
+        {
+            Board = new BoardMemoryGame(i_BoardDimensions.Item1, i_BoardDimensions.Item2);
+        }
+
+        public char GetLastValidCharacterOnBoard()
+        {
+            return (char)('A' + Board.BoardHeight + 1);
         }
 
         public bool isGameOver()
@@ -26,21 +38,25 @@
             return flag;
         }
 
-        public char openCard(int i_row, int i_column) //the function returns one of three things, '0' if the card that were chosen were invalid to flip, '1' if the card flipped and didnt matched a pair, '2' if the card was flipped and matched a pair
+        //the function returns one of three things, '0' if the card that were chosen were invalid to flip, '1' if the card flipped and didnt matched a pair, '2' if the card was flipped and matched a pair
+        public char openCard(int i_row, int i_column) 
         {
-            bool isFlippedAPair;
-            char cardToFlipAffectOnBoard = '0';
+            bool didFlipAPair;
+            eCardState cardToFlipAffectOnBoard = eCardState.CantFlip;
+
             if (Board.isCardValid(i_row, i_column))
             {
-                cardToFlipAffectOnBoard = '1';
-                isFlippedAPair = Board.openCardInBoard(i_row, i_column);
-                if (isFlippedAPair)
+                cardToFlipAffectOnBoard = eCardState.FlippedButNotMatchedPair;
+                didFlipAPair = Board.openCardInBoard(i_row, i_column);
+                if (didFlipAPair)
                 {
-                    cardToFlipAffectOnBoard = '2';
+                    cardToFlipAffectOnBoard = eCardState.FlippedAndMatchedPair;
                 }
             }
-            return cardToFlipAffectOnBoard;
+            return (char)cardToFlipAffectOnBoard;
         }
+
+
 
 
     }

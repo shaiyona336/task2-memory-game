@@ -1,6 +1,4 @@
-﻿
-
-using System;
+﻿using System;
 using System.Diagnostics.PerformanceData;
 
 namespace task2_memory_game
