@@ -18,12 +18,18 @@ namespace task2_memory_game
 
         public void setCardUserOpenAsSeen()
         {
-            boardState[withRowCardUserOpen, withColumnCardUserOpen].setIsSeen(true);
+            if (UserOpenedOneCard)
+            {
+                boardState[withRowCardUserOpen, withColumnCardUserOpen].setIsSeen(true);
+            }
         }
 
         public void setCardUserOpenAsUnseen()
         {
-            boardState[withRowCardUserOpen, withColumnCardUserOpen].setIsSeen(false);
+            if (UserOpenedOneCard)
+            {
+                boardState[withRowCardUserOpen, withColumnCardUserOpen].setIsSeen(false);
+            }
         }
 
 
@@ -89,9 +95,9 @@ namespace task2_memory_game
 
             for (int card = 0; card < list.Count; card++)
             {
-                whoToSwitchWith = random.Next(list.Count + 1);
+                whoToSwitchWith = random.Next(list.Count);
                 tempCurrCardValue = list[card].getNumberOfPair();
-                list[card].setNumberOfPair(list[whoToSwitchWith].getNumberOfPair());
+                list[card].setNumberOfPair(list[whoToSwitchWith - 1].getNumberOfPair());
                 list[whoToSwitchWith].setNumberOfPair(tempCurrCardValue);
             }
 
@@ -177,7 +183,7 @@ namespace task2_memory_game
                     }
                     else
                     {
-                        Console.Write((char)(getBoardState()[row - 1, column].getNumberOfPair()) + "|");
+                        Console.Write((getBoardState()[row - 1, column].getNumberOfPair()) + "|");
                     }
                 }
                 Console.WriteLine();
