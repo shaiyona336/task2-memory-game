@@ -4,29 +4,20 @@ namespace task2_memory_game
 {
     internal class LogicMemoryGame
     {
-        private BoardMemoryGame board;
+        public BoardMemoryGame Board { get; private set; }
 
-
-
-
-        public BoardMemoryGame getBoard()
+        public void setEmptyBoard(int i_rows, int i_columns)
         {
-            return board;
-        }
-
-
-        public void setBoard(int i_rows, int i_columns)
-        {
-            board = new BoardMemoryGame(i_rows, i_columns);
+            Board = new BoardMemoryGame(i_rows, i_columns);
         }
 
         public bool isGameOver()
         {
             bool flag = true;
-            MemoryCard[,] boardState = board.getBoardState();
-            for (int boardXDimension = 0; boardXDimension < board.getBoardXDimension() && flag; boardXDimension++)
+            MemoryCard[,] boardState = Board.getBoardState();
+            for (int boardXDimension = 0; boardXDimension < Board.BoardWidth && flag; boardXDimension++)
             {
-                for (int boardYDimension = 0; boardYDimension < board.getBoardYDimension() && flag; boardYDimension++)
+                for (int boardYDimension = 0; boardYDimension < Board.BoardHeight && flag; boardYDimension++)
                 {
                     if (boardState[boardXDimension, boardYDimension].IsSeen)
                     {
@@ -41,10 +32,10 @@ namespace task2_memory_game
         {
             bool isFlippedAPair;
             char cardToFlipAffectOnBoard = '0';
-            if (board.isCardValid(i_row, i_column))
+            if (Board.isCardValid(i_row, i_column))
             {
                 cardToFlipAffectOnBoard = '1';
-                isFlippedAPair = board.openCardInBoard(i_row, i_column);
+                isFlippedAPair = Board.openCardInBoard(i_row, i_column);
                 if (isFlippedAPair)
                 {
                     cardToFlipAffectOnBoard = '2';

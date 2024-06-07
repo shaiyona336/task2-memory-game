@@ -6,26 +6,25 @@ namespace task2_memory_game
 {
     public class BoardMemoryGame
     {
-        private int m_sizeRowBoard;
-        private int m_sizeColumnBoard;
+        public int BoardHeight { get; private set; }
+        public int BoardWidth { get; private set; }
         private MemoryCard[,] boardState;
         private bool UserOpenedOneCard = false;
         private int withRowCardUserOpen;
         private int withColumnCardUserOpen;
 
 
-        public void setCardsOpenTwoSeconds((int,int) firstCard, (int,int) secondCard)
+        public void RevealCards((int,int) firstCard, (int,int) secondCard)
         {
             boardState[firstCard.Item1, firstCard.Item2].IsSeen = true;
             boardState[secondCard.Item1, secondCard.Item2].IsSeen = true;
         }
 
-        public void setCardsClosedTwoSeconds((int, int) firstCard, (int, int) secondCard)
+        public void HideCards((int, int) firstCard, (int, int) secondCard)
         {
             boardState[firstCard.Item1, firstCard.Item2].IsSeen = false;
             boardState[secondCard.Item1, secondCard.Item2].IsSeen = false;
         }
-
 
         public void setCardUserOpenAsSeen()
         {
@@ -43,28 +42,16 @@ namespace task2_memory_game
             }
         }
 
-
         public bool getUserOpenedOneCard()
         {
             return UserOpenedOneCard;
         }
 
-
-        public int getBoardXDimension()
+        public BoardMemoryGame(int i_BoardHeight, int i_BoardWidth)
         {
-            return m_sizeColumnBoard;
-        }
-
-        public int getBoardYDimension()
-        {  
-            return m_sizeRowBoard;
-        }
-
-        public BoardMemoryGame(int i_sizeRowBoard, int i_sizeColumnBoard)
-        {
-            m_sizeRowBoard = i_sizeRowBoard;
-            m_sizeColumnBoard = i_sizeColumnBoard;
-            boardState = new MemoryCard[m_sizeRowBoard, m_sizeColumnBoard];
+            BoardHeight = i_BoardHeight;
+            BoardWidth = i_BoardWidth;
+            boardState = new MemoryCard[BoardHeight, BoardWidth];
         }
 
         public MemoryCard[,] getBoardState()
@@ -74,7 +61,7 @@ namespace task2_memory_game
 
         public void generatePairs()
         {
-            int numberOfPairs = (m_sizeRowBoard * m_sizeColumnBoard) / 2; //size of the board devide by two
+            int numberOfPairs = (BoardHeight * BoardWidth) / 2; //size of the board devide by two
             List<MemoryCard> pairsToShuffle = new List<MemoryCard>(numberOfPairs * 2); //save all the cards in a list, shuffle them, and put them in the board
 
             for (int pair = 1; pair <= numberOfPairs; pair++)
@@ -88,11 +75,11 @@ namespace task2_memory_game
             //shuffle
             shufflePairs(pairsToShuffle);
             //put the cards in the board
-            for (int row = 0; row < m_sizeRowBoard; row++)
+            for (int row = 0; row < BoardHeight; row++)
             {
-                for (int column = 0; column < m_sizeColumnBoard; column++)
+                for (int column = 0; column < BoardWidth; column++)
                 {
-                    boardState[row, column] = pairsToShuffle[row * m_sizeColumnBoard + column];
+                    boardState[row, column] = pairsToShuffle[row * BoardWidth + column];
                 }
             }
 
@@ -147,7 +134,7 @@ namespace task2_memory_game
         {
             bool i_flag = false;
 
-            if (i_row >= 0 && i_row <= m_sizeRowBoard && i_column >= 0 && i_column <= m_sizeColumnBoard)
+            if (i_row >= 0 && i_row <= BoardHeight && i_column >= 0 && i_column <= BoardWidth)
             {
                 if (!(boardState[i_row, i_column].IsSeen))
                 {
@@ -175,19 +162,19 @@ namespace task2_memory_game
             Ex02.ConsoleUtils.Screen.Clear();
             setCardUserOpenAsSeen(); //treat the open card in the current turn as a normal opened card to show him on the board
             Console.Write("   ");
-            for (int latter = 0; latter < m_sizeColumnBoard; latter++)
+            for (int latter = 0; latter < BoardWidth; latter++)
             {
                 Console.Write((char)('A' + latter) + " ");
             }
             Console.WriteLine();
             //top border
-            lineOfEquals(m_sizeColumnBoard);
+            lineOfEquals(BoardWidth);
             //rows
-            for (int row = 1; row <= m_sizeRowBoard; row++)
+            for (int row = 1; row <= BoardHeight; row++)
             {
                 Console.Write(row + " |");
 
-                for (int column = 0; column < m_sizeColumnBoard; column++)
+                for (int column = 0; column < BoardWidth; column++)
                 {
                     if (!(getBoardState()[row - 1, column].IsSeen))
                     {
@@ -199,7 +186,7 @@ namespace task2_memory_game
                     }
                 }
                 Console.WriteLine();
-                lineOfEquals(m_sizeColumnBoard);
+                lineOfEquals(BoardWidth);
             }
             setCardUserOpenAsUnseen();
         }
