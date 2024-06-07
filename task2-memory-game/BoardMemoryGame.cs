@@ -16,6 +16,19 @@ namespace task2_memory_game
         private int withColumnCardUserOpen;
 
 
+        public void setCardsOpenTwoSeconds((int,int) firstCard, (int,int) secondCard)
+        {
+            boardState[firstCard.Item1, firstCard.Item2].setIsSeen(true);
+            boardState[secondCard.Item1, secondCard.Item2].setIsSeen(true);
+        }
+
+        public void setCardsClosedTwoSeconds((int, int) firstCard, (int, int) secondCard)
+        {
+            boardState[firstCard.Item1, firstCard.Item2].setIsSeen(false);
+            boardState[secondCard.Item1, secondCard.Item2].setIsSeen(false);
+        }
+
+
         public void setCardUserOpenAsSeen()
         {
             if (UserOpenedOneCard)

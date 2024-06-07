@@ -1,7 +1,8 @@
 ﻿
 
 using System;
-using System.Runtime.InteropServices;
+using System.Threading;
+
 
 namespace task2_memory_game
 {
@@ -28,6 +29,7 @@ namespace task2_memory_game
             logicMemoryGame = new LogicMemoryGame();
             string currentCardToOpen;
             var pair = (-1, -1); //convert card to open format to something logic can deal with
+            var secondPair = (-1, -1);
            
             bool againstComputer;
             firstPlayerName = UI.getUsername();
@@ -62,16 +64,26 @@ namespace task2_memory_game
                 }
                 logicMemoryGame.getBoard().printBoard(); //print board after placing the first card
                 //open second card first player
-                pair = askUserForLigalCardToOpen();
-                openCardState = logicMemoryGame.openCard(pair.Item1, pair.Item2);
+                secondPair = askUserForLigalCardToOpen();
+                openCardState = logicMemoryGame.openCard(secondPair.Item1, secondPair.Item2);
                 while (openCardState == '0') //cant flip unmatched card on the first card that we open in the turn, just need to check it flipped the card
                 {
                     UI.printIllegalPlaceForCard();
-                    pair = askUserForLigalCardToOpen();
-                    openCardState = logicMemoryGame.openCard(pair.Item1, pair.Item2);
+                    secondPair = askUserForLigalCardToOpen();
+                    openCardState = logicMemoryGame.openCard(secondPair.Item1, secondPair.Item2);
                 }
                 //need to check if openCardState is 1 or 2, if 1 print the board with the 2 cards that the user open for two seconds
-
+                if (openCardState == '2') //need to print the board normally
+                {
+                    logicMemoryGame.getBoard().printBoard();
+                }
+                else //openCardState == '1'
+                {
+                    logicMemoryGame.getBoard().setCardsOpenTwoSeconds(pair, secondPair);
+                    logicMemoryGame.getBoard().printBoard();
+                    Thread.Sleep(2000); //2000 miliseconds = 2 seconds
+                    logicMemoryGame.getBoard().setCardsClosedTwoSeconds(pair, secondPair);
+                }
 
             }
             Console.ReadLine();
