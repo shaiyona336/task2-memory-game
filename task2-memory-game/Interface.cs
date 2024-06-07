@@ -34,9 +34,9 @@ namespace task2_memory_game
             var secondPair = (-1, -1);
            
             bool againstComputer;
-            string firstPlayerName = UI.getUsername();
+            string firstPlayerName = UI.GetUsername();
             firstPlayer = new HumanPlayerMemoryGame(firstPlayerName);
-            againstComputer = UI.againstHumanOrComputer();
+            againstComputer = UI.AgainstHumanOrComputer();
             if (againstComputer)
             {
                 computerIsPlaying = true;
@@ -44,7 +44,7 @@ namespace task2_memory_game
             else
             {
                 computerIsPlaying = false;
-                string secondPlayerName = UI.getUsername();
+                string secondPlayerName = UI.GetUsername();
                 secondPlayer = new HumanPlayerMemoryGame(secondPlayerName);
             }
             var boardDimensions = UI.getBoardSize(minimumRowSize, minimumColumnSize, maximumRowSize, maximumColumnSize);
@@ -85,7 +85,7 @@ namespace task2_memory_game
                     isGameOver = logicMemoryGame.isGameOver();
                     if (isGameOver)
                     {
-                        startNewGame = UI.endGameMessageAndAskIfAnotherGame(firstPlayerPoints, secondPlayerPoints);
+                        startNewGame = UI.endGameMessageAndAskForAnotherGame(firstPlayerPoints, secondPlayerPoints);
                         if (!startNewGame)
                         {
                             pair = (-2, -2); //the same as if the user press Q in a middle of a game, quit
@@ -136,12 +136,12 @@ namespace task2_memory_game
 
         private (int,int) askUserForLigalCardToOpen()
         {
-            string currentCardToOpen = UI.askUserForCardToOpen();
+            string currentCardToOpen = UI.AskUserForCardToOpen();
             var pair = isCardToOpenValidAndConvertFormat(currentCardToOpen);
             while (pair == (-1, -1))
             {
                 UI.printIllegalPlaceForCardBorder();
-                currentCardToOpen = UI.askUserForCardToOpen();
+                currentCardToOpen = UI.AskUserForCardToOpen();
                 pair = isCardToOpenValidAndConvertFormat(currentCardToOpen);
             }
             return pair;

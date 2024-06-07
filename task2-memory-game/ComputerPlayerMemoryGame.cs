@@ -2,7 +2,7 @@
 
 namespace task2_memory_game
 {
-    internal class ComputerPlayerMemoryGame : PlayerMemoryGame
+    class ComputerPlayerMemoryGame : PlayerMemoryGame
     {
         public ComputerPlayerMemoryGame() : base()
         {
@@ -22,6 +22,5 @@ namespace task2_memory_game
 
             return (row, col);
         }
-
     }
 }
