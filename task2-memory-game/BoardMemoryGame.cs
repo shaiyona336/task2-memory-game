@@ -127,13 +127,13 @@ namespace task2_memory_game
                 {
                     isFlippedAPair = true;
                     boardState[i_row, i_column].setIsSeen(true); // need to flip this card and keep his state like that
+                    boardState[withRowCardUserOpen, withColumnCardUserOpen].setIsSeen(true);
                 }
                 else //if the card flipped wasnt a pair
                 {
                     isFlippedAPair = false;
                     boardState[withRowCardUserOpen, withColumnCardUserOpen].setIsSeen(false); // need to set the old card that been flipped to not seen again
                 }
-
             }
             else //if (UserOpenedOneCard == false), then need to set the card that is now opened in the middle of a turn
             {

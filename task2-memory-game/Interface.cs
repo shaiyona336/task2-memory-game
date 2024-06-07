@@ -83,6 +83,7 @@ namespace task2_memory_game
                     logicMemoryGame.getBoard().printBoard();
                     Thread.Sleep(2000); //2000 miliseconds = 2 seconds
                     logicMemoryGame.getBoard().setCardsClosedTwoSeconds(pair, secondPair);
+                    logicMemoryGame.getBoard().printBoard();
                 }
 
             }
