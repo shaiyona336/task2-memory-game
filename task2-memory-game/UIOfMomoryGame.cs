@@ -45,10 +45,10 @@ namespace task2_memory_game
             int row;
             int column;
 
-            Console.WriteLine("Enter width of board:");
+            Console.WriteLine("Enter height of board:");
             row = getInputFromRange(minimumRowSize, maximumRowSize);
 
-            Console.WriteLine("Enter height of board:");
+            Console.WriteLine("Enter width of board:");
             column = getInputFromRange(minimumColumnSize, maximumColumnSize);
 
             rowAndColumnSize = new Tuple<int, int>(row, column);

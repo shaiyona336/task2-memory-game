@@ -51,9 +51,9 @@ namespace task2_memory_game
             int boardRow = boardDimensions.Item1;
             int boardCol = boardDimensions.Item2;
 
-            logicMemoryGame.setBoard(boardRow, boardCol);
-            logicMemoryGame.getBoard().printBoard();
-            logicMemoryGame.getBoard().generatePairs();
+            logicMemoryGame.setEmptyBoard(boardRow, boardCol);
+            logicMemoryGame.Board.printBoard();
+            logicMemoryGame.Board.generatePairs();
             //while user didnt typed 'Q'
             while (pair != (-2,-2))
             {
@@ -66,7 +66,7 @@ namespace task2_memory_game
                     pair = askUserForLigalCardToOpen();
                     openCardState = logicMemoryGame.openCard(pair.Item1, pair.Item2);
                 }
-                logicMemoryGame.getBoard().printBoard(); //print board after placing the first card
+                logicMemoryGame.Board.printBoard(); //print board after placing the first card
                 //open second card first player
                 secondPair = askUserForLigalCardToOpen();
                 openCardState = logicMemoryGame.openCard(secondPair.Item1, secondPair.Item2);
@@ -80,8 +80,8 @@ namespace task2_memory_game
                 if (openCardState == '2') //need to print the board normally
                 {
                     givePoints(isFirstPlayerTurn, ref firstPlayerPoints, ref secondPlayerPoints);
-                    logicMemoryGame.getBoard().printBoard();
-                    
+
+                    logicMemoryGame.Board.printBoard();
                     isGameOver = logicMemoryGame.isGameOver();
                     if (isGameOver)
                     {
@@ -92,18 +92,17 @@ namespace task2_memory_game
                         }
                         else //if the user want to start a new game, need to clear the board
                         {
-                            logicMemoryGame.getBoard().generatePairs();
-                            logicMemoryGame.getBoard().printBoard();
+                            logicMemoryGame.Board.generatePairs();
                         }
                     }
                 }
                 else //openCardState == '1'
                 {
-                    logicMemoryGame.getBoard().setCardsOpenTwoSeconds(pair, secondPair);
-                    logicMemoryGame.getBoard().printBoard();
+                    logicMemoryGame.Board.RevealCards(pair, secondPair);
+                    logicMemoryGame.Board.printBoard();
                     Thread.Sleep(2000); //2000 miliseconds = 2 seconds
-                    logicMemoryGame.getBoard().setCardsClosedTwoSeconds(pair, secondPair);
-                    logicMemoryGame.getBoard().printBoard();
+                    logicMemoryGame.Board.HideCards(pair, secondPair);
+                    logicMemoryGame.Board.printBoard();
                 }
                 switchTurn(ref isFirstPlayerTurn);
             }
@@ -158,9 +157,9 @@ namespace task2_memory_game
             }
             else if (cardToOpen.Length == 2 &&
                 cardToOpen[0] - 'A' >= 0 &&
-                cardToOpen[0] - 'A' <= logicMemoryGame.getBoard().getBoardXDimension() + 1 &&
+                cardToOpen[0] - 'A' <= logicMemoryGame.Board.BoardHeight + 1 &&
                 cardToOpen[1] - '0' >= 0 &&
-                cardToOpen[1] - '0' <= logicMemoryGame.getBoard().getBoardYDimension())
+                cardToOpen[1] - '0' <= logicMemoryGame.Board.BoardWidth)
             {
                 pair = (cardToOpen[1] - '0' - 1, cardToOpen[0] - 'A');
             }
