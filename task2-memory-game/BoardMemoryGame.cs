@@ -11,6 +11,17 @@ namespace task2_memory_game
         private int m_sizeColumnBoard;
         private MemoryCard[,] boardState;
 
+
+        public int getBoardXDimension()
+        {
+            return m_sizeColumnBoard;
+        }
+
+        public int getBoardYDimension()
+        {  
+            return m_sizeRowBoard;
+        }
+
         public BoardMemoryGame(int i_sizeRowBoard, int i_sizeColumnBoard)
         {
             m_sizeRowBoard = i_sizeRowBoard;

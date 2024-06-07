@@ -20,6 +20,10 @@ namespace task2_memory_game
         {
             return m_isSeen;
         }
+        public void setIsSeen(bool i_isSeen)
+        {
+            m_isSeen = i_isSeen;
+        }
         public int getNumberOfPair()
         {
             return m_numberOfPair;
