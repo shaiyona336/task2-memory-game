@@ -16,14 +16,14 @@ namespace task2_memory_game
 
         public void setCardsOpenTwoSeconds((int,int) firstCard, (int,int) secondCard)
         {
-            boardState[firstCard.Item1, firstCard.Item2].setIsSeen(true);
-            boardState[secondCard.Item1, secondCard.Item2].setIsSeen(true);
+            boardState[firstCard.Item1, firstCard.Item2].IsSeen = true;
+            boardState[secondCard.Item1, secondCard.Item2].IsSeen = true;
         }
 
         public void setCardsClosedTwoSeconds((int, int) firstCard, (int, int) secondCard)
         {
-            boardState[firstCard.Item1, firstCard.Item2].setIsSeen(false);
-            boardState[secondCard.Item1, secondCard.Item2].setIsSeen(false);
+            boardState[firstCard.Item1, firstCard.Item2].IsSeen = false;
+            boardState[secondCard.Item1, secondCard.Item2].IsSeen = false;
         }
 
 
@@ -31,7 +31,7 @@ namespace task2_memory_game
         {
             if (UserOpenedOneCard)
             {
-                boardState[withRowCardUserOpen, withColumnCardUserOpen].setIsSeen(true);
+                boardState[withRowCardUserOpen, withColumnCardUserOpen].IsSeen = true;
             }
         }
 
@@ -39,7 +39,7 @@ namespace task2_memory_game
         {
             if (UserOpenedOneCard)
             {
-                boardState[withRowCardUserOpen, withColumnCardUserOpen].setIsSeen(false);
+                boardState[withRowCardUserOpen, withColumnCardUserOpen].IsSeen = false;
             }
         }
 
@@ -105,10 +105,9 @@ namespace task2_memory_game
 
             for (int card = 0; card < list.Count; card++)
             {
-                whoToSwitchWith = random.Next(list.Count + 1);
+                whoToSwitchWith = random.Next(list.Count);
                 switchCardsInList(list, card, whoToSwitchWith);
             }
-
         }
 
         private void switchCardsInList(List<MemoryCard> io_list, int i_card1Index, int i_card2Index)
@@ -123,16 +122,16 @@ namespace task2_memory_game
             bool isFlippedAPair = false;
             if (UserOpenedOneCard == true)
             {
-                if (boardState[i_row, i_column].getNumberOfPair() == boardState[withRowCardUserOpen, withColumnCardUserOpen].getNumberOfPair())
+                if (boardState[i_row, i_column].PairNum == boardState[withRowCardUserOpen, withColumnCardUserOpen].PairNum)
                 {
                     isFlippedAPair = true;
-                    boardState[i_row, i_column].setIsSeen(true); // need to flip this card and keep his state like that
-                    boardState[withRowCardUserOpen, withColumnCardUserOpen].setIsSeen(true);
+                    boardState[i_row, i_column].IsSeen = true; // need to flip this card and keep his state like that
+                    boardState[withRowCardUserOpen, withColumnCardUserOpen].IsSeen = true;
                 }
                 else //if the card flipped wasnt a pair
                 {
                     isFlippedAPair = false;
-                    boardState[withRowCardUserOpen, withColumnCardUserOpen].setIsSeen(false); // need to set the old card that been flipped to not seen again
+                    boardState[withRowCardUserOpen, withColumnCardUserOpen].IsSeen = false; // need to set the old card that been flipped to not seen again
                 }
             }
             else //if (UserOpenedOneCard == false), then need to set the card that is now opened in the middle of a turn
@@ -150,7 +149,7 @@ namespace task2_memory_game
 
             if (i_row >= 0 && i_row <= m_sizeRowBoard && i_column >= 0 && i_column <= m_sizeColumnBoard)
             {
-                if (!(boardState[i_row, i_column].getIsSeen()))
+                if (!(boardState[i_row, i_column].IsSeen))
                 {
                     i_flag = true;
                 }
@@ -190,13 +189,13 @@ namespace task2_memory_game
 
                 for (int column = 0; column < m_sizeColumnBoard; column++)
                 {
-                    if (!(getBoardState()[row - 1, column].getIsSeen()))
+                    if (!(getBoardState()[row - 1, column].IsSeen))
                     {
                         Console.Write(" |");
                     }
                     else
                     {
-                        Console.Write((getBoardState()[row - 1, column].getNumberOfPair()) + "|");
+                        Console.Write((getBoardState()[row - 1, column].PairNum) + "|");
                     }
                 }
                 Console.WriteLine();
