@@ -1,6 +1,4 @@
-﻿
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
@@ -74,11 +72,10 @@ namespace task2_memory_game
             return boardState;
         }
 
-
         public void generatePairs()
         {
             int numberOfPairs = (m_sizeRowBoard * m_sizeColumnBoard) / 2; //size of the board devide by two
-            List<MemoryCard> pairsToShuffle = new List<MemoryCard>(); //save all the cards in a list, shuffle them, and put them in the board
+            List<MemoryCard> pairsToShuffle = new List<MemoryCard>(numberOfPairs * 2); //save all the cards in a list, shuffle them, and put them in the board
 
             for (int pair = 1; pair <= numberOfPairs; pair++)
             {
@@ -87,6 +84,7 @@ namespace task2_memory_game
                 pairsToShuffle.Add(card1);
                 pairsToShuffle.Add(card2);
             }
+
             //shuffle
             shufflePairs(pairsToShuffle);
             //put the cards in the board
@@ -104,19 +102,21 @@ namespace task2_memory_game
         {
             Random random = new Random();
             int whoToSwitchWith;
-            int tempCurrCardValue;
 
             for (int card = 0; card < list.Count; card++)
             {
-                whoToSwitchWith = random.Next(list.Count);
-                tempCurrCardValue = list[card].getNumberOfPair();
-                list[card].setNumberOfPair(list[whoToSwitchWith].getNumberOfPair());
-                list[whoToSwitchWith].setNumberOfPair(tempCurrCardValue);
+                whoToSwitchWith = random.Next(list.Count + 1);
+                switchCardsInList(list, card, whoToSwitchWith);
             }
 
         }
 
-
+        private void switchCardsInList(List<MemoryCard> io_list, int i_card1Index, int i_card2Index)
+        {
+            MemoryCard tempCard = io_list[i_card1Index];
+            io_list[i_card1Index] = io_list[i_card2Index];
+            io_list[i_card2Index] = tempCard;
+        }
 
         public bool openCardInBoard(int i_row, int i_column) //return if flipped a pair
         {
@@ -143,7 +143,6 @@ namespace task2_memory_game
             UserOpenedOneCard = !UserOpenedOneCard; //if user open card, now need to flip the condition of one card open in a turn
             return isFlippedAPair;
         }
-
 
         public bool isCardValid(int i_row, int i_column)
         {
@@ -208,6 +207,4 @@ namespace task2_memory_game
 
 
     }
-
 }
-

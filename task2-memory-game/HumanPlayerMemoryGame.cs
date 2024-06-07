@@ -1,15 +1,13 @@
-﻿
-
-namespace task2_memory_game
+﻿namespace task2_memory_game
 {
     internal class HumanPlayerMemoryGame
     {
-        private readonly string m_namePlayer;
+        public string PlayerName { get; }
 
-        public HumanPlayerMemoryGame(string i_namePlayer) {
-            m_namePlayer = i_namePlayer;
+        public HumanPlayerMemoryGame(string i_namePlayer) 
+        {
+            PlayerName = i_namePlayer;
         }
-
 
     }
 }

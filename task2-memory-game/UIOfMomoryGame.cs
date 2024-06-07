@@ -34,29 +34,32 @@ namespace task2_memory_game
 
         public Tuple<int, int> getBoardSize(int minimumRowSize, int minimumColumnSize, int maximumRowSize, int maximumColumnSize)
         {
-            Tuple<int, int> i_rowAndColumnSize;
-            string i_rowInput;
-            string i_columnInput;
-            int i_row;
-            int i_column;
-            i_rowInput = Console.ReadLine();
-            while (int.TryParse(i_rowInput, out i_row) && i_row >= minimumRowSize && i_row <= maximumRowSize)
-            {
-                i_rowInput = Console.ReadLine();
-            }
-            i_columnInput = Console.ReadLine();
-            while (int.TryParse(i_columnInput, out i_column) && i_column >= minimumColumnSize && i_column <= maximumColumnSize)
-            {
-                i_columnInput = Console.ReadLine();
-            }
+            Tuple<int, int> rowAndColumnSize;
+            int row;
+            int column;
 
-            i_rowAndColumnSize = new Tuple<int, int>(i_row, i_column);
+            Console.WriteLine("Enter width of board:");
+            row = getInputFromRange(minimumRowSize, maximumRowSize);
 
-            return i_rowAndColumnSize;
+            Console.WriteLine("Enter height of board:");
+            column = getInputFromRange(minimumColumnSize, maximumColumnSize);
 
+            rowAndColumnSize = new Tuple<int, int>(row, column);
+            return rowAndColumnSize;
         }
 
+        private int getInputFromRange(int i_minimum, int i_maximum)
+        {
+            int inputInt;
+            string inputStr = Console.ReadLine();
 
+            while (!(int.TryParse(inputStr, out inputInt) && inputInt >= i_minimum && inputInt <= i_maximum))
+            {
+                Console.WriteLine("Invalid input! Please try again.");
+                inputStr = Console.ReadLine();
+            }
+            return inputInt;
+        }
 
         public string askUserForCardToOpen()
         {

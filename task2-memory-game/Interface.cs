@@ -1,22 +1,21 @@
 ﻿
 
 using System;
-using System.Threading;
-
+using System.Runtime.InteropServices;
 
 namespace task2_memory_game
 {
     internal class Interface
     {
-        string firstPlayerName;
-        string secondPlayerName;
-        private bool isFirstPlayerTurn;
-        private bool computerIsPlaying;
         HumanPlayerMemoryGame firstPlayer;
         HumanPlayerMemoryGame secondPlayer;
+        private bool isFirstPlayerTurn;
+        private bool computerIsPlaying;
         ComputerPlayerMemoryGame computer;
+
         private UIOfMomoryGame UI;
         private LogicMemoryGame logicMemoryGame;
+
         private const int minimumRowSize = 4;
         private const int minimumColumnSize = 4;
         private const int maximumRowSize = 6;
@@ -32,9 +31,11 @@ namespace task2_memory_game
             var secondPair = (-1, -1);
            
             bool againstComputer;
-            firstPlayerName = UI.getUsername();
+            string firstPlayerName = UI.getUsername();
             firstPlayer = new HumanPlayerMemoryGame(firstPlayerName);
+
             againstComputer = UI.againstHumanOrComputer();
+
             if (againstComputer)
             {
                 computerIsPlaying = true;
@@ -42,12 +43,14 @@ namespace task2_memory_game
             else
             {
                 computerIsPlaying = false;
-                secondPlayerName = UI.getUsername();
+                string secondPlayerName = UI.getUsername();
                 secondPlayer = new HumanPlayerMemoryGame(secondPlayerName);
             }
-            //need to get board dimensions here
-            /////////////////
-            logicMemoryGame.setBoard(4, 6);
+            var boardDimensions = UI.getBoardSize(minimumRowSize, minimumColumnSize, maximumRowSize, maximumColumnSize);
+            int boardRow = boardDimensions.Item1;
+            int boardCol = boardDimensions.Item2;
+
+            logicMemoryGame.setBoard(boardRow, boardCol);
             logicMemoryGame.getBoard().printBoard();
             logicMemoryGame.getBoard().generatePairs();
             //while user didnt typed 'Q'
