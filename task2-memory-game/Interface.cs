@@ -30,10 +30,9 @@ namespace task2_memory_game
             logicMemoryGame = new LogicMemoryGame();
         }
 
-        public void game()
+        private void setUpGame()
         {
-            string currentCardToOpen;
-            eCardState openCardState;
+            //string currentCardToOpen;
             //var pair = (-1, -1); //convert card to open format to something logic can deal with
             //var secondPair = (-1, -1);
 
@@ -50,6 +49,12 @@ namespace task2_memory_game
             logicMemoryGame.setEmptyBoard(boardDimensions);
             logicMemoryGame.Board.printBoard();
             logicMemoryGame.Board.GeneratePairs();
+        }
+
+        public void game()
+        {
+            eCardState openCardState;
+            setUpGame();
 
             //while user didnt typed 'Q'
             while (continueGame)
@@ -64,31 +69,40 @@ namespace task2_memory_game
                 if (openCardState == eCardState.FlippedAndMatched) //need to print the board normally
                 {
                     givePointToCurrentlyPlayingPlayer();
-
                     logicMemoryGame.Board.printBoard();
-                    bool isGameOver = logicMemoryGame.isGameOver();
-                    if (isGameOver)
-                    {
-                        bool startNewGame = UIOfMemoryGame.EndGameMessageAndAskForAnotherGame(player1, player2);
-                        if (startNewGame)
-                        {
-                            logicMemoryGame.Board.GeneratePairs();
-                        }
-                        else //if the user don't want to start a new game:
-                        {
-                           continueGame = false; //the same as if the user press Q in a middle of a game, quit
-                        }
-                    }
+                    startNewGameIfRequested(out continueGame);
                 }
                 else //openCardState == '1'
                 {
-                    logicMemoryGame.Board.RevealCards(pair1, pair2);
-                    logicMemoryGame.Board.printBoard();
-                    Thread.Sleep(2000); //2000 miliseconds = 2 seconds
-                    logicMemoryGame.Board.HideCards(pair1, pair2);
-                    logicMemoryGame.Board.printBoard();
+                    revealAndHideCards(pair1, pair2);
                 }
                 switchTurn();
+            }
+        }
+
+        private void revealAndHideCards((int,int) i_Pair1, (int, int) i_Pair2)
+        {
+            logicMemoryGame.Board.RevealCards(i_Pair1, i_Pair2);
+            logicMemoryGame.Board.printBoard();
+            Thread.Sleep(2000); //2000 miliseconds = 2 seconds
+            logicMemoryGame.Board.HideCards(i_Pair1, i_Pair2);
+            logicMemoryGame.Board.printBoard();
+        }
+
+        private void startNewGameIfRequested(out bool continueGame)
+        {
+            continueGame = true;
+            if (logicMemoryGame.isGameOver())
+            {
+                bool startNewGame = UIOfMemoryGame.EndGameMessageAndAskForAnotherGame(player1, player2);
+                if (startNewGame)
+                {
+                    logicMemoryGame.Board.GeneratePairs();
+                }
+                else //if the user don't want to start a new game:
+                {
+                    continueGame = false; //the same as if the user press Q in a middle of a game, quit
+                }
             }
         }
 
