@@ -6,8 +6,9 @@ namespace task2_memory_game
     {
         private const string k_ChooseYes = "y";
         private const string k_ChooseNo = "n";
+        private const string k_QuitGame = "Q";
 
-        public string GetUsername()
+        public static string GetUsername()
         {
             string name;
             Console.WriteLine("Enter username:");
@@ -15,7 +16,7 @@ namespace task2_memory_game
             return name;
         }
 
-        public bool AgainstHumanOrComputer()
+        public static bool AgainstHumanOrComputer()
         {
             bool i_flag;
 
@@ -24,7 +25,7 @@ namespace task2_memory_game
             return i_flag;
         }
 
-        private bool isAnswerYes()
+        private static bool isAnswerYes()
         {
             bool wasYesChosen;
             string i_answer;
@@ -40,7 +41,7 @@ namespace task2_memory_game
             return wasYesChosen;
         }
 
-        public (int,int) GetBoardSizeFromUser((int,int) i_RowSizeMinAndMax, (int,int) i_ColSizeMinAndMax)
+        public static (int,int) GetBoardSizeFromUser((int,int) i_RowSizeMinAndMax, (int,int) i_ColSizeMinAndMax)
         {
             (int,int) rowAndColumnSize;
             int row;
@@ -56,7 +57,7 @@ namespace task2_memory_game
             return rowAndColumnSize;
         }
 
-        private int getInputFromRange(int i_minimum, int i_maximum)
+        private static int getInputFromRange(int i_minimum, int i_maximum)
         {
             int inputInt;
             string inputStr = Console.ReadLine();
@@ -69,7 +70,7 @@ namespace task2_memory_game
             return inputInt;
         }
 
-        private bool isInputFromRangeLegal(string inputStr, int i_minimum, int i_maximum, out int inputInt)
+        private static bool isInputFromRangeLegal(string inputStr, int i_minimum, int i_maximum, out int inputInt)
         {
             bool returnValue = false;
 
@@ -86,25 +87,35 @@ namespace task2_memory_game
             return returnValue;
         }
 
-        public string AskUserForCardToOpen()
+        public static string AskUserForCardToOpen(out bool o_ContinueGame)
         {
             string cardToOpen;
             Console.WriteLine("Pick a card to open: ");
             cardToOpen = Console.ReadLine();
+
+            if (cardToOpen == k_QuitGame)
+            {
+                o_ContinueGame = false;
+            }
+            else
+            {
+                o_ContinueGame = true;
+            }
+
             return cardToOpen;
         }
 
-        public void printIllegalPlaceForCard()
+        public static void printIllegalPlaceForCard()
         {
             Console.WriteLine("Illegal place for card");
         }
 
-        public void printIllegalPlaceForCardBorder() 
+        public static void PrintCardNotInBorderWarning() 
         {
             Console.WriteLine("Card not in borders");
         }
 
-        public bool EndGameMessageAndAskForAnotherGame(PlayerMemoryGame i_player1, PlayerMemoryGame i_player2)
+        public static bool EndGameMessageAndAskForAnotherGame(PlayerMemoryGame i_player1, PlayerMemoryGame i_player2)
         {
             bool i_flag;
             Console.WriteLine("THE GAME HAS ENDED");
@@ -119,7 +130,7 @@ namespace task2_memory_game
             return i_flag;
         }
 
-        private void printWinnerMessage(PlayerMemoryGame i_player1, PlayerMemoryGame i_player2)
+        private static void printWinnerMessage(PlayerMemoryGame i_player1, PlayerMemoryGame i_player2)
         {
             if (i_player1.Score > i_player2.Score)
             {
@@ -135,7 +146,7 @@ namespace task2_memory_game
             }
         }
         
-        private void printPlayerScore(PlayerMemoryGame i_player)
+        private static void printPlayerScore(PlayerMemoryGame i_player)
         {
             Console.WriteLine("{i_player.name} GOT {i_player.Score} POINTS!");
         }

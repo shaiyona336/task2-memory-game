@@ -108,7 +108,7 @@ namespace task2_memory_game
             io_list[i_card2Index] = tempCard;
         }
 
-        public bool openCardInBoard(int i_row, int i_column) //return if flipped a pair
+        public bool flipCardOnBoard(int i_row, int i_column) //return if flipped a pair
         {
             bool isFlippedAPair = false;
             if (IsThereARevealedCard == true)
@@ -136,16 +136,16 @@ namespace task2_memory_game
 
         public bool isCardValid(int i_row, int i_column)
         {
-            bool i_flag = false;
+            bool returnValue = false;
 
             if (i_row >= 0 && i_row <= BoardHeight && i_column >= 0 && i_column <= BoardWidth)
             {
                 if (!BoardState[i_row, i_column].IsSeen)
                 {
-                    i_flag = true;
+                    returnValue = true;
                 }
             }
-            return i_flag;
+            return returnValue;
         }
 
         public void PrintLineOfEquals(int i_columns)
