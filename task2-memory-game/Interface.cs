@@ -61,7 +61,7 @@ namespace task2_memory_game
                 }
 
                 //need to check if openCardState is 1 or 2, if 1 print the board with the 2 cards that the user open for two seconds
-                if (openCardState == eCardState.FlippedAndMatched) //need to print the board normally
+                if (openCardState != eCardState.FlippedButDidntMatch) //need to print the board normally
                 {
                     givePointToCurrentlyPlayingPlayer();
 
