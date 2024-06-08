@@ -30,26 +30,6 @@ namespace task2_memory_game
             logicMemoryGame = new LogicMemoryGame();
         }
 
-        private void setUpGame()
-        {
-            //string currentCardToOpen;
-            //var pair = (-1, -1); //convert card to open format to something logic can deal with
-            //var secondPair = (-1, -1);
-
-            string firstPlayerName = UIOfMemoryGame.GetUsername();
-            player1 = new HumanPlayerMemoryGame(firstPlayerName);
-            bool againstComputer = UIOfMemoryGame.AgainstHumanOrComputer();
-            if (!againstComputer)
-            {
-                string secondPlayerName = UIOfMemoryGame.GetUsername();
-                player2 = new HumanPlayerMemoryGame(secondPlayerName);
-            }
-
-            (int, int) boardDimensions = UIOfMemoryGame.GetBoardSizeFromUser((k_MinimumRowSize, k_MaximumRowSize), (k_MinimumColumnSize, k_MaximumColumnSize));
-            logicMemoryGame.setEmptyBoard(boardDimensions);
-            logicMemoryGame.Board.printBoard();
-            logicMemoryGame.Board.GeneratePairs();
-        }
 
         public void game()
         {
@@ -78,6 +58,23 @@ namespace task2_memory_game
                 }
                 switchTurn();
             }
+        }
+
+        private void setUpGame()
+        {
+            string firstPlayerName = UIOfMemoryGame.GetUsername();
+            player1 = new HumanPlayerMemoryGame(firstPlayerName);
+            bool againstComputer = UIOfMemoryGame.AgainstHumanOrComputer();
+            if (!againstComputer)
+            {
+                string secondPlayerName = UIOfMemoryGame.GetUsername();
+                player2 = new HumanPlayerMemoryGame(secondPlayerName);
+            }
+
+            (int, int) boardDimensions = UIOfMemoryGame.GetBoardSizeFromUser((k_MinimumRowSize, k_MaximumRowSize), (k_MinimumColumnSize, k_MaximumColumnSize));
+            logicMemoryGame.setEmptyBoard(boardDimensions);
+            logicMemoryGame.Board.printBoard();
+            logicMemoryGame.Board.GeneratePairs();
         }
 
         private void revealAndHideCards((int,int) i_Pair1, (int, int) i_Pair2)
