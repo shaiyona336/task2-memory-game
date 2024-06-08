@@ -96,8 +96,8 @@ namespace task2_memory_game
                 else //openCardState == '1'
                 {
                     revealAndHideCards(pair1, pair2);
+                    switchTurn();
                 }
-                switchTurn();
             }
         }
 
