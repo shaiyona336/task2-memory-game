@@ -19,6 +19,7 @@ namespace task2_memory_game
         private const int minimumColumnSize = 4;
         private const int maximumRowSize = 6;
         private const int maximumColumnSize = 6;
+        private readonly (int, int) quit = (-2, -2);
         private char openCardState; //0 the card couldnt opened, 1 card opend but not matched a previous pair
         int firstPlayerPoints = 0;
         int secondPlayerPoints = 0;
@@ -143,6 +144,10 @@ namespace task2_memory_game
                 UI.printIllegalPlaceForCardBorder();
                 currentCardToOpen = UI.askUserForCardToOpen();
                 pair = isCardToOpenValidAndConvertFormat(currentCardToOpen);
+            }
+            if (pair == quit)
+            {
+                Environment.Exit(1);
             }
             return pair;
         }
