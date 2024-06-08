@@ -9,10 +9,10 @@
             PlayerName = i_namePlayer;
         }
 
-        //public override ((int, int), (int, int)) PickTwoCardsOnBoard(BoardMemoryGame board)
-        //{
+        public override ((int, int), (int, int)) PickTwoCardsOnBoard(BoardMemoryGame board)
+        {
 
-        //}
+        }
 
     }
 }

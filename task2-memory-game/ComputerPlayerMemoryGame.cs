@@ -4,32 +4,37 @@ namespace task2_memory_game
 {
     class ComputerPlayerMemoryGame : PlayerMemoryGame
     {
+        private Random m_RandomNumGenerator;
+
         public ComputerPlayerMemoryGame() : base()
         {
+            m_RandomNumGenerator = new Random();
         }
 
-        public ((int, int), (int, int)) PickTwoCardsOnBoard(BoardMemoryGame board)
+        public override ((int, int), (int, int)) PickTwoCardsOnBoard(BoardMemoryGame board)
         {
-            Random random = new Random();
-            int row = random.Next(board.BoardHeight);
-            int col = random.Next(board.BoardWidth);
-            int row2 = random.Next(board.BoardHeight);
-            int col2 = random.Next(board.BoardWidth);
+            (int, int) pair1 = generateRandomPair(board);
+            (int, int) pair2 = generateRandomPair(board);
 
-            while (!board.isCardValid(row, col))
+            while (!board.IsCardValid(pair1))
             {
-                row = random.Next(board.BoardHeight);
-                col = random.Next(board.BoardWidth);
+                pair1 = generateRandomPair(board);
             }
 
-            while (row != row2 && col != col2 && !board.isCardValid(row2, col2))
+            while (pair2 == pair1 || !board.IsCardValid(pair2))
             {
-                row2 = random.Next(board.BoardHeight);
-                col2 = random.Next(board.BoardWidth);
+                pair2 = generateRandomPair(board);
             }
 
+            return (pair1, pair2);
+        }
 
-            return ((row, col), (row2, col2));
+        private (int, int) generateRandomPair(BoardMemoryGame board)
+        {
+            int row = m_RandomNumGenerator.Next(board.BoardHeight);
+            int col = m_RandomNumGenerator.Next(board.BoardWidth);
+
+            return (row, col);
         }
     }
 }

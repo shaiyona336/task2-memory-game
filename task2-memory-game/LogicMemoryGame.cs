@@ -52,7 +52,7 @@
         {
             eCardState stateAfterFlipAttempt = eCardState.CantFlip;
 
-            if (Board.isCardValid(i_row, i_column))
+            if (Board.IsCardValid(i_row, i_column))
             {
                 stateAfterFlipAttempt = eCardState.FlippedButDidntMatch;
                 bool didFlipAPair = Board.flipCardOnBoard(i_row, i_column);

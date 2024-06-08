@@ -136,7 +136,7 @@ namespace task2_memory_game
             return isFlippedAPair;
         }
 
-        public bool isCardValid(int i_row, int i_column)
+        public bool IsCardValid(int i_row, int i_column)
         {
             bool returnValue = false;
 
@@ -148,6 +148,11 @@ namespace task2_memory_game
                 }
             }
             return returnValue;
+        }
+
+        public bool IsCardValid((int,int) i_Pair)
+        {
+            return IsCardValid(i_Pair.Item1, i_Pair.Item2);
         }
 
         public void PrintLineOfEquals(int i_columns)
