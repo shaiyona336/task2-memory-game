@@ -186,7 +186,7 @@ namespace task2_memory_game
                     }
                     else
                     {
-                        Console.Write((BoardState[row - 1, column].PairNum) + "|");
+                        Console.Write((char)((BoardState[row - 1, column].PairNum) + 'A' - 1) + "|");
                     }
                 }
                 Console.WriteLine();
