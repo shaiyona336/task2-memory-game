@@ -18,7 +18,7 @@ namespace task2_memory_game
         {
             Player1Turn,
             Player2Turn
-        }
+        }           
 
         private HumanPlayerMemoryGame player1;//change to general player
         private HumanPlayerMemoryGame player2;//change to general player
@@ -173,7 +173,7 @@ namespace task2_memory_game
             else // if currentTurn == Player2Turn
             {
                 currentTurn = ePlayerTurn.Player1Turn;
-            }
+            }        
         }
     }
 }
