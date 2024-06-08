@@ -138,7 +138,7 @@ namespace task2_memory_game
             else // if currentTurn == Player2Turn
             {
                 currentTurn = ePlayerTurn.Player1Turn;
-            }
+            }        
         }
     }
 }
