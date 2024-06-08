@@ -2,7 +2,7 @@
 {
     internal class LogicMemoryGame
     {
-        private (char, int) k_SomePair = ('a',1);
+        private (int, int) k_SomePair = (1,1);
         public BoardMemoryGame Board { get; private set; }
         public enum eCardState
         {
@@ -14,11 +14,6 @@
         public void setEmptyBoard((int, int) i_BoardDimensions)
         {
             Board = new BoardMemoryGame(i_BoardDimensions.Item1, i_BoardDimensions.Item2);
-        }
-
-        public char GetLastValidCharacterOnBoard()
-        {
-            return (char)('A' + Board.BoardHeight + 1);
         }
 
         public bool isGameOver()
@@ -38,16 +33,16 @@
             return flag;
         }
 
-        public eCardState CheckIfPairValidAndFlipIfItIs(ref (char, int) io_Pair, out bool o_ContinueGame)
+        public eCardState CheckIfPairValidAndFlipIfItIs(ref (int, int) io_Pair, out bool o_ContinueGame)
         {
-            eCardState openCardState = tryFlippingPair(io_Pair.Item1 - 'A', io_Pair.Item2);
+            eCardState openCardState = tryFlippingPair(io_Pair.Item1, io_Pair.Item2);
             o_ContinueGame = true;
 
             while (openCardState == eCardState.CantFlip) //cant flip unmatched card on the first card that we open in the turn, just need to check it flipped the card
             {
                 UIOfMemoryGame.printIllegalPlaceForCard();
                 io_Pair = getCardFromUser(out o_ContinueGame);
-                openCardState = tryFlippingPair(io_Pair.Item1 - 'A', io_Pair.Item2);
+                openCardState = tryFlippingPair(io_Pair.Item1, io_Pair.Item2);
             }
             return openCardState;
         }
@@ -69,10 +64,10 @@
             return stateAfterFlipAttempt;
         }
 
-        public (char, int) getCardFromUser(out bool o_ContinueGame)
+        public (int, int) getCardFromUser(out bool o_ContinueGame)
         {
             string cardToOpenStr;
-            (char, int) outPair = k_SomePair;
+            (int, int) outPair = k_SomePair;
             bool isStringAValidPair = false;
             o_ContinueGame = true;
 
@@ -93,7 +88,7 @@
             return outPair;
         }
 
-        private bool convertStringToPairIfPossible(string i_CardToOpen, out (char, int) o_Pair)
+        private bool convertStringToPairIfPossible(string i_CardToOpen, out (int, int) o_Pair)
         {
             bool returnValue = false;
             o_Pair = k_SomePair;
@@ -111,12 +106,12 @@
         }
 
         //Method assumes that the string given is actually a valid pair
-        private (char, int) convertStringToPair(string i_CardToConvert)
+        private (int, int) convertStringToPair(string i_CardToConvert)
         {
-            char charPartOfCard = i_CardToConvert[0];
-            int intPartOfCard = (int)char.GetNumericValue(i_CardToConvert[1]);
+            int charPartOfCard = i_CardToConvert[0] - 'A';
+            int intPartOfCard = (int)char.GetNumericValue(i_CardToConvert[1]) - 1; //might add -1 here
 
-            return (charPartOfCard, intPartOfCard);
+            return (intPartOfCard, charPartOfCard);
         }
 
         private bool isCardAPairOfCharAndInt(string i_CardToCheck)
@@ -135,13 +130,11 @@
             return returnValue;
         }
 
-        private bool isPairOnGameBoard((char, int) i_Pair)
+        private bool isPairOnGameBoard((int, int) i_Pair)
         {
-            char lastValidCharOnBoard = GetLastValidCharacterOnBoard();
-            int boardWidth = Board.BoardWidth;
             bool returnValue = true;
 
-            if (i_Pair.Item1 > lastValidCharOnBoard || i_Pair.Item1 < 'A' || i_Pair.Item2 > boardWidth || i_Pair.Item2 < 0)
+            if (i_Pair.Item1 > Board.BoardHeight || i_Pair.Item1 < 0 || i_Pair.Item2 > Board.BoardWidth || i_Pair.Item2 < 0)
             {
                 returnValue = false;
             }

@@ -10,7 +10,7 @@ namespace task2_memory_game
         private const int k_MinimumColumnSize = 4;
         private const int k_MaximumRowSize = 6;
         private const int k_MaximumColumnSize = 6;
-        private (char, int) k_SomePair = ('a', 1);
+        private (int, int) k_SomePair = ('a', 1);
         private enum ePlayerTurn
         {
             Player1Turn,
@@ -54,7 +54,7 @@ namespace task2_memory_game
             //while user didnt typed 'Q'
             while (continueGame)
             {
-                openCardState = flipTwoPairs(out (char, int) pair1, out (char, int) pair2, out continueGame);
+                openCardState = flipTwoPairs(out (int, int) pair1, out (int, int) pair2, out continueGame);
                 if (!continueGame)
                 {
                     break;
@@ -92,21 +92,21 @@ namespace task2_memory_game
             }
         }
 
-        private eCardState flipTwoPairs(out (char,int) o_Pair1, out (char, int) o_Pair2, out bool o_ContinueGame)
+        private eCardState flipTwoPairs(out (int,int) o_Pair1, out (int, int) o_Pair2, out bool o_ContinueGame)
         {
             o_ContinueGame = true;
             eCardState openCardState = eCardState.CantFlip;
             o_Pair2 = k_SomePair;
 
             o_Pair1 = logicMemoryGame.getCardFromUser(out continueGame);
-            if (!continueGame)
+            if (continueGame)
             {
                 logicMemoryGame.CheckIfPairValidAndFlipIfItIs(ref o_Pair1, out continueGame); 
-                if (!continueGame)
+                if (continueGame)
                 {
                     logicMemoryGame.Board.printBoard(); //print board after placing the first card
                     o_Pair2 = logicMemoryGame.getCardFromUser(out continueGame);
-                    if (!continueGame)
+                    if (continueGame)
                     {
                         openCardState = logicMemoryGame.CheckIfPairValidAndFlipIfItIs(ref o_Pair2, out continueGame);
                     }
