@@ -27,6 +27,9 @@ namespace task2_memory_game
         public void RevealCards((int,int) i_firstCardCords, (int,int) i_secondCardCords)
         {
             BoardState[i_firstCardCords.Item1, i_firstCardCords.Item2].RevealCard();
+            BoardState[i_firstCardCords.Item1, i_firstCardCords.Item2].IsSeen = true;
+            BoardState[i_secondCardCords.Item1, i_secondCardCords.Item2].IsSeen = true;
+
             BoardState[i_secondCardCords.Item1, i_secondCardCords.Item2].RevealCard();
         }
 
@@ -34,6 +37,8 @@ namespace task2_memory_game
         {
             BoardState[firstCardCords.Item1, firstCardCords.Item2].HideCard();
             BoardState[secondCardCords.Item1, secondCardCords.Item2].HideCard();
+            BoardState[firstCardCords.Item1, firstCardCords.Item2].IsSeen = false;
+            BoardState[secondCardCords.Item1, secondCardCords.Item2].IsSeen = false;
         }
 
         public void setCardUserOpenAsSeen()
