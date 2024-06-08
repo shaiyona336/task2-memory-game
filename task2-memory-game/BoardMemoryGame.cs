@@ -18,18 +18,13 @@ namespace task2_memory_game
             {
                 return BoardState[m_currentlyOpenedCardCords.Item1, m_currentlyOpenedCardCords.Item2];
             }
-            //set
-            //{
-            //    BoardState[m_currentlyOpenedCardCords.Item1, m_currentlyOpenedCardCords.Item2] = value;
-            //}
         }
 
         public void RevealCards((int,int) i_firstCardCords, (int,int) i_secondCardCords)
         {
             BoardState[i_firstCardCords.Item1, i_firstCardCords.Item2].RevealCard();
-            BoardState[i_firstCardCords.Item1, i_firstCardCords.Item2].IsSeen = true;
+            BoardState[i_firstCardCords.Item1, i_firstCardCords.Item2].IsSeen = true; //It's the same!!!
             BoardState[i_secondCardCords.Item1, i_secondCardCords.Item2].IsSeen = true;
-
             BoardState[i_secondCardCords.Item1, i_secondCardCords.Item2].RevealCard();
         }
 
@@ -37,7 +32,7 @@ namespace task2_memory_game
         {
             BoardState[firstCardCords.Item1, firstCardCords.Item2].HideCard();
             BoardState[secondCardCords.Item1, secondCardCords.Item2].HideCard();
-            BoardState[firstCardCords.Item1, firstCardCords.Item2].IsSeen = false;
+            BoardState[firstCardCords.Item1, firstCardCords.Item2].IsSeen = false; //it's the same thing!!!!!
             BoardState[secondCardCords.Item1, secondCardCords.Item2].IsSeen = false;
         }
 

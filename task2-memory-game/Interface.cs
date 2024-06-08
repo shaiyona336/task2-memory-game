@@ -35,10 +35,6 @@ namespace task2_memory_game
 
         private void setUpGame()
         {
-            //string currentCardToOpen;
-            //var pair = (-1, -1); //convert card to open format to something logic can deal with
-            //var secondPair = (-1, -1);
-
             string firstPlayerName = UIOfMemoryGame.GetUsername();
             player1 = new HumanPlayerMemoryGame(firstPlayerName);
             bool againstComputer = UIOfMemoryGame.AgainstHumanOrComputer();
@@ -71,11 +67,9 @@ namespace task2_memory_game
             {
                 if (isComputerPlaying && currentTurn == ePlayerTurn.Player2Turn)
                 {
-                    (pair1, pair2) = computer.PickLocationOnBoard(logicMemoryGame.Board);
+                    (pair1, pair2) = computer.PickTwoCardsOnBoard(logicMemoryGame.Board);
 
                     openCardState = flipTwoPairs(ref pair1, ref pair2, out continueGame, true);
-
-
                 }
                 else
                 {

@@ -8,7 +8,7 @@ namespace task2_memory_game
         {
         }
 
-        public ((int, int), (int, int)) PickLocationOnBoard(BoardMemoryGame board)
+        public ((int, int), (int, int)) PickTwoCardsOnBoard(BoardMemoryGame board)
         {
             Random random = new Random();
             int row = random.Next(board.BoardHeight);
