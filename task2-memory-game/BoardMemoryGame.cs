@@ -36,21 +36,23 @@ namespace task2_memory_game
             BoardState[secondCardCords.Item1, secondCardCords.Item2].HideCard();
         }
 
-        //public void setCardUserOpenAsSeen()
-        //{
-        //    if (UserOpenedOneCard)
-        //    {
-        //        CurrentlyOpenedCard.RevealCard();
-        //    }
-        //}
-        //
-        //public void setCardUserOpenAsUnseen()
-        //{
-        //    if (UserOpenedOneCard)
-        //    {
-        //        CurrentlyOpenedCard.HideCard();
-        //    }
-        //}
+        public void setCardUserOpenAsSeen()
+        {
+            if (IsThereARevealedCard)
+            {
+                CurrentlyOpenedCard.RevealCard();
+                BoardState[m_currentlyOpenedCardCords.Item1, m_currentlyOpenedCardCords.Item2].IsSeen = true;
+            }
+        }
+
+        public void setCardUserOpenAsUnseen()
+        {
+            if (IsThereARevealedCard)
+            {
+                CurrentlyOpenedCard.HideCard();
+                BoardState[m_currentlyOpenedCardCords.Item1, m_currentlyOpenedCardCords.Item2].IsSeen = true;
+            }
+        }
 
         public BoardMemoryGame(int i_BoardHeight, int i_BoardWidth)
         {
@@ -162,7 +164,7 @@ namespace task2_memory_game
         public void printBoard()
         {
             Ex02.ConsoleUtils.Screen.Clear();
-            //setCardUserOpenAsSeen(); //treat the open card in the current turn as a normal opened card to show him on the board
+            setCardUserOpenAsSeen(); //treat the open card in the current turn as a normal opened card to show him on the board
             Console.Write("   ");
             for (int latter = 0; latter < BoardWidth; latter++)
             {
@@ -190,7 +192,7 @@ namespace task2_memory_game
                 Console.WriteLine();
                 PrintLineOfEquals(BoardWidth);
             }
-            //setCardUserOpenAsUnseen();
+            setCardUserOpenAsUnseen();
         }
 
 

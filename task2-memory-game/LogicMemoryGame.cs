@@ -117,8 +117,17 @@
         private bool isCardAPairOfCharAndInt(string i_CardToCheck)
         {
             bool returnValue = true;
-            char checkIfUpper = i_CardToCheck[0];
-            char checkIfDigit = i_CardToCheck[1];
+            char checkIfUpper = '-';
+            char checkIfDigit = '-';
+            if (i_CardToCheck.Length < 2)
+            {
+                returnValue = false;
+            }
+            else
+            {
+                checkIfUpper = i_CardToCheck[0];
+                checkIfDigit = i_CardToCheck[1];
+            }
 
             if (i_CardToCheck.Length != 2 ||
                 char.IsLower(checkIfUpper) ||

@@ -6,7 +6,7 @@ namespace task2_memory_game
     public struct MemoryCard
     {
         public int PairNum { get; set; }
-        public bool IsSeen { get; private set; } 
+        public bool IsSeen { get; set; } 
         
         public MemoryCard(int i_numberOfPair)
         {
