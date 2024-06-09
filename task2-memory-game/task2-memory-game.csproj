@@ -41,6 +41,7 @@
     <Compile Include="HumanPlayerMemoryGame.cs" />
     <Compile Include="MemoryGame.cs" />
     <Compile Include="CardMemoryGame.cs" />
+    <Compile Include="MemoryGameCardCords.cs" />
     <Compile Include="PlayerMemoryGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="MemoryGameInputManager.cs" />

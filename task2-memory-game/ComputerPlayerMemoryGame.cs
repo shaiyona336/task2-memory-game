@@ -13,10 +13,10 @@ namespace MemoryGameLogic
             m_RandomNumGenerator = new Random();
         }
 
-        public override (int, int) PickCardOnBoard(BoardMemoryGame i_Board, out bool o_ContinueGame)
+        public override MemoryGameCardCords PickCardOnBoard(BoardMemoryGame i_Board, out bool o_ContinueGame)
         {
             o_ContinueGame = true;
-            (int, int) pair1 = generateRandomPair(i_Board);
+            MemoryGameCardCords pair1 = generateRandomPair(i_Board);
 
             while (!i_Board.IsCardHidden(pair1))
             {
@@ -26,7 +26,7 @@ namespace MemoryGameLogic
             return pair1;
         }
 
-        private (int, int) generateRandomPair(BoardMemoryGame i_Board)
+        private MemoryGameCardCords generateRandomPair(BoardMemoryGame i_Board)
         {
             int row = m_RandomNumGenerator.Next(i_Board.BoardHeight);
             int col = m_RandomNumGenerator.Next(i_Board.BoardWidth);

@@ -23,8 +23,8 @@ namespace MemoryGameUI
         private const int k_MinimumColumnSize = 4;
         private const int k_MaximumRowSize = 6;
         private const int k_MaximumColumnSize = 6;
-        private (int, int) k_SomePair = (1, 1);
-        private const bool v_Matched = true;
+        private MemoryGameCardCords k_SomeCardCords = (1, 1);
+        private const bool v_CardsMatched = true;
 
         public MemoryGame()
         {
@@ -45,21 +45,21 @@ namespace MemoryGameUI
 
         public void RunMemoryGame()
         {
-            (int, int) pair1;
-            (int, int) pair2;
-            bool didMatch;
+            MemoryGameCardCords card1;
+            MemoryGameCardCords card2;
+            bool didCardsMatch;
             setUpGame();
 
             //while user didnt typed 'Q'
             while (m_ContinueGame)
             {
-                didMatch = getPairsFromCurrentPlayerAndFlip(out pair1, out pair2, out m_ContinueGame);
+                didCardsMatch = getPairsFromCurrentPlayerAndFlip(out card1, out card2, out m_ContinueGame);
                 if (!m_ContinueGame)
                 {
                     break;
                 }
 
-                if (didMatch == v_Matched) //need to print the board normally
+                if (didCardsMatch == v_CardsMatched) //need to print the board normally
                 {
                     givePointToCurrentlyPlayingPlayer();
                     m_Board.PrintBoard();
@@ -67,7 +67,7 @@ namespace MemoryGameUI
                 }
                 else //If didn't match
                 {
-                    revealCardsForTwoSeconds(pair1, pair2);
+                    revealCardsForTwoSeconds(card1, card2);
                     switchTurn();
                 }
             }
@@ -75,7 +75,7 @@ namespace MemoryGameUI
 
         private void setUpGame()
         {
-            (int, int) boardDimensions = MemoryGameInputManager.GetBoardSizeFromUser((k_MinimumRowSize, k_MaximumRowSize), (k_MinimumColumnSize, k_MaximumColumnSize));
+            (int,int) boardDimensions = MemoryGameInputManager.GetBoardSizeFromUser((k_MinimumRowSize, k_MaximumRowSize), (k_MinimumColumnSize, k_MaximumColumnSize));
             m_Board = new BoardMemoryGame(boardDimensions);
             m_Board.PrintBoard();
 
@@ -83,12 +83,12 @@ namespace MemoryGameUI
             m_CurrentlyPlayingPlayer = m_Player1;
         }
 
-        private void revealCardsForTwoSeconds((int, int) i_Pair1, (int, int) i_Pair2)
+        private void revealCardsForTwoSeconds(MemoryGameCardCords i_Card1Cords, MemoryGameCardCords i_Card2Cords)
         {
-            m_Board.RevealCards(i_Pair1, i_Pair2);
+            m_Board.RevealCardsOnBoard(i_Card1Cords, i_Card2Cords);
             m_Board.PrintBoard();
             Thread.Sleep(2000); //2000 miliseconds = 2 seconds
-            m_Board.HideCards(i_Pair1, i_Pair2);
+            m_Board.HideCards(i_Card1Cords, i_Card2Cords);
             m_Board.PrintBoard();
         }
 
@@ -109,22 +109,22 @@ namespace MemoryGameUI
             }
         }
 
-        private bool getPairsFromCurrentPlayerAndFlip(out (int, int) o_Pair1, out (int, int) o_Pair2, out bool o_ContinueGame)
+        private bool getPairsFromCurrentPlayerAndFlip(out MemoryGameCardCords o_Pair1, out MemoryGameCardCords o_Pair2, out bool o_ContinueGame)
         {
             bool didMatch = false;
-            o_Pair2 = k_SomePair;
+            o_Pair2 = k_SomeCardCords;
 
             o_Pair1 = m_CurrentlyPlayingPlayer.PickCardOnBoard(m_Board, out o_ContinueGame);
             if (m_ContinueGame)
             {
-                m_Board.FlipCardOnBoard(o_Pair1.Item1, o_Pair1.Item2);
+                m_Board.FlipCardOnBoard(o_Pair1);
                 if (m_ContinueGame)
                 {
                     m_Board.PrintBoard(); //print board after placing the first card
                     o_Pair2 = m_CurrentlyPlayingPlayer.PickCardOnBoard(m_Board, out o_ContinueGame);
                     if (m_ContinueGame)
                     {
-                        didMatch = m_Board.FlipCardOnBoard(o_Pair2.Item1, o_Pair2.Item2);
+                        didMatch = m_Board.FlipCardOnBoard(o_Pair2);
                     }
                 }
             }

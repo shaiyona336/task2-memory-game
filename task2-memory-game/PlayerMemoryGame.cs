@@ -15,6 +15,6 @@
             Score++;
         }
 
-        public abstract (int, int) PickCardOnBoard(BoardMemoryGame i_Board, out bool o_ContinueGame);
+        public abstract MemoryGameCardCords PickCardOnBoard(BoardMemoryGame i_Board, out bool o_ContinueGame);
     }
 }

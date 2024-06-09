@@ -10,13 +10,13 @@ namespace MemoryGameLogic
         public CardMemoryGame[,] BoardState { get; private set; }
         public bool IsThereARevealedCard { get; private set; }
 
-        private (int, int) m_currentlyOpenedCardCords;
+        private MemoryGameCardCords m_currentlyOpenedCardCords;
 
         public BoardMemoryGame(int i_BoardHeight, int i_BoardWidth) : this((i_BoardHeight, i_BoardWidth))
         {
         }
 
-        public BoardMemoryGame((int, int) i_BoardDimensions)
+        public BoardMemoryGame((int,int) i_BoardDimensions)
         {
             SetEmptyBoard(i_BoardDimensions);
         }
@@ -30,16 +30,16 @@ namespace MemoryGameLogic
             IsThereARevealedCard = false;
         }
 
-        public void RevealCards((int, int) i_firstCardCords, (int, int) i_secondCardCords)
+        public void RevealCardsOnBoard(MemoryGameCardCords i_FirstCardCords, MemoryGameCardCords i_SecondCardCords)
         {
-            BoardState[i_firstCardCords.Item1, i_firstCardCords.Item2].RevealCard();
-            BoardState[i_secondCardCords.Item1, i_secondCardCords.Item2].RevealCard();
+            BoardState[i_FirstCardCords.Y, i_FirstCardCords.X].RevealCard();
+            BoardState[i_SecondCardCords.Y, i_SecondCardCords.X].RevealCard();
         }
 
-        public void HideCards((int, int) i_FirstCardCords, (int, int) i_SecondCardCords)
+        public void HideCards(MemoryGameCardCords i_FirstCardCords, MemoryGameCardCords i_SecondCardCords)
         {
-            BoardState[i_FirstCardCords.Item1, i_FirstCardCords.Item2].HideCard();
-            BoardState[i_SecondCardCords.Item1, i_SecondCardCords.Item2].HideCard();
+            BoardState[i_FirstCardCords.Y, i_FirstCardCords.X].HideCard();
+            BoardState[i_SecondCardCords.Y, i_SecondCardCords.X].HideCard();
         }
 
         public void FillBoardWithNewPairs()
@@ -90,17 +90,17 @@ namespace MemoryGameLogic
             io_List[i_Card2Index] = tempCard;
         }
 
-        public bool FlipCardOnBoard(int i_Row, int i_Column) //return if flipped a pair
+        public bool FlipCardOnBoard(MemoryGameCardCords i_CardCords) //return if flipped a pair
         {
             bool isFlippedAPair = false;
 
             if (IsThereARevealedCard == true)
             {
-                ref CardMemoryGame currentlyRevealedCard = ref BoardState[m_currentlyOpenedCardCords.Item1, m_currentlyOpenedCardCords.Item2];
-                if (BoardState[i_Row, i_Column].PairNum == currentlyRevealedCard.PairNum)
+                ref CardMemoryGame currentlyRevealedCard = ref BoardState[m_currentlyOpenedCardCords.Y, m_currentlyOpenedCardCords.X];
+                if (BoardState[i_CardCords.Y, i_CardCords.X].PairNum == currentlyRevealedCard.PairNum)
                 {
                     isFlippedAPair = true;
-                    BoardState[i_Row, i_Column].RevealCard(); // need to flip this card and keep his state like that
+                    BoardState[i_CardCords.Y, i_CardCords.X].RevealCard(); // need to flip this card and keep his state like that
                 }
                 else //if the card flipped wasnt a pair
                 {
@@ -110,29 +110,24 @@ namespace MemoryGameLogic
             }
             else //if (UserOpenedOneCard == false), then need to set the card that is now opened in the middle of a turn
             {
-                m_currentlyOpenedCardCords = (i_Row, i_Column);
-                BoardState[m_currentlyOpenedCardCords.Item1, m_currentlyOpenedCardCords.Item2].RevealCard();
+                m_currentlyOpenedCardCords = (i_CardCords.Y, i_CardCords.X);
+                BoardState[m_currentlyOpenedCardCords.Y, m_currentlyOpenedCardCords.X].RevealCard();
             }
 
             IsThereARevealedCard = !IsThereARevealedCard; //if user open card, now need to flip the condition of one card open in a turn
             return isFlippedAPair;
         }
 
-        public bool IsCardHidden(int i_Row, int i_Column)
+        public bool IsCardHidden(MemoryGameCardCords i_CardCords)
         {
             bool returnValue = false;
 
-            if (IsPairOnGameBoard((i_Row, i_Column)) && !BoardState[i_Row, i_Column].IsSeen)
+            if (IsCardOnGameBoard(i_CardCords) && !BoardState[i_CardCords.Y, i_CardCords.X].IsSeen)
             {
                 returnValue = true;
             }
 
             return returnValue;
-        }
-
-        public bool IsCardHidden((int, int) i_Pair)
-        {
-            return IsCardHidden(i_Pair.Item1, i_Pair.Item2);
         }
 
         public void PrintBoard()
@@ -158,11 +153,11 @@ namespace MemoryGameLogic
             return returnValue;
         }
 
-        public bool IsPairOnGameBoard((int, int) i_Pair)
+        public bool IsCardOnGameBoard(MemoryGameCardCords i_CardCords)
         {
             bool returnValue = false;
 
-            if (i_Pair.Item1 < BoardHeight && i_Pair.Item1 >= 0 && i_Pair.Item2 < BoardWidth && i_Pair.Item2 >= 0)
+            if (i_CardCords.Y < BoardHeight && i_CardCords.Y >= 0 && i_CardCords.X < BoardWidth && i_CardCords.X >= 0)
             {
                 returnValue = true;
             }
