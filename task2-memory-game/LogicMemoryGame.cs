@@ -4,6 +4,7 @@
     {
         private (int, int) k_SomePair = (1, 1);
         public BoardMemoryGame Board { get; private set; }
+
         public enum eCardState
         {
             CantFlip = '0',
@@ -11,51 +12,57 @@
             FlippedAndMatched
         }
 
-        public void setEmptyBoard((int, int) i_BoardDimensions)
+        public void setEmptyBoard((int, int) i_BoardDimensions) //move to board
         {
             Board = new BoardMemoryGame(i_BoardDimensions.Item1, i_BoardDimensions.Item2);
         }
 
-        public bool isGameOver()
+        public bool isGameOver() //move to board
         {
-            bool flag = true;
+            bool returnValue = true;
             MemoryCard[,] boardState = Board.BoardState;
-            for (int boardXDimension = 0; boardXDimension < Board.BoardWidth && flag; boardXDimension++)
+            for (int boardXDimension = 0; boardXDimension < Board.BoardWidth && returnValue; boardXDimension++)
             {
-                for (int boardYDimension = 0; boardYDimension < Board.BoardHeight && flag; boardYDimension++)
+                for (int boardYDimension = 0; boardYDimension < Board.BoardHeight && returnValue; boardYDimension++)
                 {
                     if (boardState[boardXDimension, boardYDimension].IsSeen)
                     {
-                        flag = false;
+                        returnValue = false;
+                        break;
                     }
                 }
+                
+                if (!returnValue)
+                {
+                    break;
+                }
             }
-            return flag;
+            return returnValue;
         }
 
         public eCardState CheckIfPairValidAndFlipIfItIs(ref (int, int) io_Pair, out bool o_ContinueGame)
         {
-            eCardState openCardState = tryFlippingPair(io_Pair.Item1, io_Pair.Item2);
             o_ContinueGame = true;
+            eCardState openCardState = tryFlippingPair(io_Pair);
 
             while (openCardState == eCardState.CantFlip) //cant flip unmatched card on the first card that we open in the turn, just need to check it flipped the card
             {
-                UIOfMemoryGame.printIllegalPlaceForCard();
+                UIOfMemoryGame.printIllegalPlaceForCardMessage();
                 io_Pair = getCardFromUser(out o_ContinueGame);
-                openCardState = tryFlippingPair(io_Pair.Item1, io_Pair.Item2);
+                openCardState = tryFlippingPair(io_Pair);
             }
             return openCardState;
         }
 
         //the function returns one of three things, '0' if the card that were chosen were invalid to flip, '1' if the card flipped and didnt matched a pair, '2' if the card was flipped and matched a pair
-        public eCardState tryFlippingPair(int i_row, int i_column)
+        public eCardState tryFlippingPair((int, int) i_Pair)
         {
             eCardState stateAfterFlipAttempt = eCardState.CantFlip;
 
-            if (Board.IsCardValid(i_row, i_column))
+            if (Board.IsCardValid(i_Pair.Item1, i_Pair.Item2))
             {
                 stateAfterFlipAttempt = eCardState.FlippedButDidntMatch;
-                bool didFlipAPair = Board.flipCardOnBoard(i_row, i_column);
+                bool didFlipAPair = Board.flipCardOnBoard(i_Pair.Item1, i_Pair.Item2);
                 if (didFlipAPair)
                 {
                     stateAfterFlipAttempt = eCardState.FlippedAndMatched;
@@ -64,7 +71,7 @@
             return stateAfterFlipAttempt;
         }
 
-        public (int, int) getCardFromUser(out bool o_ContinueGame)
+        public (int, int) getCardFromUser(out bool o_ContinueGame)//move to player
         {
             string cardToOpenStr;
             (int, int) outPair = k_SomePair;
@@ -88,7 +95,7 @@
             return outPair;
         }
 
-        private bool convertStringToPairIfPossible(string i_CardToOpen, out (int, int) o_Pair)
+        private bool convertStringToPairIfPossible(string i_CardToOpen, out (int, int) o_Pair)//move to player
         {
             bool returnValue = false;
             o_Pair = k_SomePair;
@@ -106,15 +113,15 @@
         }
 
         //Method assumes that the string given is actually a valid pair
-        private (int, int) convertStringToPair(string i_CardToConvert)
+        private (int, int) convertStringToPair(string i_CardToConvert) //move to player
         {
             int charPartOfCard = i_CardToConvert[0] - 'A';
-            int intPartOfCard = (int)char.GetNumericValue(i_CardToConvert[1]) - 1; //might add -1 here
+            int intPartOfCard = (int)char.GetNumericValue(i_CardToConvert[1]) - 1;
 
             return (intPartOfCard, charPartOfCard);
         }
 
-        private bool isCardAPairOfCharAndInt(string i_CardToCheck)
+        private bool isCardAPairOfCharAndInt(string i_CardToCheck) //move to player
         {
             bool returnValue = true;
             if (i_CardToCheck.Length < 2)
@@ -135,7 +142,7 @@
             return returnValue;
         }
 
-        private bool isPairOnGameBoard((int, int) i_Pair)
+        private bool isPairOnGameBoard((int, int) i_Pair) //move to board
         {
             bool returnValue = true;
 
@@ -145,7 +152,5 @@
             }
             return returnValue;
         }
-
-
     }
 }

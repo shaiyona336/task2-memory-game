@@ -105,7 +105,7 @@ namespace task2_memory_game
             return cardToOpen;
         }
 
-        public static void printIllegalPlaceForCard()
+        public static void printIllegalPlaceForCardMessage()
         {
             Console.WriteLine("Illegal place for card");
         }

@@ -11,10 +11,11 @@ namespace task2_memory_game
             m_RandomNumGenerator = new Random();
         }
 
-        public override ((int, int), (int, int)) PickTwoCardsOnBoard(BoardMemoryGame board)
+        public override ((int, int), (int, int)) PickTwoCardsOnBoard(BoardMemoryGame board, out bool continueGame)
         {
             (int, int) pair1 = generateRandomPair(board);
             (int, int) pair2 = generateRandomPair(board);
+            continueGame = true;
 
             while (!board.IsCardValid(pair1))
             {

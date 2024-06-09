@@ -20,6 +20,23 @@ namespace task2_memory_game
             }
         }
 
+        public BoardMemoryGame(int i_BoardHeight, int i_BoardWidth) : this((i_BoardHeight, i_BoardWidth))
+        {
+        }
+
+        public BoardMemoryGame((int, int) i_BoardDimensions)
+        {
+            setEmptyBoard(i_BoardDimensions);
+        }
+
+        public void setEmptyBoard((int, int) i_BoardDimensions)
+        {
+            BoardHeight = i_BoardDimensions.Item1;
+            BoardWidth = i_BoardDimensions.Item2;
+            BoardState = new MemoryCard[BoardHeight, BoardWidth];
+            IsThereARevealedCard = false;
+        }
+
         public void RevealCards((int,int) i_firstCardCords, (int,int) i_secondCardCords)
         {
             BoardState[i_firstCardCords.Item1, i_firstCardCords.Item2].RevealCard();
@@ -52,14 +69,6 @@ namespace task2_memory_game
                 CurrentlyOpenedCard.HideCard();
                 BoardState[m_currentlyOpenedCardCords.Item1, m_currentlyOpenedCardCords.Item2].IsSeen = true;
             }
-        }
-
-        public BoardMemoryGame(int i_BoardHeight, int i_BoardWidth)
-        {
-            BoardHeight = i_BoardHeight;
-            BoardWidth = i_BoardWidth;
-            BoardState = new MemoryCard[BoardHeight, BoardWidth];
-            IsThereARevealedCard = false;
         }
 
         public void GeneratePairs()
@@ -155,7 +164,7 @@ namespace task2_memory_game
             return IsCardValid(i_Pair.Item1, i_Pair.Item2);
         }
 
-        public void PrintLineOfEquals(int i_columns)
+        private void printLineOfEquals(int i_columns)
         {
             Console.Write("  ");
             for (int amountOfEquals = 0; amountOfEquals < i_columns * 2 + 1; amountOfEquals++)
@@ -164,7 +173,6 @@ namespace task2_memory_game
             }
             Console.WriteLine();
         }
-
 
         public void printBoard()
         {
@@ -177,7 +185,7 @@ namespace task2_memory_game
             }
             Console.WriteLine();
             //top border
-            PrintLineOfEquals(BoardWidth);
+            printLineOfEquals(BoardWidth);
             //rows
             for (int row = 1; row <= BoardHeight; row++)
             {
@@ -195,9 +203,42 @@ namespace task2_memory_game
                     }
                 }
                 Console.WriteLine();
-                PrintLineOfEquals(BoardWidth);
+                printLineOfEquals(BoardWidth);
             }
             setCardUserOpenAsUnseen();
+        }
+
+        public bool isGameOver()
+        {
+            bool returnValue = true;
+            for (int boardXDimension = 0; boardXDimension < BoardWidth && returnValue; boardXDimension++)
+            {
+                for (int boardYDimension = 0; boardYDimension < BoardHeight && returnValue; boardYDimension++)
+                {
+                    if (BoardState[boardXDimension, boardYDimension].IsSeen)
+                    {
+                        returnValue = false;
+                        break;
+                    }
+                }
+
+                if (!returnValue)
+                {
+                    break;
+                }
+            }
+            return returnValue;
+        }
+
+        public bool IsPairOnGameBoard((int, int) i_Pair) //move to board
+        {
+            bool returnValue = true;
+
+            if (i_Pair.Item1 > BoardHeight || i_Pair.Item1 < 0 || i_Pair.Item2 > BoardWidth || i_Pair.Item2 < 0)
+            {
+                returnValue = false;
+            }
+            return returnValue;
         }
 
 

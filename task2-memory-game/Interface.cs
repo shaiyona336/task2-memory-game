@@ -67,7 +67,7 @@ namespace task2_memory_game
             {
                 if (isComputerPlaying && currentTurn == ePlayerTurn.Player2Turn)
                 {
-                    (pair1, pair2) = computer.PickTwoCardsOnBoard(logicMemoryGame.Board);
+                    (pair1, pair2) = computer.PickTwoCardsOnBoard(logicMemoryGame.Board, out continueGame);
 
                     openCardState = flipTwoPairs(ref pair1, ref pair2, out continueGame, true);
                 }
@@ -128,7 +128,6 @@ namespace task2_memory_game
             if (!isComputerPlayingThisTurn)
             {
                 o_Pair2 = k_SomePair;
-
                 o_Pair1 = logicMemoryGame.getCardFromUser(out continueGame);
             }
             if (continueGame)

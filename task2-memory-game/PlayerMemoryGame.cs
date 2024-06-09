@@ -20,6 +20,6 @@ namespace task2_memory_game
             Score++;
         }
 
-        public abstract ((int, int), (int, int)) PickTwoCardsOnBoard(BoardMemoryGame board);
+        public abstract ((int, int), (int, int)) PickTwoCardsOnBoard(BoardMemoryGame board, out bool continueGame);
     }
 }
