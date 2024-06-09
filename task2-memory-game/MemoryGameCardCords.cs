@@ -8,7 +8,6 @@ namespace MemoryGameLogic
 {
     public struct MemoryGameCardCords
     {
-        //public MemoryGameCardCords CardCords { get; set; }
 
         public int Y { get; set; }
         public int X { get; set; }
@@ -19,13 +18,13 @@ namespace MemoryGameLogic
             X = i_X;
         }
 
-        // Implicit conversion from MemoryGameCardCords to Pair
+        // Convert from (int,int) to MemoryGameCardCords
         public static implicit operator MemoryGameCardCords((int,int) i_Cords)
         {
             return new MemoryGameCardCords(i_Cords.Item1, i_Cords.Item2);
         }
 
-        // Implicit conversion from Pair to MemoryGameCardCords
+        // Convert from MemoryGameCardCords to (int,int)
         public static implicit operator (int,int)(MemoryGameCardCords i_Cords)
         {
             return (i_Cords.Y, i_Cords.X);

@@ -23,6 +23,7 @@ namespace MemoryGameUI
         private const int k_MinimumColumnSize = 4;
         private const int k_MaximumRowSize = 6;
         private const int k_MaximumColumnSize = 6;
+        private const int k_TimeToFreezeGameInMilliseconds = 2000; //2000 miliseconds = 2 seconds
         private MemoryGameCardCords k_SomeCardCords = (1, 1);
         private const bool v_CardsMatched = true;
 
@@ -45,15 +46,15 @@ namespace MemoryGameUI
 
         public void RunMemoryGame()
         {
-            MemoryGameCardCords card1;
-            MemoryGameCardCords card2;
+            MemoryGameCardCords card1Cords;
+            MemoryGameCardCords card2Cords;
             bool didCardsMatch;
             setUpGame();
 
             //while user didnt typed 'Q'
             while (m_ContinueGame)
             {
-                didCardsMatch = getPairsFromCurrentPlayerAndFlip(out card1, out card2, out m_ContinueGame);
+                didCardsMatch = getCardsFromCurrentPlayerAndFlip(out card1Cords, out card2Cords);
                 if (!m_ContinueGame)
                 {
                     break;
@@ -63,11 +64,11 @@ namespace MemoryGameUI
                 {
                     givePointToCurrentlyPlayingPlayer();
                     m_Board.PrintBoard();
-                    startNewGameIfNeeded(out m_ContinueGame);
+                    startNewGameIfNeeded();
                 }
                 else //If didn't match
                 {
-                    revealCardsForTwoSeconds(card1, card2);
+                    revealCardsForTwoSeconds(card1Cords, card2Cords);
                     switchTurn();
                 }
             }
@@ -87,14 +88,13 @@ namespace MemoryGameUI
         {
             m_Board.RevealCardsOnBoard(i_Card1Cords, i_Card2Cords);
             m_Board.PrintBoard();
-            Thread.Sleep(2000); //2000 miliseconds = 2 seconds
+            Thread.Sleep(k_TimeToFreezeGameInMilliseconds); 
             m_Board.HideCards(i_Card1Cords, i_Card2Cords);
             m_Board.PrintBoard();
         }
 
-        private void startNewGameIfNeeded(out bool o_ContinueGame)
+        private void startNewGameIfNeeded()
         {
-            o_ContinueGame = true;
             if (m_Board.IsBoardFullyRevealed())
             {
                 bool startNewGame = MemoryGameInputManager.PrintEndGameMessageAndAskForAnotherGame(m_Player1, m_Player2);
@@ -104,27 +104,28 @@ namespace MemoryGameUI
                 }
                 else //if the user don't want to start a new game:
                 {
-                    o_ContinueGame = false; //the same as if the user press Q in a middle of a game, quit
+                    m_ContinueGame = false; //the same as if the user press Q in a middle of a game: quit
                 }
             }
         }
 
-        private bool getPairsFromCurrentPlayerAndFlip(out MemoryGameCardCords o_Pair1, out MemoryGameCardCords o_Pair2, out bool o_ContinueGame)
+        private bool getCardsFromCurrentPlayerAndFlip(out MemoryGameCardCords o_Card1Cords,
+            out MemoryGameCardCords o_Card2Cords)
         {
             bool didMatch = false;
-            o_Pair2 = k_SomeCardCords;
+            o_Card2Cords = k_SomeCardCords;
 
-            o_Pair1 = m_CurrentlyPlayingPlayer.PickCardOnBoard(m_Board, out o_ContinueGame);
+            o_Card1Cords = m_CurrentlyPlayingPlayer.PickCardOnBoard(m_Board, out m_ContinueGame);
             if (m_ContinueGame)
             {
-                m_Board.FlipCardOnBoard(o_Pair1);
+                m_Board.FlipCardOnBoard(o_Card1Cords);
                 if (m_ContinueGame)
                 {
                     m_Board.PrintBoard(); //print board after placing the first card
-                    o_Pair2 = m_CurrentlyPlayingPlayer.PickCardOnBoard(m_Board, out o_ContinueGame);
+                    o_Card2Cords = m_CurrentlyPlayingPlayer.PickCardOnBoard(m_Board, out m_ContinueGame);
                     if (m_ContinueGame)
                     {
-                        didMatch = m_Board.FlipCardOnBoard(o_Pair2);
+                        didMatch = m_Board.FlipCardOnBoard(o_Card2Cords);
                     }
                 }
             }

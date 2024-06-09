@@ -5,7 +5,7 @@ namespace MemoryGameUI
 {
     internal class HumanPlayerMemoryGame : PlayerMemoryGame
     {
-        private MemoryGameCardCords k_SomePair = (-1, -1);
+        private MemoryGameCardCords k_SomeCardCords = (-1, -1);
 
         public HumanPlayerMemoryGame(string i_PlayerName)
         {
@@ -15,7 +15,7 @@ namespace MemoryGameUI
         public override MemoryGameCardCords PickCardOnBoard(BoardMemoryGame i_Board, out bool o_ContinueGame)
         {
             string cardToOpenStr;
-            MemoryGameCardCords outPair = k_SomePair;
+            MemoryGameCardCords outPair = k_SomeCardCords;
             bool isStringAValidPair = false;
             o_ContinueGame = true;
 
@@ -26,11 +26,11 @@ namespace MemoryGameUI
                 {
                     break;
                 }
-                else if (!isCardAPairOfCharAndInt(cardToOpenStr))
+                else if (!isStringAPairOfCharAndInt(cardToOpenStr))
                 {
                     MemoryGameInputManager.PrintIllegalInputFromUserMessage();
                 }
-                else if (!convertStringToPairIfPossible(cardToOpenStr, i_Board, out outPair))
+                else if (!convertStringToCardIfPossible(cardToOpenStr, out outPair, i_Board))
                 {
                     MemoryGameInputManager.PrintCardNotInBorderWarning();
                 }
@@ -46,15 +46,16 @@ namespace MemoryGameUI
             return outPair;
         }
 
-        private bool convertStringToPairIfPossible(string i_CardToOpen, BoardMemoryGame i_Board, out MemoryGameCardCords o_Pair)
+        private bool convertStringToCardIfPossible(string i_CardStrToConvert, out MemoryGameCardCords o_CardCordsAfterConvert,
+            BoardMemoryGame i_BoardOfRequestedCard)
         {
             bool returnValue = false;
-            o_Pair = k_SomePair;
+            o_CardCordsAfterConvert = k_SomeCardCords;
 
-            if (isCardAPairOfCharAndInt(i_CardToOpen))
+            if (isStringAPairOfCharAndInt(i_CardStrToConvert))
             {
-                o_Pair = convertStringToPair(i_CardToOpen);
-                if (i_Board.IsCardOnGameBoard(o_Pair))
+                o_CardCordsAfterConvert = convertStringToCardCords(i_CardStrToConvert);
+                if (i_BoardOfRequestedCard.IsCardOnGameBoard(o_CardCordsAfterConvert))
                 {
                     returnValue = true;
                 }
@@ -63,19 +64,20 @@ namespace MemoryGameUI
             return returnValue;
         }
 
-        private bool isCardAPairOfCharAndInt(string i_CardToCheck)
+        private bool isStringAPairOfCharAndInt(string i_StrToCheck)
         {
             bool returnValue = true;
-            if (i_CardToCheck.Length < 2)
+
+            if (i_StrToCheck.Length < 2)
             {
                 returnValue = false;
             }
             else
             {
-                char checkIfUpper = i_CardToCheck[0];
-                char checkIfDigit = i_CardToCheck[1];
+                char checkIfUpper = i_StrToCheck[0];
+                char checkIfDigit = i_StrToCheck[1];
 
-                if (i_CardToCheck.Length > 2 || char.IsLower(checkIfUpper) || !char.IsDigit(checkIfDigit))
+                if (i_StrToCheck.Length > 2 || char.IsLower(checkIfUpper) || !char.IsDigit(checkIfDigit))
                 {
                     returnValue = false;
                 }
@@ -84,7 +86,8 @@ namespace MemoryGameUI
             return returnValue;
         }
 
-        private MemoryGameCardCords convertStringToPair(string i_CardToConvert)
+        //Assumes that the given string is a valid Card 
+        private MemoryGameCardCords convertStringToCardCords(string i_CardToConvert)
         {
             int charPartOfCard = i_CardToConvert[0] - 'A';
             int intPartOfCard = (int)char.GetNumericValue(i_CardToConvert[1]) - 1;
