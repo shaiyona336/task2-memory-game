@@ -208,7 +208,7 @@ namespace task2_memory_game
             setCardUserOpenAsUnseen();
         }
 
-        public bool isGameOver()
+        public bool IsBoardFullyRevealed()
         {
             bool returnValue = true;
             for (int boardXDimension = 0; boardXDimension < BoardWidth && returnValue; boardXDimension++)
