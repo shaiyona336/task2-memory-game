@@ -9,6 +9,7 @@ namespace task2_memory_game
     public abstract class PlayerMemoryGame
     {
         public int Score { get; private set; }
+        public string Name { get; protected set; }
 
         public PlayerMemoryGame()
         {

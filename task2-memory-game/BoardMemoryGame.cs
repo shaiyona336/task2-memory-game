@@ -215,7 +215,7 @@ namespace task2_memory_game
             {
                 for (int boardYDimension = 0; boardYDimension < BoardHeight && returnValue; boardYDimension++)
                 {
-                    if (!(BoardState[boardXDimension, boardYDimension].IsSeen))
+                    if (!BoardState[boardXDimension, boardYDimension].IsSeen)
                     {
                         returnValue = false;
                         break;

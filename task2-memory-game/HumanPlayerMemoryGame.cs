@@ -2,13 +2,11 @@
 {
     internal class HumanPlayerMemoryGame : PlayerMemoryGame
     {
-        public string Name { get; }
-
         private (int, int) k_SomePair = (1, 1);
 
-        public HumanPlayerMemoryGame(string i_namePlayer) 
+        public HumanPlayerMemoryGame(string i_PlayerName) 
         {
-            Name = i_namePlayer;
+            Name = i_PlayerName;
         }
 
         public override (int, int) PickCardOnBoard(BoardMemoryGame board, out bool continueGame)

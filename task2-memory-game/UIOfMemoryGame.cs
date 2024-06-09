@@ -117,8 +117,8 @@ namespace task2_memory_game
 
         public static bool EndGameMessageAndAskForAnotherGame(PlayerMemoryGame i_player1, PlayerMemoryGame i_player2)
         {
-            bool i_flag;
-            Console.WriteLine("THE GAME HAS ENDED");
+            bool shouldStartNewGame;
+            Console.WriteLine("THE GAME HAS ENDED!!!");
             printWinnerMessage(i_player1, i_player2);
 
             printPlayerScore(i_player1);
@@ -126,56 +126,34 @@ namespace task2_memory_game
 
             Console.WriteLine("DO YOU WANT TO START A NEW GAME: (y/n)");
             
-            i_flag = isAnswerYes();
-            return i_flag;
+            shouldStartNewGame = isAnswerYes();
+            return shouldStartNewGame;
         }
 
         private static void printWinnerMessage(PlayerMemoryGame i_player1, PlayerMemoryGame i_player2)
         {
-            HumanPlayerMemoryGame i_human;
-
-            if (i_player1.Score > i_player2.Score)
+            if (i_player1.Score == i_player2.Score)
             {
-                if (i_player1 is ComputerPlayerMemoryGame)
-                {
-                    Console.WriteLine("computer WON!");
-                }
-                else
-                {
-                    i_human = (HumanPlayerMemoryGame)i_player1;
-                    Console.WriteLine($"{i_human.Name} GOT {i_human.Score} POINTS!");
-                }
-            }
-            else if (i_player2.Score > i_player1.Score)
-            {
-                if (i_player1 is ComputerPlayerMemoryGame)
-                {
-                    Console.WriteLine("computer WON!");
-                }
-                else
-                {
-                    i_human = (HumanPlayerMemoryGame)i_player1;
-                    Console.WriteLine($"{i_human.Name} WON!");
-                }
+                Console.WriteLine("THE GAME ENDED IN A TIE!");
             }
             else
             {
-                Console.WriteLine("THE GAME ENDED IN A TIE!");
+                PlayerMemoryGame winner;
+                if (i_player1.Score > i_player2.Score)
+                {
+                    winner = i_player1;
+                }
+                else //if (i_player2.Score > i_player1.Score)
+                {
+                    winner = i_player2;
+                }
+                Console.WriteLine($"{winner.Name} WON THE GAME!");
             }
         }
         
         private static void printPlayerScore(PlayerMemoryGame i_player)
         {
-            HumanPlayerMemoryGame i_human;
-            if (i_player is ComputerPlayerMemoryGame)
-            {
-                Console.WriteLine($"computer GOT {i_player.Score} POINTS!");
-            }
-            else
-            {
-                i_human = (HumanPlayerMemoryGame)i_player;
-                Console.WriteLine($"{i_human.Name} GOT {i_human.Score} POINTS!");
-            }
+            Console.WriteLine($"{i_player.Name} GOT {i_player.Score} POINTS!");
         }
     }
 }

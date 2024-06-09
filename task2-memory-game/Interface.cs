@@ -33,10 +33,6 @@ namespace task2_memory_game
 
         public Interface()
         {
-        }
-
-        private void setUpGame()
-        {
             string firstPlayerName = UIOfMemoryGame.GetUsername();
             player1 = new HumanPlayerMemoryGame(firstPlayerName);
 
@@ -50,11 +46,16 @@ namespace task2_memory_game
                 string secondPlayerName = UIOfMemoryGame.GetUsername();
                 player2 = new HumanPlayerMemoryGame(secondPlayerName);
             }
+        }
 
+        private void setUpGame()
+        {
             (int, int) boardDimensions = UIOfMemoryGame.GetBoardSizeFromUser((k_MinimumRowSize, k_MaximumRowSize), (k_MinimumColumnSize, k_MaximumColumnSize));
             board = new BoardMemoryGame(boardDimensions);
             board.printBoard();
             board.GeneratePairs();
+
+            currentTurn = ePlayerTurn.Player1Turn;
             currentlyPlayingPlayer = player1;
         }
 
@@ -74,23 +75,21 @@ namespace task2_memory_game
                     break;
                 }
 
-                //need to check if openCardState is 1 or 2, if 1 print the board with the 2 cards that the user open for two seconds
                 if (didMatch == k_Matched) //need to print the board normally
                 {
                     givePointToCurrentlyPlayingPlayer();
-                    startNewGameIfRequested(out continueGame);
+                    startNewGameIfNeeded(out continueGame);
                     board.printBoard();
-
                 }
                 else //If didn't match
                 {
-                    revealAndHideCards(pair1, pair2);
+                    revealCardsForTwoSeconds(pair1, pair2);
                     switchTurn();
                 }
             }
         }
 
-        private void revealAndHideCards((int, int) i_Pair1, (int, int) i_Pair2)
+        private void revealCardsForTwoSeconds((int, int) i_Pair1, (int, int) i_Pair2)
         {
             board.RevealCards(i_Pair1, i_Pair2);
             board.printBoard();
@@ -99,7 +98,7 @@ namespace task2_memory_game
             board.printBoard();
         }
 
-        private void startNewGameIfRequested(out bool continueGame)
+        private void startNewGameIfNeeded(out bool continueGame)
         {
             continueGame = true;
             if (board.IsBoardFullyRevealed())
@@ -107,11 +106,7 @@ namespace task2_memory_game
                 bool startNewGame = UIOfMemoryGame.EndGameMessageAndAskForAnotherGame(player1, player2);
                 if (startNewGame)
                 {
-                    board.GeneratePairs();
-                    if (currentTurn == ePlayerTurn.Player2Turn) //need to start from the first player
-                    {
-                        switchTurn();
-                    }
+                    setUpGame();
                 }
                 else //if the user don't want to start a new game:
                 {
