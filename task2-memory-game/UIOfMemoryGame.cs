@@ -132,13 +132,31 @@ namespace task2_memory_game
 
         private static void printWinnerMessage(PlayerMemoryGame i_player1, PlayerMemoryGame i_player2)
         {
+            HumanPlayerMemoryGame i_human;
+
             if (i_player1.Score > i_player2.Score)
             {
-                Console.WriteLine("{i_player1.name} WON!");
+                if (i_player1 is ComputerPlayerMemoryGame)
+                {
+                    Console.WriteLine("computer WON!");
+                }
+                else
+                {
+                    i_human = (HumanPlayerMemoryGame)i_player1;
+                    Console.WriteLine($"{i_human.Name} GOT {i_human.Score} POINTS!");
+                }
             }
             else if (i_player2.Score > i_player1.Score)
             {
-                Console.WriteLine("{i_player2.name} WON!");
+                if (i_player1 is ComputerPlayerMemoryGame)
+                {
+                    Console.WriteLine("computer WON!");
+                }
+                else
+                {
+                    i_human = (HumanPlayerMemoryGame)i_player1;
+                    Console.WriteLine($"{i_human.Name} WON!");
+                }
             }
             else
             {
@@ -148,7 +166,16 @@ namespace task2_memory_game
         
         private static void printPlayerScore(PlayerMemoryGame i_player)
         {
-            Console.WriteLine("{i_player.name} GOT {i_player.Score} POINTS!");
+            HumanPlayerMemoryGame i_human;
+            if (i_player is ComputerPlayerMemoryGame)
+            {
+                Console.WriteLine($"computer GOT {i_player.Score} POINTS!");
+            }
+            else
+            {
+                i_human = (HumanPlayerMemoryGame)i_player;
+                Console.WriteLine($"{i_human.Name} GOT {i_human.Score} POINTS!");
+            }
         }
     }
 }

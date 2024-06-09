@@ -78,8 +78,9 @@ namespace task2_memory_game
                 if (didMatch == k_Matched) //need to print the board normally
                 {
                     givePointToCurrentlyPlayingPlayer();
-                    board.printBoard();
                     startNewGameIfRequested(out continueGame);
+                    board.printBoard();
+
                 }
                 else //If didn't match
                 {
@@ -107,6 +108,10 @@ namespace task2_memory_game
                 if (startNewGame)
                 {
                     board.GeneratePairs();
+                    if (currentTurn == ePlayerTurn.Player2Turn) //need to start from the first player
+                    {
+                        switchTurn();
+                    }
                 }
                 else //if the user don't want to start a new game:
                 {
