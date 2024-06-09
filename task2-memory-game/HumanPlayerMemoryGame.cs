@@ -9,13 +9,13 @@
             Name = i_PlayerName;
         }
 
-        public override (int, int) PickCardOnBoard(BoardMemoryGame board, out bool continueGame)
+        public override (int, int) PickCardOnBoard(BoardMemoryGame i_Board, out bool o_ContinueGame)
         {
-            (int, int) pair = getCardFromUser(board, out continueGame);
+            (int, int) pair = getCardFromUser(i_Board, out o_ContinueGame);
             return pair;
         }
 
-        private (int, int) getCardFromUser(BoardMemoryGame board, out bool o_ContinueGame)
+        private (int, int) getCardFromUser(BoardMemoryGame i_Board, out bool o_ContinueGame)
         {
             string cardToOpenStr;
             (int, int) outPair = k_SomePair;
@@ -30,7 +30,7 @@
                     break;
                 }
 
-                isStringAValidPair = convertStringToPairIfPossible(cardToOpenStr, board, out outPair);
+                isStringAValidPair = convertStringToPairIfPossible(cardToOpenStr, i_Board, out outPair);
 
                 if (!isStringAValidPair)
                 {
@@ -38,7 +38,7 @@
                 }
                 else
                 {
-                    isStringAValidPair = board.IsCardValid(outPair);
+                    isStringAValidPair = i_Board.IsCardValid(outPair);
                     if (!isStringAValidPair)
                     {
                         UIOfMemoryGame.printIllegalPlaceForCardMessage();
@@ -48,7 +48,7 @@
             return outPair;
         }
 
-        private bool convertStringToPairIfPossible(string i_CardToOpen, BoardMemoryGame board, out (int, int) o_Pair)
+        private bool convertStringToPairIfPossible(string i_CardToOpen, BoardMemoryGame i_Board, out (int, int) o_Pair)
         { 
             bool returnValue = false;
             o_Pair = k_SomePair;
@@ -56,7 +56,7 @@
             if (isCardAPairOfCharAndInt(i_CardToOpen))
             {
                 o_Pair = convertStringToPair(i_CardToOpen);
-                if (board.IsPairOnGameBoard(o_Pair))
+                if (i_Board.IsPairOnGameBoard(o_Pair))
                 {
                     returnValue = true;
                 }

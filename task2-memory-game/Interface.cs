@@ -6,57 +6,53 @@ namespace task2_memory_game
 {
     public class Interface
     {
-
         private enum ePlayerTurn
         {
-            Player1Turn = 1,
-            Player2Turn = 0
+            Player1Turn,
+            Player2Turn
         }
 
-        private PlayerMemoryGame player1; 
-        private PlayerMemoryGame player2; 
-        private PlayerMemoryGame currentlyPlayingPlayer;
-        private BoardMemoryGame board;
+        private PlayerMemoryGame m_Player1; 
+        private PlayerMemoryGame m_Player2; 
+        private PlayerMemoryGame m_CurrentlyPlayingPlayer;
+        private BoardMemoryGame m_Board;
 
-        private ePlayerTurn currentTurn = ePlayerTurn.Player1Turn;
-        private bool continueGame = true;
+        private ePlayerTurn m_CurrentTurn = ePlayerTurn.Player1Turn;
+        private bool m_ContinueGame = true;
 
         private const int k_MinimumRowSize = 4;
         private const int k_MinimumColumnSize = 4;
         private const int k_MaximumRowSize = 6;
         private const int k_MaximumColumnSize = 6;
-
-        private (int, int) k_SomePair = ('a', 1);
-
-        private const bool k_Matched = true;
-        private const bool k_DidntMatch = false;
+        private (int, int) k_SomePair = (1, 1);
+        private const bool v_Matched = true;
 
         public Interface()
         {
             string firstPlayerName = UIOfMemoryGame.GetUsername();
-            player1 = new HumanPlayerMemoryGame(firstPlayerName);
+            m_Player1 = new HumanPlayerMemoryGame(firstPlayerName);
 
             bool isComputerPlaying = UIOfMemoryGame.AgainstHumanOrComputer();
             if (isComputerPlaying)
             {
-                player2 = new ComputerPlayerMemoryGame();
+                m_Player2 = new ComputerPlayerMemoryGame();
             }
             else
             {
                 string secondPlayerName = UIOfMemoryGame.GetUsername();
-                player2 = new HumanPlayerMemoryGame(secondPlayerName);
+                m_Player2 = new HumanPlayerMemoryGame(secondPlayerName);
             }
         }
 
         private void setUpGame()
         {
             (int, int) boardDimensions = UIOfMemoryGame.GetBoardSizeFromUser((k_MinimumRowSize, k_MaximumRowSize), (k_MinimumColumnSize, k_MaximumColumnSize));
-            board = new BoardMemoryGame(boardDimensions);
-            board.printBoard();
-            board.GeneratePairs();
+            m_Board = new BoardMemoryGame(boardDimensions);
+            m_Board.printBoard();
+            m_Board.GeneratePairs();
 
-            currentTurn = ePlayerTurn.Player1Turn;
-            currentlyPlayingPlayer = player1;
+            m_CurrentTurn = ePlayerTurn.Player1Turn;
+            m_CurrentlyPlayingPlayer = m_Player1;
         }
 
         public void game()
@@ -67,19 +63,19 @@ namespace task2_memory_game
             setUpGame();
 
             //while user didnt typed 'Q'
-            while (continueGame)
+            while (m_ContinueGame)
             {
-                didMatch = getPairsFromCurrentPlayerAndFlip(out pair1, out pair2, out continueGame);
-                if (!continueGame)
+                didMatch = getPairsFromCurrentPlayerAndFlip(out pair1, out pair2, out m_ContinueGame);
+                if (!m_ContinueGame)
                 {
                     break;
                 }
 
-                if (didMatch == k_Matched) //need to print the board normally
+                if (didMatch == v_Matched) //need to print the board normally
                 {
                     givePointToCurrentlyPlayingPlayer();
-                    startNewGameIfNeeded(out continueGame);
-                    board.printBoard();
+                    startNewGameIfNeeded(out m_ContinueGame);
+                    m_Board.printBoard();
                 }
                 else //If didn't match
                 {
@@ -91,26 +87,26 @@ namespace task2_memory_game
 
         private void revealCardsForTwoSeconds((int, int) i_Pair1, (int, int) i_Pair2)
         {
-            board.RevealCards(i_Pair1, i_Pair2);
-            board.printBoard();
+            m_Board.RevealCards(i_Pair1, i_Pair2);
+            m_Board.printBoard();
             Thread.Sleep(2000); //2000 miliseconds = 2 seconds
-            board.HideCards(i_Pair1, i_Pair2);
-            board.printBoard();
+            m_Board.HideCards(i_Pair1, i_Pair2);
+            m_Board.printBoard();
         }
 
-        private void startNewGameIfNeeded(out bool continueGame)
+        private void startNewGameIfNeeded(out bool o_ContinueGame)
         {
-            continueGame = true;
-            if (board.IsBoardFullyRevealed())
+            o_ContinueGame = true;
+            if (m_Board.IsBoardFullyRevealed())
             {
-                bool startNewGame = UIOfMemoryGame.EndGameMessageAndAskForAnotherGame(player1, player2);
+                bool startNewGame = UIOfMemoryGame.EndGameMessageAndAskForAnotherGame(m_Player1, m_Player2);
                 if (startNewGame)
                 {
                     setUpGame();
                 }
                 else //if the user don't want to start a new game:
                 {
-                    continueGame = false; //the same as if the user press Q in a middle of a game, quit
+                    o_ContinueGame = false; //the same as if the user press Q in a middle of a game, quit
                 }
             }
         }
@@ -120,17 +116,17 @@ namespace task2_memory_game
             bool didMatch = false;
             o_Pair2 = k_SomePair;
 
-            o_Pair1 = currentlyPlayingPlayer.PickCardOnBoard(board, out o_ContinueGame);
-            if (continueGame)
+            o_Pair1 = m_CurrentlyPlayingPlayer.PickCardOnBoard(m_Board, out o_ContinueGame);
+            if (m_ContinueGame)
             {
-                board.flipCardOnBoard(o_Pair1.Item1, o_Pair1.Item2);
-                if (continueGame)
+                m_Board.flipCardOnBoard(o_Pair1.Item1, o_Pair1.Item2);
+                if (m_ContinueGame)
                 {
-                    board.printBoard(); //print board after placing the first card
-                    o_Pair2 = currentlyPlayingPlayer.PickCardOnBoard(board, out o_ContinueGame);
-                    if (continueGame)
+                    m_Board.printBoard(); //print board after placing the first card
+                    o_Pair2 = m_CurrentlyPlayingPlayer.PickCardOnBoard(m_Board, out o_ContinueGame);
+                    if (m_ContinueGame)
                     {
-                        didMatch = board.flipCardOnBoard(o_Pair2.Item1, o_Pair2.Item2);
+                        didMatch = m_Board.flipCardOnBoard(o_Pair2.Item1, o_Pair2.Item2);
                     }
                 }
             }
@@ -140,20 +136,20 @@ namespace task2_memory_game
 
         public void givePointToCurrentlyPlayingPlayer()
         {
-            currentlyPlayingPlayer.addPoint();
+            m_CurrentlyPlayingPlayer.AddPoint();
         }
 
         private void switchTurn()
         {
-            if (currentTurn == ePlayerTurn.Player1Turn)
+            if (m_CurrentTurn == ePlayerTurn.Player1Turn)
             {
-                currentTurn = ePlayerTurn.Player2Turn;
-                currentlyPlayingPlayer = player2;
+                m_CurrentTurn = ePlayerTurn.Player2Turn;
+                m_CurrentlyPlayingPlayer = m_Player2;
             }
             else // if currentTurn == Player2Turn
             {
-                currentTurn = ePlayerTurn.Player1Turn;
-                currentlyPlayingPlayer = player1;
+                m_CurrentTurn = ePlayerTurn.Player1Turn;
+                m_CurrentlyPlayingPlayer = m_Player1;
             }
         }
     }

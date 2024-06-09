@@ -57,12 +57,12 @@ namespace task2_memory_game
             return rowAndColumnSize;
         }
 
-        private static int getInputFromRange(int i_minimum, int i_maximum)
+        private static int getInputFromRange(int i_Minimum, int i_Maximum)
         {
             int inputInt;
             string inputStr = Console.ReadLine();
 
-            while (!isInputFromRangeLegal(inputStr, i_minimum, i_maximum, out inputInt))
+            while (!isInputFromRangeLegal(inputStr, i_Minimum, i_Maximum, out inputInt))
             {
                 Console.WriteLine("Invalid input! Please try again.");
                 inputStr = Console.ReadLine();
@@ -70,15 +70,15 @@ namespace task2_memory_game
             return inputInt;
         }
 
-        private static bool isInputFromRangeLegal(string inputStr, int i_minimum, int i_maximum, out int inputInt)
+        private static bool isInputFromRangeLegal(string i_InputStr, int i_Minimum, int i_Maximum, out int o_InputInt)
         {
             bool returnValue = false;
 
-            if (int.TryParse(inputStr, out inputInt))
+            if (int.TryParse(i_InputStr, out o_InputInt))
             {
-                if (inputInt >= i_minimum && inputInt <= i_maximum)
+                if (o_InputInt >= i_Minimum && o_InputInt <= i_Maximum)
                 {
-                    if (inputInt % 2 == 0)
+                    if (o_InputInt % 2 == 0)
                     {
                         returnValue = true;
                     }
@@ -115,14 +115,14 @@ namespace task2_memory_game
             Console.WriteLine("Card not in borders");
         }
 
-        public static bool EndGameMessageAndAskForAnotherGame(PlayerMemoryGame i_player1, PlayerMemoryGame i_player2)
+        public static bool EndGameMessageAndAskForAnotherGame(PlayerMemoryGame i_Player1, PlayerMemoryGame i_Player2)
         {
             bool shouldStartNewGame;
             Console.WriteLine("THE GAME HAS ENDED!!!");
-            printWinnerMessage(i_player1, i_player2);
+            printWinnerMessage(i_Player1, i_Player2);
 
-            printPlayerScore(i_player1);
-            printPlayerScore(i_player2);
+            printPlayerScore(i_Player1);
+            printPlayerScore(i_Player2);
 
             Console.WriteLine("DO YOU WANT TO START A NEW GAME: (y/n)");
             
@@ -130,30 +130,30 @@ namespace task2_memory_game
             return shouldStartNewGame;
         }
 
-        private static void printWinnerMessage(PlayerMemoryGame i_player1, PlayerMemoryGame i_player2)
+        private static void printWinnerMessage(PlayerMemoryGame i_Player1, PlayerMemoryGame i_Player2)
         {
-            if (i_player1.Score == i_player2.Score)
+            if (i_Player1.Score == i_Player2.Score)
             {
                 Console.WriteLine("THE GAME ENDED IN A TIE!");
             }
             else
             {
                 PlayerMemoryGame winner;
-                if (i_player1.Score > i_player2.Score)
+                if (i_Player1.Score > i_Player2.Score)
                 {
-                    winner = i_player1;
+                    winner = i_Player1;
                 }
                 else //if (i_player2.Score > i_player1.Score)
                 {
-                    winner = i_player2;
+                    winner = i_Player2;
                 }
                 Console.WriteLine($"{winner.Name} WON THE GAME!");
             }
         }
         
-        private static void printPlayerScore(PlayerMemoryGame i_player)
+        private static void printPlayerScore(PlayerMemoryGame i_Player)
         {
-            Console.WriteLine($"{i_player.Name} GOT {i_player.Score} POINTS!");
+            Console.WriteLine($"{i_Player.Name} GOT {i_Player.Score} POINTS!");
         }
     }
 }

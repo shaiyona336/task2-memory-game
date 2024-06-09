@@ -40,17 +40,13 @@ namespace task2_memory_game
         public void RevealCards((int,int) i_firstCardCords, (int,int) i_secondCardCords)
         {
             BoardState[i_firstCardCords.Item1, i_firstCardCords.Item2].RevealCard();
-            BoardState[i_firstCardCords.Item1, i_firstCardCords.Item2].IsSeen = true; //It's the same!!!
-            BoardState[i_secondCardCords.Item1, i_secondCardCords.Item2].IsSeen = true;
             BoardState[i_secondCardCords.Item1, i_secondCardCords.Item2].RevealCard();
         }
 
-        public void HideCards((int, int) firstCardCords, (int, int) secondCardCords)
+        public void HideCards((int, int) i_FirstCardCords, (int, int) i_SecondCardCords)
         {
-            BoardState[firstCardCords.Item1, firstCardCords.Item2].HideCard();
-            BoardState[secondCardCords.Item1, secondCardCords.Item2].HideCard();
-            BoardState[firstCardCords.Item1, firstCardCords.Item2].IsSeen = false; //it's the same thing!!!!!
-            BoardState[secondCardCords.Item1, secondCardCords.Item2].IsSeen = false;
+            BoardState[i_FirstCardCords.Item1, i_FirstCardCords.Item2].HideCard();
+            BoardState[i_SecondCardCords.Item1, i_SecondCardCords.Item2].HideCard();
         }
 
         public void setCardUserOpenAsSeen()
@@ -100,34 +96,34 @@ namespace task2_memory_game
             }
         }
 
-        private void shufflePairs(List<MemoryCard> list)
+        private void shufflePairs(List<MemoryCard> io_List)
         {
             Random random = new Random();
             int whoToSwitchWith;
 
-            for (int card = 0; card < list.Count; card++)
+            for (int card = 0; card < io_List.Count; card++)
             {
-                whoToSwitchWith = random.Next(list.Count);
-                switchCardsInList(list, card, whoToSwitchWith);
+                whoToSwitchWith = random.Next(io_List.Count);
+                switchCardsInList(io_List, card, whoToSwitchWith);
             }
         }
 
-        private void switchCardsInList(List<MemoryCard> io_list, int i_card1Index, int i_card2Index)
+        private void switchCardsInList(List<MemoryCard> io_List, int i_Card1Index, int i_Card2Index)
         {
-            MemoryCard tempCard = io_list[i_card1Index];
-            io_list[i_card1Index] = io_list[i_card2Index];
-            io_list[i_card2Index] = tempCard;
+            MemoryCard tempCard = io_List[i_Card1Index];
+            io_List[i_Card1Index] = io_List[i_Card2Index];
+            io_List[i_Card2Index] = tempCard;
         }
 
-        public bool flipCardOnBoard(int i_row, int i_column) //return if flipped a pair
+        public bool flipCardOnBoard(int i_Row, int i_Column) //return if flipped a pair
         {
             bool isFlippedAPair = false;
             if (IsThereARevealedCard == true)
             {
-                if (BoardState[i_row, i_column].PairNum == CurrentlyOpenedCard.PairNum)
+                if (BoardState[i_Row, i_Column].PairNum == CurrentlyOpenedCard.PairNum)
                 {
                     isFlippedAPair = true;
-                    BoardState[i_row, i_column].RevealCard(); // need to flip this card and keep his state like that
+                    BoardState[i_Row, i_Column].RevealCard(); // need to flip this card and keep his state like that
                     CurrentlyOpenedCard.RevealCard();
                 }
                 else //if the card flipped wasnt a pair
@@ -138,20 +134,20 @@ namespace task2_memory_game
             }
             else //if (UserOpenedOneCard == false), then need to set the card that is now opened in the middle of a turn
             {
-                m_currentlyOpenedCardCords = (i_row, i_column);
+                m_currentlyOpenedCardCords = (i_Row, i_Column);
             }
 
             IsThereARevealedCard = !IsThereARevealedCard; //if user open card, now need to flip the condition of one card open in a turn
             return isFlippedAPair;
         }
 
-        public bool IsCardValid(int i_row, int i_column)
+        public bool IsCardValid(int i_Row, int i_Column)
         {
             bool returnValue = false;
 
-            if (i_row >= 0 && i_row <= BoardHeight && i_column >= 0 && i_column <= BoardWidth)
+            if (i_Row >= 0 && i_Row <= BoardHeight && i_Column >= 0 && i_Column <= BoardWidth)
             {
-                if (!BoardState[i_row, i_column].IsSeen)
+                if (!BoardState[i_Row, i_Column].IsSeen)
                 {
                     returnValue = true;
                 }
@@ -164,10 +160,10 @@ namespace task2_memory_game
             return IsCardValid(i_Pair.Item1, i_Pair.Item2);
         }
 
-        private void printLineOfEquals(int i_columns)
+        private void printLineOfEquals(int i_Columns)
         {
             Console.Write("  ");
-            for (int amountOfEquals = 0; amountOfEquals < i_columns * 2 + 1; amountOfEquals++)
+            for (int amountOfEquals = 0; amountOfEquals < i_Columns * 2 + 1; amountOfEquals++)
             {
                 Console.Write('=');
             }

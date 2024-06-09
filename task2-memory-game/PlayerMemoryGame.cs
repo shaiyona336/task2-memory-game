@@ -16,11 +16,11 @@ namespace task2_memory_game
             Score = 0;
         }
 
-        public void addPoint()
+        public void AddPoint()
         {
             Score++;
         }
 
-        public abstract (int, int) PickCardOnBoard(BoardMemoryGame board, out bool continueGame);
+        public abstract (int, int) PickCardOnBoard(BoardMemoryGame i_Board, out bool o_ContinueGame);
     }
 }
