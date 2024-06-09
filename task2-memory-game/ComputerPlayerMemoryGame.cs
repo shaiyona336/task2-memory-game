@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace task2_memory_game
+namespace MemoryGameLogic
 {
     class ComputerPlayerMemoryGame : PlayerMemoryGame
     {

@@ -1,11 +1,11 @@
-﻿namespace task2_memory_game
+﻿namespace MemoryGameLogic
 {
-    public struct MemoryCard
+    public struct CardMemoryGame
     {
         public int PairNum { get; set; }
         public bool IsSeen { get; private set; } 
         
-        public MemoryCard(int i_NumberOfPair)
+        public CardMemoryGame(int i_NumberOfPair)
         {
             PairNum = i_NumberOfPair;
             IsSeen = false;

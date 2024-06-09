@@ -39,11 +39,11 @@
     <Compile Include="BoardMemoryGame.cs" />
     <Compile Include="ComputerPlayerMemoryGame.cs" />
     <Compile Include="HumanPlayerMemoryGame.cs" />
-    <Compile Include="Interface.cs" />
-    <Compile Include="MemoryCard.cs" />
+    <Compile Include="MemoryGame.cs" />
+    <Compile Include="CardMemoryGame.cs" />
     <Compile Include="PlayerMemoryGame.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="UIOfMemoryGame.cs" />
+    <Compile Include="MemoryGameInputManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Ex02.ConsoleUtils">

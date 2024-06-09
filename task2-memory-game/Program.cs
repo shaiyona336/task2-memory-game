@@ -4,8 +4,8 @@
     {
         public static void Main()
         {
-            Interface game = new Interface();
-            game.RunGame();
+            MemoryGameUI.MemoryGame game = new MemoryGameUI.MemoryGame();
+            game.RunMemoryGame();
         }
     }
 }

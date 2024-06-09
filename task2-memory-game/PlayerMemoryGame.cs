@@ -1,4 +1,4 @@
-﻿namespace task2_memory_game
+﻿namespace MemoryGameLogic
 {
     public abstract class PlayerMemoryGame
     {

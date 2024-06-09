@@ -1,10 +1,9 @@
-﻿using System;
-using System.Threading;
-//using static task2_memory_game.LogicMemoryGame;
+﻿using System.Threading;
+using MemoryGameLogic;
 
-namespace task2_memory_game
+namespace MemoryGameUI
 {
-    public class Interface
+    public class MemoryGame
     {
         private enum ePlayerTurn
         {
@@ -27,24 +26,24 @@ namespace task2_memory_game
         private (int, int) k_SomePair = (1, 1);
         private const bool v_Matched = true;
 
-        public Interface()
+        public MemoryGame()
         {
-            string firstPlayerName = UIOfMemoryGame.GetUsername();
+            string firstPlayerName = MemoryGameInputManager.GetUsername();
             m_Player1 = new HumanPlayerMemoryGame(firstPlayerName);
 
-            bool isComputerPlaying = UIOfMemoryGame.AskUserIfPlayingAgainstComputer();
+            bool isComputerPlaying = MemoryGameInputManager.AskUserIfPlayingAgainstComputer();
             if (isComputerPlaying)
             {
                 m_Player2 = new ComputerPlayerMemoryGame();
             }
             else
             {
-                string secondPlayerName = UIOfMemoryGame.GetUsername();
+                string secondPlayerName = MemoryGameInputManager.GetUsername();
                 m_Player2 = new HumanPlayerMemoryGame(secondPlayerName);
             }
         }
 
-        public void RunGame()
+        public void RunMemoryGame()
         {
             (int, int) pair1;
             (int, int) pair2;
@@ -76,7 +75,7 @@ namespace task2_memory_game
 
         private void setUpGame()
         {
-            (int, int) boardDimensions = UIOfMemoryGame.GetBoardSizeFromUser((k_MinimumRowSize, k_MaximumRowSize), (k_MinimumColumnSize, k_MaximumColumnSize));
+            (int, int) boardDimensions = MemoryGameInputManager.GetBoardSizeFromUser((k_MinimumRowSize, k_MaximumRowSize), (k_MinimumColumnSize, k_MaximumColumnSize));
             m_Board = new BoardMemoryGame(boardDimensions);
             m_Board.PrintBoard();
 
@@ -98,7 +97,7 @@ namespace task2_memory_game
             o_ContinueGame = true;
             if (m_Board.IsBoardFullyRevealed())
             {
-                bool startNewGame = UIOfMemoryGame.PrintEndGameMessageAndAskForAnotherGame(m_Player1, m_Player2);
+                bool startNewGame = MemoryGameInputManager.PrintEndGameMessageAndAskForAnotherGame(m_Player1, m_Player2);
                 if (startNewGame)
                 {
                     setUpGame();

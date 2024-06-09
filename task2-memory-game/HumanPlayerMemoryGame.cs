@@ -1,4 +1,6 @@
-﻿namespace task2_memory_game
+﻿using MemoryGameLogic;
+
+namespace MemoryGameUI
 {
     internal class HumanPlayerMemoryGame : PlayerMemoryGame
     {
@@ -24,7 +26,7 @@
 
             while (!isStringAValidPair)
             {
-                cardToOpenStr = UIOfMemoryGame.AskUserForCardToOpen(out o_ContinueGame);
+                cardToOpenStr = MemoryGameInputManager.AskUserForCardToOpen(out o_ContinueGame);
                 if (!o_ContinueGame)
                 {
                     break;
@@ -33,14 +35,14 @@
                 isStringAValidPair = convertStringToPairIfPossible(cardToOpenStr, i_Board, out outPair);
                 if (!isStringAValidPair)
                 {
-                    UIOfMemoryGame.PrintCardNotInBorderWarning();
+                    MemoryGameInputManager.PrintCardNotInBorderWarning();
                 }
                 else
                 {
                     isStringAValidPair = i_Board.IsCardValid(outPair);
                     if (!isStringAValidPair)
                     {
-                        UIOfMemoryGame.PrintIllegalPlaceForCardMessage();
+                        MemoryGameInputManager.PrintIllegalPlaceForCardMessage();
                     }
                 }
             }

@@ -1,8 +1,9 @@
 ﻿using System;
+using MemoryGameLogic;
 
-namespace task2_memory_game
+namespace MemoryGameUI
 {
-    internal class UIOfMemoryGame
+    internal class MemoryGameInputManager
     {
         private const string k_ChooseYes = "y";
         private const string k_ChooseNo = "n";

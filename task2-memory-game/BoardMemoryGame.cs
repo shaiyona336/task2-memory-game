@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Logic
+namespace MemoryGameLogic
 {
     public class BoardMemoryGame
     {
         public int BoardHeight { get; private set; }
         public int BoardWidth { get; private set; }
-        public MemoryCard[,] BoardState { get; private set; }
+        public CardMemoryGame[,] BoardState { get; private set; }
         public bool IsThereARevealedCard { get; private set; }
 
         private (int, int) m_currentlyOpenedCardCords;
@@ -25,7 +25,7 @@ namespace Logic
         {
             BoardHeight = i_BoardDimensions.Item1;
             BoardWidth = i_BoardDimensions.Item2;
-            BoardState = new MemoryCard[BoardHeight, BoardWidth];
+            BoardState = new CardMemoryGame[BoardHeight, BoardWidth];
             FillBoardWithNewPairs();
             IsThereARevealedCard = false;
         }
@@ -45,7 +45,7 @@ namespace Logic
         public void FillBoardWithNewPairs()
         {
             int numberOfPairs = (BoardHeight * BoardWidth) / 2; //size of the board devide by two
-            insertPairsToList(numberOfPairs, out List<MemoryCard> pairsToShuffle);//save all the cards in a list, shuffle them, and put them in the board
+            insertPairsToList(numberOfPairs, out List<CardMemoryGame> pairsToShuffle);//save all the cards in a list, shuffle them, and put them in the board
             shufflePairs(pairsToShuffle);
 
             //put the cards on the board
@@ -58,20 +58,20 @@ namespace Logic
             }
         }
 
-        private void insertPairsToList(int i_NumberOfPairs, out List<MemoryCard> o_PairsList)
+        private void insertPairsToList(int i_NumberOfPairs, out List<CardMemoryGame> o_PairsList)
         {
-            o_PairsList = new List<MemoryCard>(i_NumberOfPairs * 2);
+            o_PairsList = new List<CardMemoryGame>(i_NumberOfPairs * 2);
 
             for (int pair = 1; pair <= i_NumberOfPairs; pair++)
             {
-                MemoryCard card1 = new MemoryCard(pair);
-                MemoryCard card2 = new MemoryCard(pair);
+                CardMemoryGame card1 = new CardMemoryGame(pair);
+                CardMemoryGame card2 = new CardMemoryGame(pair);
                 o_PairsList.Add(card1);
                 o_PairsList.Add(card2);
             }
         }
 
-        private void shufflePairs(List<MemoryCard> io_List)
+        private void shufflePairs(List<CardMemoryGame> io_List)
         {
             Random random = new Random();
             int whoToSwitchWith;
@@ -83,9 +83,9 @@ namespace Logic
             }
         }
 
-        private void switchCardsInList(List<MemoryCard> io_List, int i_Card1Index, int i_Card2Index)
+        private void switchCardsInList(List<CardMemoryGame> io_List, int i_Card1Index, int i_Card2Index)
         {
-            MemoryCard tempCard = io_List[i_Card1Index];
+            CardMemoryGame tempCard = io_List[i_Card1Index];
             io_List[i_Card1Index] = io_List[i_Card2Index];
             io_List[i_Card2Index] = tempCard;
         }
@@ -96,7 +96,7 @@ namespace Logic
 
             if (IsThereARevealedCard == true)
             {
-                ref MemoryCard currentlyRevealedCard = ref BoardState[m_currentlyOpenedCardCords.Item1, m_currentlyOpenedCardCords.Item2];
+                ref CardMemoryGame currentlyRevealedCard = ref BoardState[m_currentlyOpenedCardCords.Item1, m_currentlyOpenedCardCords.Item2];
                 if (BoardState[i_Row, i_Column].PairNum == currentlyRevealedCard.PairNum)
                 {
                     isFlippedAPair = true;
@@ -137,7 +137,7 @@ namespace Logic
 
         public void PrintBoard()
         {
-            UIOfMemoryGame.PrintBoard(this);
+            MemoryGameUI.MemoryGameInputManager.PrintBoard(this);
         }
 
         public bool IsBoardFullyRevealed()
@@ -160,12 +160,13 @@ namespace Logic
 
         public bool IsPairOnGameBoard((int, int) i_Pair)
         {
-            bool returnValue = true;
+            bool returnValue = false;
 
-            if (i_Pair.Item1 > BoardHeight || i_Pair.Item1 < 0 || i_Pair.Item2 > BoardWidth || i_Pair.Item2 < 0)
+            if (i_Pair.Item1 < BoardHeight && i_Pair.Item1 >= 0 && i_Pair.Item2 < BoardWidth && i_Pair.Item2 >= 0)
             {
-                returnValue = false;
+                returnValue = true;
             }
+            
             return returnValue;
         }
 
