@@ -12,82 +12,81 @@ namespace task2_memory_game
         private const int k_MaximumColumnSize = 6;
         private (int, int) k_SomePair = ('a', 1);
 
-        private bool isComputerPlaying = false;
-        ComputerPlayerMemoryGame computer;
+        private const bool k_Matched = true;
+        private const bool k_DidntMatch = false;
+
+        private bool isComputerPlaying;
         private enum ePlayerTurn
         {
-            Player1Turn,
-            Player2Turn
-        }           
+            Player1Turn = 1,
+            Player2Turn = 0
+        }
 
-        private HumanPlayerMemoryGame player1;//change to general player
-        private HumanPlayerMemoryGame player2;//change to general player
+        private PlayerMemoryGame player1; //change to general player
+        private PlayerMemoryGame player2; //change to general player
+        private PlayerMemoryGame currentlyPlayingPlayer;
+
         private ePlayerTurn currentTurn;
         private bool continueGame = true;
 
-        private LogicMemoryGame logicMemoryGame;//Might make all methods static
+        private LogicMemoryGame logicMemoryGame; //Might delete
+        private BoardMemoryGame board;
 
         public Interface()
         {
             currentTurn = ePlayerTurn.Player1Turn;
-            logicMemoryGame = new LogicMemoryGame();
+            setUpGame();
+            currentlyPlayingPlayer = player1;
         }
 
         private void setUpGame()
         {
             string firstPlayerName = UIOfMemoryGame.GetUsername();
             player1 = new HumanPlayerMemoryGame(firstPlayerName);
-            bool againstComputer = UIOfMemoryGame.AgainstHumanOrComputer();
-            if (!againstComputer)
+
+            isComputerPlaying = UIOfMemoryGame.AgainstHumanOrComputer();
+            if (isComputerPlaying)
+            {
+                player2 = new ComputerPlayerMemoryGame();
+            }
+            else
             {
                 string secondPlayerName = UIOfMemoryGame.GetUsername();
                 player2 = new HumanPlayerMemoryGame(secondPlayerName);
             }
-            else
-            {
-                isComputerPlaying = true;
-                computer = new ComputerPlayerMemoryGame();
-            }
 
             (int, int) boardDimensions = UIOfMemoryGame.GetBoardSizeFromUser((k_MinimumRowSize, k_MaximumRowSize), (k_MinimumColumnSize, k_MaximumColumnSize));
-            logicMemoryGame.setEmptyBoard(boardDimensions);
-            logicMemoryGame.Board.printBoard();
-            logicMemoryGame.Board.GeneratePairs();
+            board = new BoardMemoryGame(boardDimensions);
+            logicMemoryGame = new LogicMemoryGame(board);
+            board.printBoard();
+            board.GeneratePairs();
         }
 
         public void game()
         {
-            (int, int) pair1 = (0, 0);
-            (int, int) pair2 = (0, 0);
-            eCardState openCardState;
-            setUpGame();
+            (int, int) pair1;
+            (int, int) pair2;
+
+            bool didMatch;
+            //setUpGame();
 
             //while user didnt typed 'Q'
             while (continueGame)
             {
-                if (isComputerPlaying && currentTurn == ePlayerTurn.Player2Turn)
-                {
-                    (pair1, pair2) = computer.PickTwoCardsOnBoard(logicMemoryGame.Board, out continueGame);
-
-                    openCardState = flipTwoPairs(ref pair1, ref pair2, out continueGame, true);
-                }
-                else
-                {
-                    openCardState = flipTwoPairs(ref pair1, ref pair2, out continueGame, false);
-                }
+                didMatch = getPairsFromCurrentPlayerAndFlip(out pair1, out pair2, out continueGame);
                 if (!continueGame)
                 {
                     break;
                 }
 
                 //need to check if openCardState is 1 or 2, if 1 print the board with the 2 cards that the user open for two seconds
-                if (openCardState == eCardState.FlippedAndMatched) //need to print the board normally
+                if (didMatch == k_Matched) //need to print the board normally
                 {
                     givePointToCurrentlyPlayingPlayer();
-                    logicMemoryGame.Board.printBoard();
+                    board.printBoard();
                     startNewGameIfRequested(out continueGame);
                 }
-                else //openCardState == '1'
+                else //If didn't match
                 {
                     revealAndHideCards(pair1, pair2);
                     switchTurn();
@@ -121,58 +120,47 @@ namespace task2_memory_game
             }
         }
 
-        private eCardState flipTwoPairs(ref (int, int) o_Pair1, ref (int, int) o_Pair2, out bool o_ContinueGame, bool isComputerPlayingThisTurn)
+        private bool getPairsFromCurrentPlayerAndFlip(out (int, int) o_Pair1, out (int, int) o_Pair2, out bool o_ContinueGame)
         {
             o_ContinueGame = true;
-            eCardState openCardState = eCardState.CantFlip;
-            if (!isComputerPlayingThisTurn)
-            {
-                o_Pair2 = k_SomePair;
-                o_Pair1 = logicMemoryGame.getCardFromUser(out continueGame);
-            }
+            bool didMatch = false;
+            o_Pair2 = k_SomePair;
+
+            o_Pair1 = logicMemoryGame.getCardFromPlayer(currentlyPlayingPlayer, out continueGame);
             if (continueGame)
             {
-                logicMemoryGame.CheckIfPairValidAndFlipIfItIs(ref o_Pair1, out continueGame);
+                board.flipCardOnBoard(o_Pair1.Item1, o_Pair1.Item2);
                 if (continueGame)
                 {
-                    logicMemoryGame.Board.printBoard(); //print board after placing the first card
-                    if (!isComputerPlayingThisTurn)
-                    {
-                        o_Pair2 = logicMemoryGame.getCardFromUser(out continueGame);
-                    }
+                    board.printBoard(); //print board after placing the first card
+                    o_Pair2 = logicMemoryGame.getCardFromPlayer(currentlyPlayingPlayer, out continueGame);
                     if (continueGame)
                     {
-                        openCardState = logicMemoryGame.CheckIfPairValidAndFlipIfItIs(ref o_Pair2, out continueGame);
+                        didMatch = board.flipCardOnBoard(o_Pair2.Item1, o_Pair2.Item2);
                     }
                 }
             }
 
-            return openCardState;
+            return didMatch;
         }
 
         public void givePointToCurrentlyPlayingPlayer()
         {
-            if (currentTurn == ePlayerTurn.Player1Turn)
-            {
-                player1.addPoint();
-            }
-            else
-            {
-                player2.addPoint();
-            }
+            currentlyPlayingPlayer.addPoint();
         }
 
-
-        public void switchTurn()
+        private void switchTurn()
         {
             if (currentTurn == ePlayerTurn.Player1Turn)
             {
                 currentTurn = ePlayerTurn.Player2Turn;
+                currentlyPlayingPlayer = player2;
             }
             else // if currentTurn == Player2Turn
             {
                 currentTurn = ePlayerTurn.Player1Turn;
-            }        
+                currentlyPlayingPlayer = player1;
+            }
         }
     }
 }

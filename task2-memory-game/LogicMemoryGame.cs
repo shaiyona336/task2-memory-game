@@ -10,6 +10,12 @@
             CantFlip = '0',
             FlippedButDidntMatch,
             FlippedAndMatched
+
+        }
+
+        public LogicMemoryGame(BoardMemoryGame board)
+        {
+            Board = board;
         }
 
         public void setEmptyBoard((int, int) i_BoardDimensions) //move to board
@@ -40,59 +46,40 @@
             return returnValue;
         }
 
-        public eCardState CheckIfPairValidAndFlipIfItIs(ref (int, int) io_Pair, out bool o_ContinueGame)
-        {
-            o_ContinueGame = true;
-            eCardState openCardState = tryFlippingPair(io_Pair);
+        //public eCardState CheckIfPairValidAndFlipIfItIs(ref (int, int) io_Pair, out bool o_ContinueGame) //Useless
+        //{
+        //    o_ContinueGame = true;
+        //    eCardState openCardState = tryFlippingPair(io_Pair);
 
-            while (openCardState == eCardState.CantFlip) //cant flip unmatched card on the first card that we open in the turn, just need to check it flipped the card
-            {
-                UIOfMemoryGame.printIllegalPlaceForCardMessage();
-                io_Pair = getCardFromUser(out o_ContinueGame);
-                openCardState = tryFlippingPair(io_Pair);
-            }
-            return openCardState;
-        }
+        //    while (openCardState == eCardState.CantFlip) //cant flip unmatched card on the first card that we open in the turn, just need to check it flipped the card
+        //    {
+        //        UIOfMemoryGame.printIllegalPlaceForCardMessage();
+        //        io_Pair = getCardFromPlayer(out o_ContinueGame);
+        //        openCardState = tryFlippingPair(io_Pair);
+        //    }
+        //    return openCardState;
+        //}
 
         //the function returns one of three things, '0' if the card that were chosen were invalid to flip, '1' if the card flipped and didnt matched a pair, '2' if the card was flipped and matched a pair
-        public eCardState tryFlippingPair((int, int) i_Pair)
+        //public eCardState tryFlippingPair((int, int) i_Pair) //Useless
+        //{
+        //    eCardState stateAfterFlipAttempt = eCardState.CantFlip;
+
+        //    if (Board.IsCardValid(i_Pair.Item1, i_Pair.Item2))
+        //    {
+        //        stateAfterFlipAttempt = eCardState.FlippedButDidntMatch;
+        //        bool didFlipAPair = Board.flipCardOnBoard(i_Pair.Item1, i_Pair.Item2);
+        //        if (didFlipAPair)
+        //        {
+        //            stateAfterFlipAttempt = eCardState.FlippedAndMatched;
+        //        }
+        //    }
+        //    return stateAfterFlipAttempt;
+        //}
+
+        public (int, int) getCardFromPlayer(PlayerMemoryGame player, out bool o_ContinueGame)
         {
-            eCardState stateAfterFlipAttempt = eCardState.CantFlip;
-
-            if (Board.IsCardValid(i_Pair.Item1, i_Pair.Item2))
-            {
-                stateAfterFlipAttempt = eCardState.FlippedButDidntMatch;
-                bool didFlipAPair = Board.flipCardOnBoard(i_Pair.Item1, i_Pair.Item2);
-                if (didFlipAPair)
-                {
-                    stateAfterFlipAttempt = eCardState.FlippedAndMatched;
-                }
-            }
-            return stateAfterFlipAttempt;
-        }
-
-        public (int, int) getCardFromUser(out bool o_ContinueGame)//move to player
-        {
-            string cardToOpenStr;
-            (int, int) outPair = k_SomePair;
-            bool isStringAValidPair = false;
-            o_ContinueGame = true;
-
-            while (!isStringAValidPair)
-            {
-                cardToOpenStr = UIOfMemoryGame.AskUserForCardToOpen(out o_ContinueGame);
-                if (!o_ContinueGame)
-                {
-                    break;
-                }
-
-                isStringAValidPair = convertStringToPairIfPossible(cardToOpenStr, out outPair);
-                if (!isStringAValidPair)
-                {
-                    UIOfMemoryGame.PrintCardNotInBorderWarning();
-                }
-            }
-            return outPair;
+            return player.PickCardOnBoard(Board, out o_ContinueGame);
         }
 
         private bool convertStringToPairIfPossible(string i_CardToOpen, out (int, int) o_Pair)//move to player

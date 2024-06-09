@@ -11,17 +11,10 @@
             PlayerName = i_namePlayer;
         }
 
-        public override ((int, int), (int, int)) PickTwoCardsOnBoard(BoardMemoryGame board, out bool continueGame)
+        public override (int, int) PickCardOnBoard(BoardMemoryGame board, out bool continueGame)
         {
-            (int, int) pair2 = k_SomePair;
-
-            (int, int) pair1 = getCardFromUser(board, out continueGame);
-            if (continueGame)
-            {
-                pair2 = getCardFromUser(board, out continueGame);
-            }
-
-            return (pair1, pair2);
+            (int, int) pair = getCardFromUser(board, out continueGame);
+            return pair;
         }
 
         private (int, int) getCardFromUser(BoardMemoryGame board, out bool o_ContinueGame)
@@ -40,9 +33,18 @@
                 }
 
                 isStringAValidPair = convertStringToPairIfPossible(cardToOpenStr, board, out outPair);
+
                 if (!isStringAValidPair)
                 {
                     UIOfMemoryGame.PrintCardNotInBorderWarning();
+                }
+                else
+                {
+                    isStringAValidPair = board.IsCardValid(outPair);
+                    if (!isStringAValidPair)
+                    {
+                        UIOfMemoryGame.printIllegalPlaceForCardMessage();
+                    }
                 }
             }
             return outPair;
