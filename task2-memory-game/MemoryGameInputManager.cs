@@ -165,7 +165,6 @@ namespace MemoryGameUI
         public static void PrintBoard(BoardMemoryGame i_Board)
         {
             Ex02.ConsoleUtils.Screen.Clear();
-            // setCardUserOpenAsSeen(); //treat the open card in the current turn as a normal opened card to show him on the board
             Console.Write("   ");
             for (int latter = 0; latter < i_Board.BoardWidth; latter++)
             {
@@ -193,7 +192,6 @@ namespace MemoryGameUI
                 Console.WriteLine();
                 printLineOfEquals(i_Board.BoardWidth);
             }
-            //setCardUserOpenAsUnseen();
         }
 
         private static void printLineOfEquals(int i_BoardWidth)
