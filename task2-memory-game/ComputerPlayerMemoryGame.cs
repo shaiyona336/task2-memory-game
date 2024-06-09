@@ -6,6 +6,9 @@ namespace task2_memory_game
     {
         private Random m_RandomNumGenerator;
 
+        public const string Name = "computer";
+
+
         public ComputerPlayerMemoryGame() : base()
         {
             m_RandomNumGenerator = new Random();
