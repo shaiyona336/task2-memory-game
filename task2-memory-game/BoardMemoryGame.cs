@@ -118,7 +118,7 @@ namespace MemoryGameLogic
             return isFlippedAPair;
         }
 
-        public bool IsCardValid(int i_Row, int i_Column)
+        public bool IsCardHidden(int i_Row, int i_Column)
         {
             bool returnValue = false;
 
@@ -130,9 +130,9 @@ namespace MemoryGameLogic
             return returnValue;
         }
 
-        public bool IsCardValid((int, int) i_Pair)
+        public bool IsCardHidden((int, int) i_Pair)
         {
-            return IsCardValid(i_Pair.Item1, i_Pair.Item2);
+            return IsCardHidden(i_Pair.Item1, i_Pair.Item2);
         }
 
         public void PrintBoard()

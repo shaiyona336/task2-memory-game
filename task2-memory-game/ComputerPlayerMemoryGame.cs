@@ -18,7 +18,7 @@ namespace MemoryGameLogic
             o_ContinueGame = true;
             (int, int) pair1 = generateRandomPair(i_Board);
 
-            while (!i_Board.IsCardValid(pair1))
+            while (!i_Board.IsCardHidden(pair1))
             {
                 pair1 = generateRandomPair(i_Board);
             }

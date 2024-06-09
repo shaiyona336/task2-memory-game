@@ -1,23 +1,18 @@
 ﻿using MemoryGameLogic;
+using System.Runtime.ConstrainedExecution;
 
 namespace MemoryGameUI
 {
     internal class HumanPlayerMemoryGame : PlayerMemoryGame
     {
-        private (int, int) k_SomePair = (1, 1);
+        private (int, int) k_SomePair = (-1, -1);
 
-        public HumanPlayerMemoryGame(string i_PlayerName) 
+        public HumanPlayerMemoryGame(string i_PlayerName)
         {
             Name = i_PlayerName;
         }
 
         public override (int, int) PickCardOnBoard(BoardMemoryGame i_Board, out bool o_ContinueGame)
-        {
-            (int, int) pair = getCardFromUser(i_Board, out o_ContinueGame);
-            return pair;
-        }
-
-        private (int, int) getCardFromUser(BoardMemoryGame i_Board, out bool o_ContinueGame)
         {
             string cardToOpenStr;
             (int, int) outPair = k_SomePair;
@@ -31,26 +26,28 @@ namespace MemoryGameUI
                 {
                     break;
                 }
-
-                isStringAValidPair = convertStringToPairIfPossible(cardToOpenStr, i_Board, out outPair);
-                if (!isStringAValidPair)
+                else if (!isCardAPairOfCharAndInt(cardToOpenStr))
+                {
+                    MemoryGameInputManager.PrintIllegalInputFromUserMessage();
+                }
+                else if (!convertStringToPairIfPossible(cardToOpenStr, i_Board, out outPair))
                 {
                     MemoryGameInputManager.PrintCardNotInBorderWarning();
                 }
+                else if (!i_Board.IsCardHidden(outPair))
+                {
+                    MemoryGameInputManager.PrintIllegalPlaceForCardMessage();
+                }
                 else
                 {
-                    isStringAValidPair = i_Board.IsCardValid(outPair);
-                    if (!isStringAValidPair)
-                    {
-                        MemoryGameInputManager.PrintIllegalPlaceForCardMessage();
-                    }
+                    isStringAValidPair = true;
                 }
             }
             return outPair;
         }
 
         private bool convertStringToPairIfPossible(string i_CardToOpen, BoardMemoryGame i_Board, out (int, int) o_Pair)
-        { 
+        {
             bool returnValue = false;
             o_Pair = k_SomePair;
 

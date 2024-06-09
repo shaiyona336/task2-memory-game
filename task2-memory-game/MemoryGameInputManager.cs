@@ -106,6 +106,11 @@ namespace MemoryGameUI
             return cardToOpen;
         }
 
+        public static void PrintIllegalInputFromUserMessage()
+        {
+            Console.WriteLine("This input is illegal.");
+        }
+
         public static void PrintIllegalPlaceForCardMessage()
         {
             Console.WriteLine("Illegal place for card.");
