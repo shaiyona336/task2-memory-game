@@ -1,7 +1,4 @@
-﻿using System;
-
-
-namespace task2_memory_game
+﻿namespace task2_memory_game
 {
     public struct MemoryCard
     {

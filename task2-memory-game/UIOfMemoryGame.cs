@@ -16,21 +16,21 @@ namespace task2_memory_game
             return name;
         }
 
-        public static bool AgainstHumanOrComputer()
+        public static bool AskUserIfPlayingAgainstComputer()
         {
-            bool i_flag;
+            bool returnValue;
 
-            System.Console.WriteLine($"do you want to play against a computer: ({k_ChooseYes}/{k_ChooseNo})");
-            i_flag = isAnswerYes();
-            return i_flag;
+            Console.WriteLine($"do you want to play against a computer: ({k_ChooseYes}/{k_ChooseNo})");
+            returnValue = isAnswerYes();
+            return returnValue;
         }
 
         private static bool isAnswerYes()
         {
             bool wasYesChosen;
-            string i_answer;
-            i_answer = Console.ReadLine();
-            if (i_answer == k_ChooseYes)
+            string userAnswer = Console.ReadLine();
+
+            if (userAnswer == k_ChooseYes)
             {
                 wasYesChosen = true;
             }
@@ -44,25 +44,25 @@ namespace task2_memory_game
         public static (int,int) GetBoardSizeFromUser((int,int) i_RowSizeMinAndMax, (int,int) i_ColSizeMinAndMax)
         {
             (int,int) rowAndColumnSize;
-            int row;
-            int column;
+            int height;
+            int width;
 
             Console.WriteLine("Enter height of board:");
-            row = getInputFromRange(i_RowSizeMinAndMax.Item1, i_RowSizeMinAndMax.Item2);
+            height = getNumberFromRange(i_RowSizeMinAndMax.Item1, i_RowSizeMinAndMax.Item2);
 
             Console.WriteLine("Enter width of board:");
-            column = getInputFromRange(i_ColSizeMinAndMax.Item1, i_ColSizeMinAndMax.Item2);
+            width = getNumberFromRange(i_ColSizeMinAndMax.Item1, i_ColSizeMinAndMax.Item2);
 
-            rowAndColumnSize = (row, column);
+            rowAndColumnSize = (height, width);
             return rowAndColumnSize;
         }
 
-        private static int getInputFromRange(int i_Minimum, int i_Maximum)
+        private static int getNumberFromRange(int i_MinimumNumber, int i_MaximumNumber)
         {
             int inputInt;
             string inputStr = Console.ReadLine();
 
-            while (!isInputFromRangeLegal(inputStr, i_Minimum, i_Maximum, out inputInt))
+            while (!isInputFromRangeLegal(inputStr, i_MinimumNumber, i_MaximumNumber, out inputInt))
             {
                 Console.WriteLine("Invalid input! Please try again.");
                 inputStr = Console.ReadLine();
@@ -105,17 +105,17 @@ namespace task2_memory_game
             return cardToOpen;
         }
 
-        public static void printIllegalPlaceForCardMessage()
+        public static void PrintIllegalPlaceForCardMessage()
         {
             Console.WriteLine("Illegal place for card");
         }
 
         public static void PrintCardNotInBorderWarning() 
         {
-            Console.WriteLine("Card not in borders");
+            Console.WriteLine("Card not in border");
         }
 
-        public static bool EndGameMessageAndAskForAnotherGame(PlayerMemoryGame i_Player1, PlayerMemoryGame i_Player2)
+        public static bool PrintEndGameMessageAndAskForAnotherGame(PlayerMemoryGame i_Player1, PlayerMemoryGame i_Player2)
         {
             bool shouldStartNewGame;
             Console.WriteLine("THE GAME HAS ENDED!!!");

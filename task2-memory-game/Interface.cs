@@ -32,7 +32,7 @@ namespace task2_memory_game
             string firstPlayerName = UIOfMemoryGame.GetUsername();
             m_Player1 = new HumanPlayerMemoryGame(firstPlayerName);
 
-            bool isComputerPlaying = UIOfMemoryGame.AgainstHumanOrComputer();
+            bool isComputerPlaying = UIOfMemoryGame.AskUserIfPlayingAgainstComputer();
             if (isComputerPlaying)
             {
                 m_Player2 = new ComputerPlayerMemoryGame();
@@ -44,18 +44,7 @@ namespace task2_memory_game
             }
         }
 
-        private void setUpGame()
-        {
-            (int, int) boardDimensions = UIOfMemoryGame.GetBoardSizeFromUser((k_MinimumRowSize, k_MaximumRowSize), (k_MinimumColumnSize, k_MaximumColumnSize));
-            m_Board = new BoardMemoryGame(boardDimensions);
-            m_Board.printBoard();
-            m_Board.GeneratePairs();
-
-            m_CurrentTurn = ePlayerTurn.Player1Turn;
-            m_CurrentlyPlayingPlayer = m_Player1;
-        }
-
-        public void game()
+        public void RunGame()
         {
             (int, int) pair1;
             (int, int) pair2;
@@ -74,8 +63,8 @@ namespace task2_memory_game
                 if (didMatch == v_Matched) //need to print the board normally
                 {
                     givePointToCurrentlyPlayingPlayer();
+                    m_Board.PrintBoard();
                     startNewGameIfNeeded(out m_ContinueGame);
-                    m_Board.printBoard();
                 }
                 else //If didn't match
                 {
@@ -85,13 +74,23 @@ namespace task2_memory_game
             }
         }
 
+        private void setUpGame()
+        {
+            (int, int) boardDimensions = UIOfMemoryGame.GetBoardSizeFromUser((k_MinimumRowSize, k_MaximumRowSize), (k_MinimumColumnSize, k_MaximumColumnSize));
+            m_Board = new BoardMemoryGame(boardDimensions);
+            m_Board.PrintBoard();
+
+            m_CurrentTurn = ePlayerTurn.Player1Turn;
+            m_CurrentlyPlayingPlayer = m_Player1;
+        }
+
         private void revealCardsForTwoSeconds((int, int) i_Pair1, (int, int) i_Pair2)
         {
             m_Board.RevealCards(i_Pair1, i_Pair2);
-            m_Board.printBoard();
+            m_Board.PrintBoard();
             Thread.Sleep(2000); //2000 miliseconds = 2 seconds
             m_Board.HideCards(i_Pair1, i_Pair2);
-            m_Board.printBoard();
+            m_Board.PrintBoard();
         }
 
         private void startNewGameIfNeeded(out bool o_ContinueGame)
@@ -99,7 +98,7 @@ namespace task2_memory_game
             o_ContinueGame = true;
             if (m_Board.IsBoardFullyRevealed())
             {
-                bool startNewGame = UIOfMemoryGame.EndGameMessageAndAskForAnotherGame(m_Player1, m_Player2);
+                bool startNewGame = UIOfMemoryGame.PrintEndGameMessageAndAskForAnotherGame(m_Player1, m_Player2);
                 if (startNewGame)
                 {
                     setUpGame();
@@ -119,14 +118,14 @@ namespace task2_memory_game
             o_Pair1 = m_CurrentlyPlayingPlayer.PickCardOnBoard(m_Board, out o_ContinueGame);
             if (m_ContinueGame)
             {
-                m_Board.flipCardOnBoard(o_Pair1.Item1, o_Pair1.Item2);
+                m_Board.FlipCardOnBoard(o_Pair1.Item1, o_Pair1.Item2);
                 if (m_ContinueGame)
                 {
-                    m_Board.printBoard(); //print board after placing the first card
+                    m_Board.PrintBoard(); //print board after placing the first card
                     o_Pair2 = m_CurrentlyPlayingPlayer.PickCardOnBoard(m_Board, out o_ContinueGame);
                     if (m_ContinueGame)
                     {
-                        didMatch = m_Board.flipCardOnBoard(o_Pair2.Item1, o_Pair2.Item2);
+                        didMatch = m_Board.FlipCardOnBoard(o_Pair2.Item1, o_Pair2.Item2);
                     }
                 }
             }
@@ -134,7 +133,7 @@ namespace task2_memory_game
             return didMatch;
         }
 
-        public void givePointToCurrentlyPlayingPlayer()
+        private void givePointToCurrentlyPlayingPlayer()
         {
             m_CurrentlyPlayingPlayer.AddPoint();
         }

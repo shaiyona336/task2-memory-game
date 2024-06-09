@@ -31,7 +31,6 @@
                 }
 
                 isStringAValidPair = convertStringToPairIfPossible(cardToOpenStr, i_Board, out outPair);
-
                 if (!isStringAValidPair)
                 {
                     UIOfMemoryGame.PrintCardNotInBorderWarning();
@@ -41,7 +40,7 @@
                     isStringAValidPair = i_Board.IsCardValid(outPair);
                     if (!isStringAValidPair)
                     {
-                        UIOfMemoryGame.printIllegalPlaceForCardMessage();
+                        UIOfMemoryGame.PrintIllegalPlaceForCardMessage();
                     }
                 }
             }
