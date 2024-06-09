@@ -107,12 +107,12 @@ namespace task2_memory_game
 
         public static void PrintIllegalPlaceForCardMessage()
         {
-            Console.WriteLine("Illegal place for card");
+            Console.WriteLine("Illegal place for card.");
         }
 
         public static void PrintCardNotInBorderWarning() 
         {
-            Console.WriteLine("Card not in border");
+            Console.WriteLine("Card not in border.");
         }
 
         public static bool PrintEndGameMessageAndAskForAnotherGame(PlayerMemoryGame i_Player1, PlayerMemoryGame i_Player2)
@@ -154,6 +154,50 @@ namespace task2_memory_game
         private static void printPlayerScore(PlayerMemoryGame i_Player)
         {
             Console.WriteLine($"{i_Player.Name} GOT {i_Player.Score} POINTS!");
+        }
+
+        public static void PrintBoard(BoardMemoryGame i_Board)
+        {
+            Ex02.ConsoleUtils.Screen.Clear();
+            // setCardUserOpenAsSeen(); //treat the open card in the current turn as a normal opened card to show him on the board
+            Console.Write("   ");
+            for (int latter = 0; latter < i_Board.BoardWidth; latter++)
+            {
+                Console.Write((char)('A' + latter) + " ");
+            }
+            Console.WriteLine();
+            //top border
+            printLineOfEquals(i_Board.BoardWidth);
+            //rows
+            for (int row = 1; row <= i_Board.BoardHeight; row++)
+            {
+                Console.Write(row + " |");
+
+                for (int column = 0; column < i_Board.BoardWidth; column++)
+                {
+                    if (!i_Board.BoardState[row - 1, column].IsSeen)
+                    {
+                        Console.Write(" |");
+                    }
+                    else
+                    {
+                        Console.Write((char)((i_Board.BoardState[row - 1, column].PairNum) + 'A' - 1) + "|");
+                    }
+                }
+                Console.WriteLine();
+                printLineOfEquals(i_Board.BoardWidth);
+            }
+            //setCardUserOpenAsUnseen();
+        }
+
+        private static void printLineOfEquals(int i_BoardWidth)
+        {
+            Console.Write("  ");
+            for (int amountOfEquals = 0; amountOfEquals < i_BoardWidth * 2 + 1; amountOfEquals++)
+            {
+                Console.Write('=');
+            }
+            Console.WriteLine();
         }
     }
 }

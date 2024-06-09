@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
-namespace task2_memory_game
+namespace Logic
 {
     public class BoardMemoryGame
     {
@@ -138,46 +137,7 @@ namespace task2_memory_game
 
         public void PrintBoard()
         {
-            Ex02.ConsoleUtils.Screen.Clear();
-            // setCardUserOpenAsSeen(); //treat the open card in the current turn as a normal opened card to show him on the board
-            Console.Write("   ");
-            for (int latter = 0; latter < BoardWidth; latter++)
-            {
-                Console.Write((char)('A' + latter) + " ");
-            }
-            Console.WriteLine();
-            //top border
-            printLineOfEquals(BoardWidth);
-            //rows
-            for (int row = 1; row <= BoardHeight; row++)
-            {
-                Console.Write(row + " |");
-
-                for (int column = 0; column < BoardWidth; column++)
-                {
-                    if (!(BoardState[row - 1, column].IsSeen))
-                    {
-                        Console.Write(" |");
-                    }
-                    else
-                    {
-                        Console.Write((char)((BoardState[row - 1, column].PairNum) + 'A' - 1) + "|");
-                    }
-                }
-                Console.WriteLine();
-                printLineOfEquals(BoardWidth);
-            }
-            //setCardUserOpenAsUnseen();
-        }
-
-        private void printLineOfEquals(int i_Columns)
-        {
-            Console.Write("  ");
-            for (int amountOfEquals = 0; amountOfEquals < i_Columns * 2 + 1; amountOfEquals++)
-            {
-                Console.Write('=');
-            }
-            Console.WriteLine();
+            UIOfMemoryGame.PrintBoard(this);
         }
 
         public bool IsBoardFullyRevealed()
