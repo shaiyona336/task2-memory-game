@@ -46,9 +46,29 @@ namespace MemoryGameLogic
             }
         }
 
-        public bool FlipCardOnBoard(MemoryGameCardCords i_CardToFlip)
+        public MemoryGameCardCords PlayCurrentTurn(out bool o_DidCardsMatch, out bool o_ShouldGameContinue, out bool didGameOver)
         {
-            return Board.FlipCardOnBoard(i_CardToFlip);
+            didGameOver = false;
+            o_DidCardsMatch = false;
+            bool wasThereARevealedCardBeforeCurrentFlip = Board.IsThereARevealedCard;
+
+            MemoryGameCardCords cardToFlip = CurrentlyPlayingPlayer.PickCardOnBoard(Board, out o_ShouldGameContinue);
+            if (o_ShouldGameContinue)
+            {
+                o_DidCardsMatch = Board.FlipCardOnBoard(cardToFlip);
+
+                if (o_DidCardsMatch)
+                {
+                    GivePointToCurrentlyPlayingPlayer();
+                    didGameOver = IsGameOver();
+                }
+                else if (wasThereARevealedCardBeforeCurrentFlip)
+                {
+                    switchTurn();
+                }
+            }
+
+            return cardToFlip;
         }
 
         public void GivePointToCurrentlyPlayingPlayer()
@@ -61,14 +81,27 @@ namespace MemoryGameLogic
             return Board.IsBoardFullyRevealed();
         }
 
-        public void SetNewGameBoard((int, int) i_BoardDimensions)
+        public void getWinnerAndLoser(out PlayerMemoryGame o_Winner, out PlayerMemoryGame o_Loser,
+            out bool o_DidGameEndInATie)
         {
-            Board.SetEmptyBoard(i_BoardDimensions);
+            o_DidGameEndInATie = false;
+            o_Winner = m_Player1;
+            o_Loser = m_Player2;
+
+            if (m_Player2.Score > m_Player1.Score)
+            {
+                o_Winner = m_Player2;
+                o_Loser = m_Player1;
+            }
+            else if (m_Player2.Score == m_Player1.Score)
+            {
+                o_DidGameEndInATie = true;
+            }
         }
 
-        public (PlayerMemoryGame, PlayerMemoryGame) getGamePlayers()
+        public void SetUpNewGame((int, int) i_NewGameBoardDimensions)
         {
-            return (m_Player1, m_Player2);
+            Board.SetEmptyBoard(i_NewGameBoardDimensions);
         }
     }
 }

@@ -121,14 +121,15 @@ namespace MemoryGameUI
             Console.WriteLine("Card not in border.");
         }
 
-        public static bool PrintEndGameMessageAndAskForAnotherGame((PlayerMemoryGame, PlayerMemoryGame) i_GamePlayers)
+        public static bool PrintEndGameMessageAndAskForAnotherGame(PlayerMemoryGame i_Winner, PlayerMemoryGame i_Loser, 
+            bool i_DidGameEndInATie)
         {
             bool shouldStartNewGame;
             Console.WriteLine("THE GAME HAS ENDED!!!");
-            printWinnerMessage(i_GamePlayers.Item1, i_GamePlayers.Item2);
+            printWinnerMessage(i_Winner, i_DidGameEndInATie);
 
-            printPlayerScore(i_GamePlayers.Item1);
-            printPlayerScore(i_GamePlayers.Item2);
+            printPlayerScore(i_Winner);
+            printPlayerScore(i_Loser);
 
             Console.WriteLine("DO YOU WANT TO START A NEW GAME: (y/n)");
             
@@ -136,24 +137,15 @@ namespace MemoryGameUI
             return shouldStartNewGame;
         }
 
-        private static void printWinnerMessage(PlayerMemoryGame i_Player1, PlayerMemoryGame i_Player2)
+        private static void printWinnerMessage(PlayerMemoryGame i_WinnerPlayer, bool i_DidGameEndInATie)
         {
-            if (i_Player1.Score == i_Player2.Score)
+            if (i_DidGameEndInATie)
             {
                 Console.WriteLine("THE GAME ENDED IN A TIE!");
             }
             else
             {
-                PlayerMemoryGame winner;
-                if (i_Player1.Score > i_Player2.Score)
-                {
-                    winner = i_Player1;
-                }
-                else //if (i_player2.Score > i_player1.Score)
-                {
-                    winner = i_Player2;
-                }
-                Console.WriteLine($"{winner.Name} WON THE GAME!");
+                Console.WriteLine($"{i_WinnerPlayer.Name} WON THE GAME!");
             }
         }
         
