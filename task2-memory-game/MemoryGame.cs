@@ -9,25 +9,25 @@ namespace MemoryGameUI
         {
             Player1Turn,
             Player2Turn
-        }
+        } //Logic
 
-        private PlayerMemoryGame m_Player1; 
-        private PlayerMemoryGame m_Player2; 
-        private PlayerMemoryGame m_CurrentlyPlayingPlayer;
-        private BoardMemoryGame m_Board;
+        private PlayerMemoryGame m_Player1; //Logic
+        private PlayerMemoryGame m_Player2; //Logic
+        private PlayerMemoryGame m_CurrentlyPlayingPlayer;//Logic
+        private BoardMemoryGame m_Board;//Logic
 
-        private ePlayerTurn m_CurrentTurn = ePlayerTurn.Player1Turn;
-        private bool m_ContinueGame = true;
+        private ePlayerTurn m_CurrentTurn = ePlayerTurn.Player1Turn;//Logic
+        private bool m_ContinueGame = true; //UI
 
-        private const int k_MinimumRowSize = 4;
-        private const int k_MinimumColumnSize = 4;
-        private const int k_MaximumRowSize = 6;
-        private const int k_MaximumColumnSize = 6;
-        private const int k_TimeToFreezeGameInMilliseconds = 2000; //2000 miliseconds = 2 seconds
-        private MemoryGameCardCords k_SomeCardCords = (1, 1);
+        private const int k_MinimumRowSize = 4; //UI
+        private const int k_MinimumColumnSize = 4; //UI
+        private const int k_MaximumRowSize = 6; //UI 
+        private const int k_MaximumColumnSize = 6; //UI
+        private const int k_TimeToFreezeGameInMilliseconds = 2000; //2000 miliseconds = 2 seconds  //UI
+        private MemoryGameCardCords k_SomeCardCords = (1, 1); //Logic
         private const bool v_CardsMatched = true;
 
-        public MemoryGame()
+        public MemoryGame() //UI
         {
             string firstPlayerName = MemoryGameInputManager.GetUsername();
             m_Player1 = new HumanPlayerMemoryGame(firstPlayerName);
@@ -44,7 +44,7 @@ namespace MemoryGameUI
             }
         }
 
-        public void RunMemoryGame()
+        public void RunMemoryGame() //UI
         {
             MemoryGameCardCords card1Cords;
             MemoryGameCardCords card2Cords;
@@ -54,12 +54,13 @@ namespace MemoryGameUI
             //while user didnt typed 'Q'
             while (m_ContinueGame)
             {
-                didCardsMatch = getCardsFromCurrentPlayerAndFlip(out card1Cords, out card2Cords);
+                didCardsMatch = getCardsFromCurrentPlayerAndFlip(out card1Cords, out card2Cords); //Logic
                 if (!m_ContinueGame)
                 {
                     break;
                 }
 
+                //UI
                 if (didCardsMatch == v_CardsMatched) //need to print the board normally
                 {
                     givePointToCurrentlyPlayingPlayer();
@@ -74,7 +75,7 @@ namespace MemoryGameUI
             }
         }
 
-        private void setUpGame()
+        private void setUpGame() //UI
         {
             (int,int) boardDimensions = MemoryGameInputManager.GetBoardSizeFromUser((k_MinimumRowSize, k_MaximumRowSize), (k_MinimumColumnSize, k_MaximumColumnSize));
             m_Board = new BoardMemoryGame(boardDimensions);
@@ -84,7 +85,7 @@ namespace MemoryGameUI
             m_CurrentlyPlayingPlayer = m_Player1;
         }
 
-        private void revealCardsForTwoSeconds(MemoryGameCardCords i_Card1Cords, MemoryGameCardCords i_Card2Cords)
+        private void revealCardsForTwoSeconds(MemoryGameCardCords i_Card1Cords, MemoryGameCardCords i_Card2Cords) //UI
         {
             m_Board.RevealCardsOnBoard(i_Card1Cords, i_Card2Cords);
             m_Board.PrintBoard();
@@ -93,7 +94,7 @@ namespace MemoryGameUI
             m_Board.PrintBoard();
         }
 
-        private void startNewGameIfNeeded()
+        private void startNewGameIfNeeded() //UI
         {
             if (m_Board.IsBoardFullyRevealed())
             {
@@ -110,7 +111,7 @@ namespace MemoryGameUI
         }
 
         private bool getCardsFromCurrentPlayerAndFlip(out MemoryGameCardCords o_Card1Cords,
-            out MemoryGameCardCords o_Card2Cords)
+            out MemoryGameCardCords o_Card2Cords) //UI
         {
             bool didMatch = false;
             o_Card2Cords = k_SomeCardCords;
@@ -133,12 +134,12 @@ namespace MemoryGameUI
             return didMatch;
         }
 
-        private void givePointToCurrentlyPlayingPlayer()
+        private void givePointToCurrentlyPlayingPlayer() //Logic
         {
             m_CurrentlyPlayingPlayer.AddPoint();
         }
 
-        private void switchTurn()
+        private void switchTurn() //Logic
         {
             if (m_CurrentTurn == ePlayerTurn.Player1Turn)
             {
@@ -151,5 +152,8 @@ namespace MemoryGameUI
                 m_CurrentlyPlayingPlayer = m_Player1;
             }
         }
+
+        //IsGameOver() //Logic
+        //ResetBoard() //Logic
     }
 }
