@@ -121,14 +121,14 @@ namespace MemoryGameUI
             Console.WriteLine("Card not in border.");
         }
 
-        public static bool PrintEndGameMessageAndAskForAnotherGame(PlayerMemoryGame i_Player1, PlayerMemoryGame i_Player2)
+        public static bool PrintEndGameMessageAndAskForAnotherGame((PlayerMemoryGame, PlayerMemoryGame) i_GamePlayers)
         {
             bool shouldStartNewGame;
             Console.WriteLine("THE GAME HAS ENDED!!!");
-            printWinnerMessage(i_Player1, i_Player2);
+            printWinnerMessage(i_GamePlayers.Item1, i_GamePlayers.Item2);
 
-            printPlayerScore(i_Player1);
-            printPlayerScore(i_Player2);
+            printPlayerScore(i_GamePlayers.Item1);
+            printPlayerScore(i_GamePlayers.Item2);
 
             Console.WriteLine("DO YOU WANT TO START A NEW GAME: (y/n)");
             

@@ -1,4 +1,6 @@
-﻿namespace task2_memory_game
+﻿using MemoryGameLogic;
+
+namespace task2_memory_game
 {
     internal class Program
     {

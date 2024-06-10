@@ -5,18 +5,7 @@ namespace MemoryGameUI
 {
     public class MemoryGame
     {
-        private enum ePlayerTurn
-        {
-            Player1Turn,
-            Player2Turn
-        } //Logic
-
-        private PlayerMemoryGame m_Player1; //Logic
-        private PlayerMemoryGame m_Player2; //Logic
-        private PlayerMemoryGame m_CurrentlyPlayingPlayer;//Logic
-        private BoardMemoryGame m_Board;//Logic
-
-        private ePlayerTurn m_CurrentTurn = ePlayerTurn.Player1Turn;//Logic
+        private GameController m_GameController;
         private bool m_ContinueGame = true; //UI
 
         private const int k_MinimumRowSize = 4; //UI
@@ -24,24 +13,28 @@ namespace MemoryGameUI
         private const int k_MaximumRowSize = 6; //UI 
         private const int k_MaximumColumnSize = 6; //UI
         private const int k_TimeToFreezeGameInMilliseconds = 2000; //2000 miliseconds = 2 seconds  //UI
-        private MemoryGameCardCords k_SomeCardCords = (1, 1); //Logic
-        private const bool v_CardsMatched = true;
+        private MemoryGameCardCords k_SomeCardCords = (-1, -1);
+        private const bool v_CardsMatched = true; //UI
 
         public MemoryGame() //UI
         {
             string firstPlayerName = MemoryGameInputManager.GetUsername();
-            m_Player1 = new HumanPlayerMemoryGame(firstPlayerName);
+            HumanPlayerMemoryGame player1 = new HumanPlayerMemoryGame(firstPlayerName);
 
+            PlayerMemoryGame player2;
             bool isComputerPlaying = MemoryGameInputManager.AskUserIfPlayingAgainstComputer();
             if (isComputerPlaying)
             {
-                m_Player2 = new ComputerPlayerMemoryGame();
+                player2 = new ComputerPlayerMemoryGame();
             }
             else
             {
                 string secondPlayerName = MemoryGameInputManager.GetUsername();
-                m_Player2 = new HumanPlayerMemoryGame(secondPlayerName);
+                player2 = new HumanPlayerMemoryGame(secondPlayerName);
             }
+
+            BoardMemoryGame gameBoard = setUpNewBoard();
+            m_GameController = new GameController(player1, player2, gameBoard);
         }
 
         public void RunMemoryGame() //UI
@@ -49,12 +42,13 @@ namespace MemoryGameUI
             MemoryGameCardCords card1Cords;
             MemoryGameCardCords card2Cords;
             bool didCardsMatch;
-            setUpGame();
+            //setUpNewBoard();
 
             //while user didnt typed 'Q'
             while (m_ContinueGame)
             {
-                didCardsMatch = getCardsFromCurrentPlayerAndFlip(out card1Cords, out card2Cords); //Logic
+                m_GameController.Board.PrintBoard();
+                didCardsMatch = getCardsFromCurrentPlayerAndFlip(out card1Cords, out card2Cords);
                 if (!m_ContinueGame)
                 {
                     break;
@@ -63,45 +57,42 @@ namespace MemoryGameUI
                 //UI
                 if (didCardsMatch == v_CardsMatched) //need to print the board normally
                 {
-                    givePointToCurrentlyPlayingPlayer();
-                    m_Board.PrintBoard();
+                    m_GameController.GivePointToCurrentlyPlayingPlayer();
+                    m_GameController.Board.PrintBoard();
                     startNewGameIfNeeded();
                 }
                 else //If didn't match
                 {
                     revealCardsForTwoSeconds(card1Cords, card2Cords);
-                    switchTurn();
+                    m_GameController.switchTurn();
                 }
             }
         }
 
-        private void setUpGame() //UI
+        private BoardMemoryGame setUpNewBoard() //UI
         {
             (int,int) boardDimensions = MemoryGameInputManager.GetBoardSizeFromUser((k_MinimumRowSize, k_MaximumRowSize), (k_MinimumColumnSize, k_MaximumColumnSize));
-            m_Board = new BoardMemoryGame(boardDimensions);
-            m_Board.PrintBoard();
-
-            m_CurrentTurn = ePlayerTurn.Player1Turn;
-            m_CurrentlyPlayingPlayer = m_Player1;
+            return new BoardMemoryGame(boardDimensions);
         }
 
         private void revealCardsForTwoSeconds(MemoryGameCardCords i_Card1Cords, MemoryGameCardCords i_Card2Cords) //UI
         {
-            m_Board.RevealCardsOnBoard(i_Card1Cords, i_Card2Cords);
-            m_Board.PrintBoard();
-            Thread.Sleep(k_TimeToFreezeGameInMilliseconds); 
-            m_Board.HideCards(i_Card1Cords, i_Card2Cords);
-            m_Board.PrintBoard();
+            m_GameController.Board.RevealCardsOnBoard(i_Card1Cords, i_Card2Cords);
+            m_GameController.Board.PrintBoard();
+            Thread.Sleep(k_TimeToFreezeGameInMilliseconds);
+            m_GameController.Board.HideCards(i_Card1Cords, i_Card2Cords);
+            m_GameController.Board.PrintBoard();
         }
 
         private void startNewGameIfNeeded() //UI
         {
-            if (m_Board.IsBoardFullyRevealed())
+            if (m_GameController.IsGameOver())
             {
-                bool startNewGame = MemoryGameInputManager.PrintEndGameMessageAndAskForAnotherGame(m_Player1, m_Player2);
+                (PlayerMemoryGame, PlayerMemoryGame) gamePlayers = m_GameController.getGamePlayers();
+                bool startNewGame = MemoryGameInputManager.PrintEndGameMessageAndAskForAnotherGame(gamePlayers);
                 if (startNewGame)
                 {
-                    setUpGame();
+                    setUpNewBoard();
                 }
                 else //if the user don't want to start a new game:
                 {
@@ -116,44 +107,23 @@ namespace MemoryGameUI
             bool didMatch = false;
             o_Card2Cords = k_SomeCardCords;
 
-            o_Card1Cords = m_CurrentlyPlayingPlayer.PickCardOnBoard(m_Board, out m_ContinueGame);
+            o_Card1Cords = m_GameController.CurrentlyPlayingPlayer.PickCardOnBoard(m_GameController.Board, out m_ContinueGame);
             if (m_ContinueGame)
             {
-                m_Board.FlipCardOnBoard(o_Card1Cords);
+                m_GameController.FlipCardOnBoard(o_Card1Cords);
                 if (m_ContinueGame)
                 {
-                    m_Board.PrintBoard(); //print board after placing the first card
-                    o_Card2Cords = m_CurrentlyPlayingPlayer.PickCardOnBoard(m_Board, out m_ContinueGame);
+                    //Maybe use print of inputManager:
+                    m_GameController.Board.PrintBoard(); //print board after placing the first card
+                    o_Card2Cords = m_GameController.CurrentlyPlayingPlayer.PickCardOnBoard(m_GameController.Board, out m_ContinueGame);
                     if (m_ContinueGame)
                     {
-                        didMatch = m_Board.FlipCardOnBoard(o_Card2Cords);
+                        didMatch = m_GameController.FlipCardOnBoard(o_Card2Cords);
                     }
                 }
             }
 
             return didMatch;
         }
-
-        private void givePointToCurrentlyPlayingPlayer() //Logic
-        {
-            m_CurrentlyPlayingPlayer.AddPoint();
-        }
-
-        private void switchTurn() //Logic
-        {
-            if (m_CurrentTurn == ePlayerTurn.Player1Turn)
-            {
-                m_CurrentTurn = ePlayerTurn.Player2Turn;
-                m_CurrentlyPlayingPlayer = m_Player2;
-            }
-            else // if currentTurn == Player2Turn
-            {
-                m_CurrentTurn = ePlayerTurn.Player1Turn;
-                m_CurrentlyPlayingPlayer = m_Player1;
-            }
-        }
-
-        //IsGameOver() //Logic
-        //ResetBoard() //Logic
     }
 }
