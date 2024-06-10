@@ -8,12 +8,8 @@ namespace MemoryGameUI
         private GameController m_GameController;
         private bool m_ContinueGame = true; 
 
-        private const int k_MinimumRowSize = 4; 
-        private const int k_MinimumColumnSize = 4; 
-        private const int k_MaximumRowSize = 6; 
-        private const int k_MaximumColumnSize = 6; 
         private const int k_TimeToFreezeGameInMilliseconds = 2000; //2000 miliseconds = 2 seconds  
-        private const bool v_CardsMatched = true; 
+        private const bool v_CardsMatched = true;
 
         public MemoryGame() 
         {
@@ -44,7 +40,7 @@ namespace MemoryGameUI
             //while user didnt typed 'Q'
             while (m_ContinueGame)
             {
-                m_GameController.Board.PrintBoard();
+                printGameBoard();
                 currentPlayingCard = m_GameController.PlayCurrentTurn(out bool didCardsMatch, out m_ContinueGame, out bool isGameOver);
                 if (!m_ContinueGame)
                 {
@@ -59,6 +55,7 @@ namespace MemoryGameUI
                     }
                     else if (isGameOver)
                     {
+                        printGameBoard();
                         startNewGameIfRequested();
                     }
                     previousPlayedCard = null;
@@ -72,21 +69,26 @@ namespace MemoryGameUI
 
         private (int,int) getBoardSizeFromUser()
         {
-            return MemoryGameInputManager.GetBoardSizeFromUser((k_MinimumRowSize, k_MaximumRowSize), (k_MinimumColumnSize, k_MaximumColumnSize));
+            return MemoryGameInputManager.GetBoardSizeFromUser();
         }
 
         private BoardMemoryGame setUpNewBoard() 
         {
             (int, int) boardDimensions = getBoardSizeFromUser();
+            while (!BoardMemoryGame.AreBoardDimensionsLegal(boardDimensions))
+            {
+                MemoryGameInputManager.PrintIllegalBoardSizeWarning();
+                boardDimensions = getBoardSizeFromUser();
+            }
             return new BoardMemoryGame(boardDimensions);
         }
 
         private void revealCardsForTwoSeconds(MemoryGameCardCords i_Card1Cords, MemoryGameCardCords i_Card2Cords) 
         {
             m_GameController.Board.RevealCardsOnBoard(i_Card1Cords, i_Card2Cords);
-            m_GameController.Board.PrintBoard();
+            printGameBoard();
             Thread.Sleep(k_TimeToFreezeGameInMilliseconds);
-            m_GameController.Board.HideCards(i_Card1Cords, i_Card2Cords);
+            m_GameController.Board.HideCardsOnBoard(i_Card1Cords, i_Card2Cords);
         }
 
         private void startNewGameIfRequested()
@@ -105,6 +107,11 @@ namespace MemoryGameUI
             {
                 m_ContinueGame = false; //the same as if the user press Q in a middle of a game: quit
             }
+        }
+
+        private void printGameBoard()
+        {
+            MemoryGameInputManager.PrintBoard(m_GameController.Board);
         }
     }
 }

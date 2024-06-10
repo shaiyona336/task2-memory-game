@@ -12,15 +12,13 @@ namespace MemoryGameLogic
         {
             Player1Turn,
             Player2Turn
-        } //Logic
+        }
 
-        private PlayerMemoryGame m_Player1; //Logic
-        private PlayerMemoryGame m_Player2; //Logic
+        private PlayerMemoryGame m_Player1;
+        private PlayerMemoryGame m_Player2; 
         public PlayerMemoryGame CurrentlyPlayingPlayer { get; private set; }
-        public BoardMemoryGame Board { get; }//Logic
-        private ePlayerTurn m_CurrentTurn = ePlayerTurn.Player1Turn;//Logic
-
-        //private MemoryGameCardCords k_SomeCardCords = (-1, -1);
+        public BoardMemoryGame Board { get; }
+        private ePlayerTurn m_CurrentTurn = ePlayerTurn.Player1Turn;
 
         public GameController(PlayerMemoryGame i_Player1, PlayerMemoryGame i_Player2, BoardMemoryGame i_Board)
         {
@@ -32,7 +30,7 @@ namespace MemoryGameLogic
             m_CurrentTurn = ePlayerTurn.Player1Turn;
         }
 
-        public void switchTurn() //Logic
+        public void switchTurn() 
         {
             if (m_CurrentTurn == ePlayerTurn.Player1Turn)
             {
@@ -46,7 +44,8 @@ namespace MemoryGameLogic
             }
         }
 
-        public MemoryGameCardCords PlayCurrentTurn(out bool o_DidCardsMatch, out bool o_ShouldGameContinue, out bool didGameOver)
+        public MemoryGameCardCords PlayCurrentTurn(out bool o_DidCardsMatch, out bool o_ShouldGameContinue, 
+            out bool didGameOver)
         {
             didGameOver = false;
             o_DidCardsMatch = false;

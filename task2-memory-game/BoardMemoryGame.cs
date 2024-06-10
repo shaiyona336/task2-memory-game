@@ -36,7 +36,7 @@ namespace MemoryGameLogic
             BoardState[i_SecondCardCords.Y, i_SecondCardCords.X].RevealCard();
         }
 
-        public void HideCards(MemoryGameCardCords i_FirstCardCords, MemoryGameCardCords i_SecondCardCords)
+        public void HideCardsOnBoard(MemoryGameCardCords i_FirstCardCords, MemoryGameCardCords i_SecondCardCords)
         {
             BoardState[i_FirstCardCords.Y, i_FirstCardCords.X].HideCard();
             BoardState[i_SecondCardCords.Y, i_SecondCardCords.X].HideCard();
@@ -92,19 +92,19 @@ namespace MemoryGameLogic
 
         public bool FlipCardOnBoard(MemoryGameCardCords i_CardCords) //return if flipped a pair
         {
-            bool isFlippedAPair = false;
+            bool didFlipAPair = false;
 
             if (IsThereARevealedCard == true)
             {
                 ref CardMemoryGame currentlyRevealedCard = ref BoardState[m_currentlyOpenedCardCords.Y, m_currentlyOpenedCardCords.X];
                 if (BoardState[i_CardCords.Y, i_CardCords.X].PairNum == currentlyRevealedCard.PairNum)
                 {
-                    isFlippedAPair = true;
+                    didFlipAPair = true;
                     BoardState[i_CardCords.Y, i_CardCords.X].RevealCard(); // need to flip this card and keep his state like that
                 }
                 else //if the card flipped wasnt a pair
                 {
-                    isFlippedAPair = false;
+                    didFlipAPair = false;
                     currentlyRevealedCard.HideCard(); // need to set the old card that been flipped to not seen again
                 }
             }
@@ -115,7 +115,7 @@ namespace MemoryGameLogic
             }
 
             IsThereARevealedCard = !IsThereARevealedCard; //if user open card, now need to flip the condition of one card open in a turn
-            return isFlippedAPair;
+            return didFlipAPair;
         }
 
         public bool IsCardHidden(MemoryGameCardCords i_CardCords)
@@ -128,11 +128,6 @@ namespace MemoryGameLogic
             }
 
             return returnValue;
-        }
-
-        public void PrintBoard()
-        {
-            MemoryGameUI.MemoryGameInputManager.PrintBoard(this);
         }
 
         public bool IsBoardFullyRevealed()
@@ -163,6 +158,11 @@ namespace MemoryGameLogic
             }
             
             return returnValue;
+        }
+
+        public static bool AreBoardDimensionsLegal((int, int) i_BoardDimensions)
+        {
+            return i_BoardDimensions.Item1 * i_BoardDimensions.Item2 % 2 == 0;
         }
 
 

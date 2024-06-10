@@ -9,6 +9,12 @@ namespace MemoryGameUI
         private const string k_ChooseNo = "n";
         private const string k_QuitGame = "Q";
 
+        private const int k_MinimumHeight = 4;
+        private const int k_MinimumWidth = 4;
+        private const int k_MaximumHeight = 6;
+        private const int k_MaximumWidth = 6;
+        private const bool k_DoHeightAndWidthRequiredToBeEven = true;
+
         public static string GetUsername()
         {
             string name;
@@ -42,36 +48,36 @@ namespace MemoryGameUI
             return wasYesChosen;
         }
 
-        public static (int,int) GetBoardSizeFromUser((int,int) i_RowSizeMinAndMax, (int,int) i_ColSizeMinAndMax)
+        public static (int,int) GetBoardSizeFromUser()
         {
-            (int,int) rowAndColumnSize;
+            (int,int) boardHeightAndWidth;
             int height;
             int width;
 
             Console.WriteLine("Enter height of board:");
-            height = getNumberFromRange(i_RowSizeMinAndMax.Item1, i_RowSizeMinAndMax.Item2);
+            height = getGameBoardDimension(k_MinimumHeight, k_MaximumHeight);
 
             Console.WriteLine("Enter width of board:");
-            width = getNumberFromRange(i_ColSizeMinAndMax.Item1, i_ColSizeMinAndMax.Item2);
+            width = getGameBoardDimension(k_MinimumWidth, k_MaximumWidth);
 
-            rowAndColumnSize = (height, width);
-            return rowAndColumnSize;
+            boardHeightAndWidth = (height, width);
+            return boardHeightAndWidth;
         }
 
-        private static int getNumberFromRange(int i_MinimumNumber, int i_MaximumNumber)
+        private static int getGameBoardDimension(int i_MinimumNumber, int i_MaximumNumber)
         {
             int inputInt;
             string inputStr = Console.ReadLine();
 
-            while (!isInputFromRangeLegal(inputStr, i_MinimumNumber, i_MaximumNumber, out inputInt))
+            while (!isInputForGameBoardLegal(inputStr, i_MinimumNumber, i_MaximumNumber, out inputInt))
             {
-                Console.WriteLine("Invalid input! Please try again.");
+                PrintIllegalBoardSizeWarning();
                 inputStr = Console.ReadLine();
             }
             return inputInt;
         }
 
-        private static bool isInputFromRangeLegal(string i_InputStr, int i_Minimum, int i_Maximum, out int o_InputInt)
+        private static bool isInputForGameBoardLegal(string i_InputStr, int i_Minimum, int i_Maximum, out int o_InputInt)
         {
             bool returnValue = false;
 
@@ -79,7 +85,7 @@ namespace MemoryGameUI
             {
                 if (o_InputInt >= i_Minimum && o_InputInt <= i_Maximum)
                 {
-                    if (o_InputInt % 2 == 0)
+                    if (!k_DoHeightAndWidthRequiredToBeEven || o_InputInt % 2 == 0)
                     {
                         returnValue = true;
                     }
@@ -119,6 +125,11 @@ namespace MemoryGameUI
         public static void PrintCardNotInBorderWarning() 
         {
             Console.WriteLine("Card not in border.");
+        }
+
+        public static void PrintIllegalBoardSizeWarning()
+        {
+            Console.WriteLine("The given board dimensions are illegal.");
         }
 
         public static bool PrintEndGameMessageAndAskForAnotherGame(PlayerMemoryGame i_Winner, PlayerMemoryGame i_Loser, 
