@@ -44,30 +44,25 @@ namespace MemoryGameLogic
             }
         }
 
-        public MemoryGameCardCords PlayCurrentTurn(out bool o_DidCardsMatch, out bool o_ShouldGameContinue, 
-            out bool didGameOver)
+        public MemoryGameCardCords PlayCurrentTurn(MemoryGameCardCords i_CurrentlyPlayingCard, out bool o_DidCardsMatch,
+            out bool o_DidGameOver)
         {
-            didGameOver = false;
-            o_DidCardsMatch = false;
+            o_DidGameOver = false;
+            //o_DidCardsMatch = false;
             bool wasThereARevealedCardBeforeCurrentFlip = Board.IsThereARevealedCard;
 
-            MemoryGameCardCords cardToFlip = CurrentlyPlayingPlayer.PickCardOnBoard(Board, out o_ShouldGameContinue);
-            if (o_ShouldGameContinue)
+            o_DidCardsMatch = Board.FlipCardOnBoard(i_CurrentlyPlayingCard);
+            if (o_DidCardsMatch)
             {
-                o_DidCardsMatch = Board.FlipCardOnBoard(cardToFlip);
-
-                if (o_DidCardsMatch)
-                {
-                    GivePointToCurrentlyPlayingPlayer();
-                    didGameOver = IsGameOver();
-                }
-                else if (wasThereARevealedCardBeforeCurrentFlip)
-                {
-                    switchTurn();
-                }
+                GivePointToCurrentlyPlayingPlayer();
+                o_DidGameOver = IsGameOver();
+            }
+            else if (wasThereARevealedCardBeforeCurrentFlip)
+            {
+                switchTurn();
             }
 
-            return cardToFlip;
+            return i_CurrentlyPlayingCard; //Will not need if I choose this
         }
 
         public void GivePointToCurrentlyPlayingPlayer()

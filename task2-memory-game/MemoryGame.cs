@@ -41,11 +41,12 @@ namespace MemoryGameUI
             while (m_ContinueGame)
             {
                 printGameBoard();
-                currentPlayingCard = m_GameController.PlayCurrentTurn(out bool didCardsMatch, out m_ContinueGame, out bool isGameOver);
+                currentPlayingCard = m_GameController.CurrentlyPlayingPlayer.PickCardOnBoard(m_GameController.Board, out m_ContinueGame);
                 if (!m_ContinueGame)
                 {
                     break;
                 }
+                m_GameController.PlayCurrentTurn(currentPlayingCard, out bool didCardsMatch, out bool isGameOver);
 
                 if (previousPlayedCard != null)
                 {
