@@ -29,5 +29,10 @@ namespace MemoryGameLogic
         {
             return (i_Cords.Y, i_Cords.X);
         }
+
+        public bool IsEqualTo(MemoryGameCardCords i_CardCordsToCheckIfEqual)
+        {
+            return this.X == i_CardCordsToCheckIfEqual.X && this.Y == i_CardCordsToCheckIfEqual.Y;
+        }
     }
 }

@@ -165,6 +165,9 @@ namespace MemoryGameLogic
             return i_BoardDimensions.Item1 * i_BoardDimensions.Item2 % 2 == 0;
         }
 
-
+        public CardMemoryGame GetCardOnBoard(MemoryGameCardCords i_RequestedCardCords)
+        {
+            return BoardState[i_RequestedCardCords.Y, i_RequestedCardCords.X];
+        }
     }
 }

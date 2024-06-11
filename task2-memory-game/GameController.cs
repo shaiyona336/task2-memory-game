@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MemoryGameLogic
+﻿namespace MemoryGameLogic
 {
     internal class GameController
     {
@@ -96,6 +90,10 @@ namespace MemoryGameLogic
         public void SetUpNewGame((int, int) i_NewGameBoardDimensions)
         {
             Board.SetEmptyBoard(i_NewGameBoardDimensions);
+            if (m_Player2 is ComputerPlayerMemoryGame)
+            {
+                ((ComputerPlayerMemoryGame)m_Player2).DidNewGameStarted = true;
+            }
         }
     }
 }
