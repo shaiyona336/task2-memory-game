@@ -1,12 +1,11 @@
 ﻿using MemoryGameLogic;
+using System;
 using System.Runtime.ConstrainedExecution;
 
 namespace MemoryGameUI
 {
     internal class HumanPlayerMemoryGame : PlayerMemoryGame
     {
-        private MemoryGameCardCords k_SomeCardCords = (-1, -1);
-
         public HumanPlayerMemoryGame(string i_PlayerName)
         {
             Name = i_PlayerName;
@@ -15,7 +14,7 @@ namespace MemoryGameUI
         public override MemoryGameCardCords PickCardOnBoard(BoardMemoryGame i_Board, out bool o_ContinueGame)
         {
             string cardToOpenStr;
-            MemoryGameCardCords outPair = k_SomeCardCords;
+            MemoryGameCardCords outCardCords = new MemoryGameCardCords();
             bool isStringAValidPair = false;
             o_ContinueGame = true;
 
@@ -30,11 +29,11 @@ namespace MemoryGameUI
                 {
                     MemoryGameInputManager.PrintIllegalInputFromUserMessage();
                 }
-                else if (!convertStringToCardIfPossible(cardToOpenStr, out outPair, i_Board))
+                else if (!convertStringToCardIfPossible(cardToOpenStr, out outCardCords, i_Board))
                 {
                     MemoryGameInputManager.PrintCardNotInBorderWarning();
                 }
-                else if (!i_Board.IsCardHidden(outPair))
+                else if (!i_Board.IsCardHidden(outCardCords))
                 {
                     MemoryGameInputManager.PrintIllegalPlaceForCardMessage();
                 }
@@ -43,14 +42,14 @@ namespace MemoryGameUI
                     isStringAValidPair = true;
                 }
             }
-            return outPair;
+            return outCardCords;
         }
 
         private bool convertStringToCardIfPossible(string i_CardStrToConvert, out MemoryGameCardCords o_CardCordsAfterConvert,
             BoardMemoryGame i_BoardOfRequestedCard)
         {
             bool returnValue = false;
-            o_CardCordsAfterConvert = k_SomeCardCords;
+            o_CardCordsAfterConvert = new MemoryGameCardCords();
 
             if (isStringAPairOfCharAndInt(i_CardStrToConvert))
             {
